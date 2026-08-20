@@ -7,7 +7,7 @@
   "independence": "NOT_CLAIMED",
   "implementation_ownership": "NONE",
   "evidence_lane": "cloud/static design preflight",
-  "checkpoint": "before C01 Draft publication",
+  "checkpoint": "before C01 cross-language worker dispatch",
   "findings": [
     {
       "id": "SH-C01-001",
@@ -36,6 +36,13 @@
       "finding": "A Python fixture checker could be promoted to cross-language or hardware proof.",
       "resolution": "Contract docs and checker emit explicit NOT_EXERCISED states for those lanes.",
       "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-005",
+      "class": "SCHEMA_DELTA",
+      "finding": "JSON Schema `pattern` only constrains string instances; pattern-only `stage`, `subject_sha`, and the SHA branch of `subject_tree` could therefore admit non-string values.",
+      "resolution": "The LocalHandoffPacket schema now binds those pattern-constrained fields to `type: string` explicitly before worker branches advance.",
+      "disposition": "VERIFIED_REPAIRED"
     }
   ],
   "remaining_dissent": [
@@ -45,5 +52,5 @@
     "No C01 exact-head hosted workflow exists yet.",
     "Independent Shadow is NOT_EXERCISED."
   ],
-  "verdict": "C01_READY_FOR_DRAFT_PUBLICATION_NOT_P2_COMPLETE"
+  "verdict": "C01_PREIMPLEMENTATION_CONTRACT_REPAIRED_FANOUT_READY_NOT_P2_COMPLETE"
 }
