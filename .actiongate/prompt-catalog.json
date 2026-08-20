@@ -1,0 +1,18 @@
+{
+  "schema": "actiongate-prompt-catalog/v1",
+  "repository": "ed3c/ActionGate",
+  "stages": [
+    {"id":"P0","file":"docs/prompts/P0_CONTROL_PLANE.md","issues":[2],"parallel_workers":false},
+    {"id":"P1","file":"docs/prompts/P1_SOURCE_RIGHTS.md","issues":[3],"parallel_workers":true},
+    {"id":"P2","file":"docs/prompts/P2_CONTRACTS.md","issues":[4],"parallel_workers":true},
+    {"id":"P3","file":"docs/prompts/P3_CORE.md","issues":[5],"parallel_workers":true},
+    {"id":"P4","file":"docs/prompts/P4_ADAPTERS.md","issues":[6,7,8,9],"parallel_workers":true},
+    {"id":"P5","file":"docs/prompts/P5_EVIDENCE.md","issues":[10],"parallel_workers":true},
+    {"id":"P6","file":"docs/prompts/P6_E2E.md","issues":[11],"parallel_workers":true},
+    {"id":"P7","file":"docs/prompts/P7_CONVERGENCE.md","issues":[12],"parallel_workers":false},
+    {"id":"P8","file":"docs/prompts/P8_PHYSICAL_HUMAN.md","issues":[13],"parallel_workers":true}
+  ],
+  "common_handoff":"docs/handoff/HANDOFF_PACKET.md",
+  "local_queue":".actiongate/local-handoff-queue.json",
+  "private_context_policy":"resolve through ignored binding; never publish private URLs/content"
+}

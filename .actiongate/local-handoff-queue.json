@@ -1,0 +1,95 @@
+{
+  "schema": "actiongate-local-handoff-queue/v1",
+  "repository": "ed3c/ActionGate",
+  "subject": "bootstrap-stack",
+  "active_item": "LH-001",
+  "items": [
+    {
+      "id": "LH-001",
+      "state": "ACTIVE",
+      "entry": "trusted local host with git, python3 and GitHub network; clean-room session",
+      "cwd": "$HOME/actiongate-handoff",
+      "commands": [
+        ["mkdir","-p","$HOME/actiongate-handoff"],
+        ["git","clone","https://github.com/ed3c/ActionGate.git","ActionGate"],
+        ["git","fetch","origin","--prune"],
+        ["git","checkout","ag/C00-technical-control-plane"],
+        ["git","reset","--hard","origin/ag/C00-technical-control-plane"],
+        ["git","diff","--check"],
+        ["python3","-m","json.tool",".actiongate/system-contract.json"],
+        ["python3","-m","json.tool",".actiongate/task-dag.json"]
+      ],
+      "receipt": ".actiongate/receipts/local/LH-001.txt",
+      "exit": "exact subject/tree plus diff and JSON checks PASS",
+      "next": "LH-002",
+      "evidence_ceiling": "local-deterministic bootstrap read-back",
+      "human_owned": []
+    },
+    {
+      "id": "LH-002",
+      "state": "BLOCKED_BY_PREDECESSOR",
+      "entry": "LH-001 valid and Draft PRs 14, 15 and 16 exist",
+      "cwd": "$HOME/actiongate-handoff/ActionGate",
+      "commands": [
+        ["git","town","--version"],
+        ["git","merge-base","--is-ancestor","origin/main","origin/ag/C00-technical-control-plane"],
+        ["git","merge-base","--is-ancestor","origin/ag/C00-technical-control-plane","origin/ag/S01-source-rights"],
+        ["git","merge-base","--is-ancestor","origin/ag/C00-technical-control-plane","origin/ag/D00-prompts-handoff"]
+      ],
+      "receipt": ".actiongate/receipts/local/LH-002.txt",
+      "exit": "ancestry PASS; Git Town capability is PASS or BLOCKED_ABSENT_EXECUTABLE",
+      "next": "LH-003",
+      "evidence_ceiling": "local tool/ancestry capability; no sync/push/merge authority",
+      "human_owned": []
+    },
+    {
+      "id": "LH-003",
+      "state": "BLOCKED_BY_IMPLEMENTATION",
+      "entry": "Issue 7 physical candidate and exact Gradle task frozen",
+      "cwd": "$HOME/actiongate-handoff/ActionGate",
+      "commands": [["adb","devices","-l"],["./gradlew",":packages:sdk-android:connectedCheck"]],
+      "receipt": ".actiongate/receipts/local/LH-003-android.json",
+      "exit": "Issue 13 admits Android physical receipt",
+      "next": "LH-005",
+      "evidence_ceiling": "live/physical Android",
+      "human_owned": []
+    },
+    {
+      "id": "LH-004",
+      "state": "BLOCKED_BY_IMPLEMENTATION",
+      "entry": "Issue 8 candidate, scheme and ACTIONGATE_IOS_DESTINATION frozen",
+      "cwd": "$HOME/actiongate-handoff/ActionGate",
+      "commands": [["xcodebuild","-scheme","ActionGateSDK","-destination","$ACTIONGATE_IOS_DESTINATION","test"]],
+      "receipt": ".actiongate/receipts/local/LH-004-ios.json",
+      "exit": "Issue 13 admits iOS physical receipt",
+      "next": "LH-005",
+      "evidence_ceiling": "live/physical iOS",
+      "human_owned": []
+    },
+    {
+      "id": "LH-005",
+      "state": "BLOCKED_BY_CANDIDATE",
+      "entry": "P7 immutable SHA/tree, threat model and SBOM",
+      "runtime_lane": "independent read-only security and clean-room reviewer",
+      "receipt": ".actiongate/receipts/local/LH-005-review.json",
+      "exit": "independent receipt admitted; legal clearance separate",
+      "next": "LH-006",
+      "evidence_ceiling": "adversarial/security or rights review",
+      "human_owned": ["legal acceptance"]
+    },
+    {
+      "id": "LH-006",
+      "state": "HUMAN_ADMIT_REQUIRED",
+      "entry": "all required receipts and blockers presented",
+      "runtime_lane": "repository/legal/security Human authorities",
+      "receipt": ".actiongate/receipts/local/LH-006-human-decision.json",
+      "exit": "explicit merge/release/rollback decision",
+      "next": null,
+      "evidence_ceiling": "Human admit",
+      "human_owned": ["merge","release","production promotion","rollback","public/private boundary changes"]
+    }
+  ],
+  "rollback_identity": "exact pre-operation branch heads and candidate SHA",
+  "cleanup_required": true,
+  "private_urls_forbidden": true
+}
