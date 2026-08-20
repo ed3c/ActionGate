@@ -1,0 +1,92 @@
+{
+  "schema": "actiongate-vector-manifest/v1",
+  "profile": "ActionGate-JCS-Int-ASCII-Key-v1",
+  "positive": {
+    "arguments": {
+      "environment": "production",
+      "image": "registry.example/actiongate/demo:v1",
+      "service": "payments-api"
+    },
+    "arguments_hash": "aDAZpSSDV7-lNqYY5ViQqqUTcU8J6m-qPpFu4QjfTUk",
+    "action_envelope": {
+      "version": "actiongate/v1",
+      "action_id": "act_demo_01",
+      "agent_id": "agent_demo",
+      "subject_id": "user_demo",
+      "tool": "deploy.production",
+      "arguments_hash": "aDAZpSSDV7-lNqYY5ViQqqUTcU8J6m-qPpFu4QjfTUk",
+      "context_hash": null,
+      "risk_tier": "R3",
+      "audience": "mcp://production-deployer",
+      "policy_version": "2026-08-21.1",
+      "issued_at_ms": 1787234400000,
+      "expires_at_ms": 1787234460000,
+      "nonce": "n_demo_01"
+    },
+    "action_digest": "XD8ngJ-f1tD-cwVWTuqFWCCPuwTjAVyzV63rtNgW89c",
+    "authorization_challenge": {
+      "version": "actiongate/v1",
+      "challenge_id": "chl_demo_01",
+      "action_digest": "XD8ngJ-f1tD-cwVWTuqFWCCPuwTjAVyzV63rtNgW89c",
+      "subject_id": "user_demo",
+      "device_id": "device_demo",
+      "audience": "mcp://production-deployer",
+      "policy_version": "2026-08-21.1",
+      "nonce": "c_demo_01",
+      "issued_at_ms": 1787234401000,
+      "expires_at_ms": 1787234461000
+    },
+    "authorization_signing_input_sha256": "8sC8JA9BcBFHT9swpU81Y5EuI3bvTxzxQKYVIWTFdkw"
+  },
+  "negative": {
+    "arguments_image_changed": {
+      "environment": "production",
+      "image": "registry.example/actiongate/attacker:latest",
+      "service": "payments-api"
+    },
+    "action_wrong_audience": {
+      "version": "actiongate/v1",
+      "action_id": "act_demo_01",
+      "agent_id": "agent_demo",
+      "subject_id": "user_demo",
+      "tool": "deploy.production",
+      "arguments_hash": "aDAZpSSDV7-lNqYY5ViQqqUTcU8J6m-qPpFu4QjfTUk",
+      "context_hash": null,
+      "risk_tier": "R3",
+      "audience": "mcp://other-service",
+      "policy_version": "2026-08-21.1",
+      "issued_at_ms": 1787234400000,
+      "expires_at_ms": 1787234460000,
+      "nonce": "n_demo_01"
+    },
+    "action_missing_policy_version": {
+      "version": "actiongate/v1",
+      "action_id": "act_demo_01",
+      "agent_id": "agent_demo",
+      "subject_id": "user_demo",
+      "tool": "deploy.production",
+      "arguments_hash": "aDAZpSSDV7-lNqYY5ViQqqUTcU8J6m-qPpFu4QjfTUk",
+      "context_hash": null,
+      "risk_tier": "R3",
+      "audience": "mcp://production-deployer",
+      "issued_at_ms": 1787234400000,
+      "expires_at_ms": 1787234460000,
+      "nonce": "n_demo_01"
+    },
+    "challenge_invalid_expiry": {
+      "version": "actiongate/v1",
+      "challenge_id": "chl_demo_01",
+      "action_digest": "XD8ngJ-f1tD-cwVWTuqFWCCPuwTjAVyzV63rtNgW89c",
+      "subject_id": "user_demo",
+      "device_id": "device_demo",
+      "audience": "mcp://production-deployer",
+      "policy_version": "2026-08-21.1",
+      "nonce": "c_demo_01",
+      "issued_at_ms": 1787234401000,
+      "expires_at_ms": 1787234401000
+    },
+    "duplicate_key_raw": "{\"tool\":\"deploy.production\",\"tool\":\"delete.production\"}",
+    "float_raw": "{\"timeout\":1.5}"
+  },
+  "evidence_ceiling": "Python reference fixture verification only; cross-language/schema-engine/platform lanes NOT_EXERCISED"
+}
