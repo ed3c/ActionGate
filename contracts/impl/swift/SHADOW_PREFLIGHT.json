@@ -1,0 +1,21 @@
+{
+  "schema": "actiongate-worker-shadow-preflight/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 19,
+  "branch": "ag/C01-swift-vectors",
+  "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "checkpoint": "before Swift implementation",
+  "findings": [
+    {"id":"SH-SWIFT-001","risk":"Dictionary iteration order used as canonical order","required_falsifier":"explicit sorted-key output matches frozen bytes"},
+    {"id":"SH-SWIFT-002","risk":"JSONSerialization NSNumber conflates boolean and number paths","required_falsifier":"bool/numeric distinction controls"},
+    {"id":"SH-SWIFT-003","risk":"Double or unsafe integer enters security values","required_falsifier":"float and range controls fail before serialization"},
+    {"id":"SH-SWIFT-004","risk":"Unicode normalization or implicit encoding changes bytes","required_falsifier":"explicit UTF-8 and non-normalization control"},
+    {"id":"SH-SWIFT-005","risk":"Secure Enclave concerns leak into language-only worker","required_falsifier":"changed-path/import scan contains no platform-security API"},
+    {"id":"SH-SWIFT-006","risk":"toolchain absence hidden by package download","required_falsifier":"exact Swift capability receipt or typed blocker"}
+  ],
+  "verdict": "PREIMPLEMENTATION_READY_NOT_EXECUTED",
+  "remaining": ["toolchain", "implementation", "vector execution", "independent Shadow", "C01 convergence"]
+}
