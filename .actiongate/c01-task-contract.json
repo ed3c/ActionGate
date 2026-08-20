@@ -1,0 +1,50 @@
+{
+  "schema": "actiongate-c01-task-contract/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 4,
+  "stage": "P2",
+  "atom": "C01",
+  "base_branch": "ag/S01-source-rights",
+  "base_sha": "6cd18694878e6db3ee65034d8e86fe990ade02c0",
+  "work_branch": "ag/C01-action-contracts",
+  "objective": "freeze language-neutral exact-action authorization contracts and deterministic vectors before implementation",
+  "non_goals": [
+    "HTTP server",
+    "database adapter",
+    "MCP SDK integration",
+    "Android/iOS implementation",
+    "business action",
+    "merge/release"
+  ],
+  "lease": {
+    "paths": [
+      "contracts/**",
+      ".actiongate/c01-task-contract.json",
+      ".actiongate/receipts/shadow/C01-contract-preflight.json"
+    ],
+    "resources": ["C01 schema/interface authority"]
+  },
+  "inputs": {
+    "issue": 4,
+    "source_claim_branch": "ag/S01-source-rights",
+    "source_claim_sha": "6cd18694878e6db3ee65034d8e86fe990ade02c0",
+    "canonicalization_sources": ["RFC8785", "RFC8949"]
+  },
+  "acceptance": [
+    "combined schema contains all required C01 envelopes",
+    "restricted canonical profile is explicit",
+    "arguments/action/challenge domains are separated",
+    "positive vectors reproduce fixed SHA-256 values",
+    "parameter/audience/missing-field/expiry/duplicate-key/float controls turn red",
+    "grant authenticity is not inferred from schema validity",
+    "physical/cross-language/integration evidence remains NOT_EXERCISED"
+  ],
+  "next_workers": [
+    {"id":"C01-KOTLIN","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/kotlin/**"],"evidence":"local-deterministic"},
+    {"id":"C01-SWIFT","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/swift/**"],"evidence":"local-deterministic"},
+    {"id":"C01-TYPESCRIPT","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/typescript/**"],"evidence":"local-deterministic"},
+    {"id":"C01-PYTHON-REFERENCE","relation":"CURRENT_OWNER_REFERENCE","owns":["contracts/v1/reference/**"],"evidence":"local-deterministic"}
+  ],
+  "human_owned": ["merge", "release", "security/legal acceptance"],
+  "evidence_ceiling": "cloud/static contract publication plus local deterministic reference only"
+}
