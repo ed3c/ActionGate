@@ -1,0 +1,140 @@
+{
+  "schema": "actiongate-c01-execution-preflight/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 37,
+  "state": "C01_EXECUTION_CONTROL_PLANE_READY",
+  "base": {
+    "branch": "ag/C01-action-contracts",
+    "sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a"
+  },
+  "worker_subjects": [
+    {"issue": 18, "pr": 34, "language": "kotlin", "branch": "ag/C01-kotlin-vectors", "head": "0136936e7d63ba0c538d2cb40db60409107ababc", "lease": "contracts/impl/kotlin/**", "state": "PREIMPLEMENTATION_READY"},
+    {"issue": 19, "pr": 35, "language": "swift", "branch": "ag/C01-swift-vectors", "head": "76b10b5a05898410ed361761626b381158edb306", "lease": "contracts/impl/swift/**", "state": "PREIMPLEMENTATION_READY"},
+    {"issue": 20, "pr": 36, "language": "typescript", "branch": "ag/C01-typescript-vectors", "head": "c62e24ffa0ceb2224fe6931929bfaeeceabe3c39", "lease": "contracts/impl/typescript/**", "state": "PREIMPLEMENTATION_READY"}
+  ],
+  "process_lanes": {
+    "runtime_capability": {"issue": 22, "receipt": ".actiongate/c01-execution/runtime-capability.receipt.json", "state": "OBSERVED_CURRENT_EPHEMERAL_LANE", "transferable": false},
+    "schema_engine": {"issue": 23, "receipt": "contracts/evidence/schema/C01-schema-engine.receipt.json", "state": "PASS_EXACT_BLOBS_ONLY"},
+    "common_receipt_gate": {"issue": 30, "schema": "contracts/evidence/common/language-worker-receipt.schema.json", "checker": "contracts/evidence/common/check_language_worker_receipt.py", "state": "PREPARED_AND_FIXTURE_VERIFIED"},
+    "clean_room": {
+      "issue": 29,
+      "state": "HUMAN_REVIEW_REQUIRED",
+      "required_fields": [
+        "personal_or_authorized_context",
+        "public_inputs_only",
+        "no_employer_repository_or_internal_document",
+        "no_private_protocol_or_test_vector",
+        "dependency_and_license_list",
+        "suspicious_similarity_stop_condition"
+      ],
+      "legal_clearance": "HUMAN_ADMIT_REQUIRED"
+    },
+    "independent_shadow": {"issue": 26, "state": "READY_FOR_SEPARATE_READ_ONLY_SESSION", "builder_may_not_satisfy": true},
+    "convergence": {"issue": 24, "state": "BLOCKED_BY_WORKER_RECEIPTS"},
+    "k01": {"issues": [25, 28], "state": "BLOCKED_BY_C01_ADMISSION"}
+  },
+  "session_dispatch": [
+    {
+      "id": "C01-KOTLIN-SESSION",
+      "issue": 18,
+      "state": "READY_FOR_CONTROLLER_OR_HUMAN_LAUNCH",
+      "prompt": "contracts/v1/LANGUAGE_WORKER_PROMPT.md",
+      "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "branch": "ag/C01-kotlin-vectors",
+      "lease": "contracts/impl/kotlin/**",
+      "first_actions": [["kotlinc", "-version"], ["java", "-version"]]
+    },
+    {
+      "id": "C01-SWIFT-SESSION",
+      "issue": 19,
+      "state": "READY_FOR_CONTROLLER_OR_HUMAN_LAUNCH",
+      "prompt": "contracts/v1/LANGUAGE_WORKER_PROMPT.md",
+      "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "branch": "ag/C01-swift-vectors",
+      "lease": "contracts/impl/swift/**",
+      "first_actions": [["swift", "--version"]]
+    },
+    {
+      "id": "C01-TYPESCRIPT-SESSION",
+      "issue": 20,
+      "state": "READY_FOR_CONTROLLER_OR_HUMAN_LAUNCH",
+      "prompt": "contracts/v1/LANGUAGE_WORKER_PROMPT.md",
+      "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "branch": "ag/C01-typescript-vectors",
+      "lease": "contracts/impl/typescript/**",
+      "first_actions": [["node", "--version"], ["tsc", "--version"]]
+    }
+  ],
+  "local_handoff_queue": {
+    "active_item": "C01-EP-001",
+    "items": [
+      {
+        "id": "C01-EP-001",
+        "state": "ACTIVE",
+        "entry": "actual Worker Session/runtime selected",
+        "operation": "re-probe required executables and obtain clean-room Human attestation",
+        "exit": "runtime receipt bound to that Session and clean-room state is PASS or typed blocker",
+        "next": "C01-EP-002"
+      },
+      {
+        "id": "C01-EP-002",
+        "state": "BLOCKED_BY_PREDECESSOR",
+        "entry": "C01-EP-001 valid for each selected Worker",
+        "operation": "launch independent language Session packet(s); launch request is not Session observation",
+        "exit": "each launched lane has an exact branch/head and first durable Worker receipt",
+        "next": "C01-EP-003"
+      },
+      {
+        "id": "C01-EP-003",
+        "state": "BLOCKED_BY_WORKERS",
+        "entry": "all selected Worker receipts validate under common gate",
+        "operation": "run Issue #26 in a separate read-only reviewer Session",
+        "exit": "independent Shadow verdict attached to Issue #24",
+        "next": "C01-EP-004"
+      },
+      {
+        "id": "C01-EP-004",
+        "state": "BLOCKED_BY_RECEIPTS",
+        "entry": "Worker, schema and independent Shadow receipts present",
+        "operation": "Issue #24 convergence emits C01_ADMITTED, HOLD or REJECT",
+        "exit": "exact convergence receipt",
+        "next": "C01-EP-005"
+      },
+      {
+        "id": "C01-EP-005",
+        "state": "BLOCKED_BY_C01_ADMISSION",
+        "entry": "Issue #24 exact verdict is C01_ADMITTED",
+        "operation": "activate #25/#28 K01 preparation against admitted subject",
+        "exit": "K01 packets remain preparation until separately executed",
+        "next": null
+      }
+    ]
+  },
+  "independent_shadow_packet": {
+    "issue": 26,
+    "state": "READY_FOR_SEPARATE_SESSION",
+    "read_only_subjects": [
+      "C01:b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "Kotlin:0136936e7d63ba0c538d2cb40db60409107ababc",
+      "Swift:76b10b5a05898410ed361761626b381158edb306",
+      "TypeScript:c62e24ffa0ceb2224fe6931929bfaeeceabe3c39"
+    ],
+    "allowed_outputs": ["findings", "falsifiers", "HOLD|REJECT|ELIGIBLE_FOR_C01_CONVERGENCE receipt"],
+    "forbidden": ["source edit", "branch movement", "PR mutation", "merge", "issue closure", "private reasoning collection"]
+  },
+  "convergence_packet": {
+    "issue": 24,
+    "owner": "Issue #4 / ag/C01-action-contracts",
+    "state": "BLOCKED_BY_WORKER_RECEIPTS",
+    "required": ["Kotlin exact receipt", "Swift exact receipt", "TypeScript exact receipt", "schema receipt", "independent Shadow receipt"],
+    "verdicts": ["C01_ADMITTED", "HOLD", "REJECT"]
+  },
+  "k01_blocked_handoff": {
+    "issues": [25, 28],
+    "state": "BLOCKED_BY_C01_ADMISSION",
+    "admission_key": "Issue #24 exact C01_ADMITTED receipt",
+    "forbidden_before_admission": ["K01 branch dispatch", "core implementation", "adapter start promotion"]
+  },
+  "evidence_ceiling": "execution-control preparation plus current-lane capability and schema-engine evidence; no language implementation or P2 closure",
+  "human_owned": ["clean-room attestation", "legal/security acceptance", "merge", "release", "production"]
+}
