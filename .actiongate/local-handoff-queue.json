@@ -1,8 +1,9 @@
 {
-  "schema": "actiongate-local-handoff-queue/v1",
+  "schema": "actiongate-local-handoff-queue/v2",
   "repository": "ed3c/ActionGate",
   "subject": "bootstrap-stack",
   "active_item": "LH-001",
+  "selection_policy": "exactly one item is ACTIVE; after its valid receipt closes, the controller may activate exactly one eligible item named by next_candidates; blocked siblings remain blocked and no item auto-executes",
   "items": [
     {
       "id": "LH-001",
@@ -33,7 +34,7 @@
         "clean_room_path contains no employer/private source"
       ],
       "exit": "exact C00 subject/tree plus diff and JSON checks PASS",
-      "next": "LH-002",
+      "next_candidates": ["LH-002"],
       "evidence_ceiling": "local-deterministic bootstrap read-back",
       "human_owned": []
     },
@@ -57,58 +58,78 @@
         "no sync, push, merge, rebase, reset, branch deletion or semantic conflict resolution executed"
       ],
       "exit": "ancestry PASS; Git Town capability is PASS or BLOCKED_ABSENT_EXECUTABLE",
-      "next": "LH-003",
+      "next_candidates": ["LH-003", "LH-004", "LH-005"],
       "evidence_ceiling": "local tool/ancestry capability; no sync/push/merge authority",
       "human_owned": []
     },
     {
       "id": "LH-003",
       "state": "BLOCKED_BY_IMPLEMENTATION",
-      "entry": "Issue 7 physical candidate and exact Gradle task frozen",
+      "entry": "Issue 7 exact candidate and Android connected-test task are frozen; trusted personal Android device is connected",
       "cwd": "ActionGate",
-      "commands": [
+      "command_template": [
         ["adb", "devices", "-l"],
-        ["./gradlew", ":packages:sdk-android:connectedCheck"]
+        ["./gradlew", "<ANDROID_CONNECTED_TEST_TASK>"]
       ],
+      "parameter_bindings": {
+        "<ANDROID_CONNECTED_TEST_TASK>": {
+          "source": "Issue #7 / A02 handoff receipt",
+          "required_before_activation": true,
+          "shell_expansion": false
+        }
+      },
       "receipt": ".actiongate/receipts/local/LH-003-android.json",
       "exit": "Issue 13 admits Android physical receipt",
-      "next": "LH-005",
+      "next_candidates": ["LH-004", "LH-005", "LH-006"],
       "evidence_ceiling": "live/physical Android",
       "human_owned": []
     },
     {
       "id": "LH-004",
       "state": "BLOCKED_BY_IMPLEMENTATION",
-      "entry": "Issue 8 candidate, scheme and ACTIONGATE_IOS_DESTINATION frozen",
+      "entry": "Issue 8 exact candidate, scheme and physical destination binding are frozen",
       "cwd": "ActionGate",
-      "commands": [
-        ["xcodebuild", "-scheme", "ActionGateSDK", "-destination", "$ACTIONGATE_IOS_DESTINATION", "test"]
+      "command_template": [
+        ["xcodebuild", "-scheme", "<IOS_SCHEME>", "-destination", "<IOS_DESTINATION>", "test"]
       ],
+      "parameter_bindings": {
+        "<IOS_SCHEME>": {
+          "source": "Issue #8 / A03 handoff receipt",
+          "required_before_activation": true,
+          "shell_expansion": false
+        },
+        "<IOS_DESTINATION>": {
+          "source": "local environment ACTIONGATE_IOS_DESTINATION",
+          "required_before_activation": true,
+          "shell_expansion": false,
+          "record_value_in_receipt": false
+        }
+      },
       "receipt": ".actiongate/receipts/local/LH-004-ios.json",
       "exit": "Issue 13 admits iOS physical receipt",
-      "next": "LH-005",
+      "next_candidates": ["LH-003", "LH-005", "LH-006"],
       "evidence_ceiling": "live/physical iOS",
       "human_owned": []
     },
     {
       "id": "LH-005",
       "state": "BLOCKED_BY_CANDIDATE",
-      "entry": "P7 immutable SHA/tree, threat model and SBOM",
+      "entry": "P7 immutable SHA/tree, threat model, dependency-rights packet and SBOM exist",
       "runtime_lane": "independent read-only security and clean-room reviewer",
       "receipt": ".actiongate/receipts/local/LH-005-review.json",
       "exit": "independent receipt admitted; legal clearance separate",
-      "next": "LH-006",
+      "next_candidates": ["LH-003", "LH-004", "LH-006"],
       "evidence_ceiling": "adversarial/security or rights review",
       "human_owned": ["legal acceptance"]
     },
     {
       "id": "LH-006",
       "state": "HUMAN_ADMIT_REQUIRED",
-      "entry": "all required receipts and blockers presented",
+      "entry": "all policy-required technical, local, physical, rights and security receipts are presented together with unresolved blockers",
       "runtime_lane": "repository/legal/security Human authorities",
       "receipt": ".actiongate/receipts/local/LH-006-human-decision.json",
       "exit": "explicit merge/release/rollback decision",
-      "next": null,
+      "next_candidates": [],
       "evidence_ceiling": "Human admit",
       "human_owned": [
         "merge",
