@@ -1,0 +1,122 @@
+{
+  "schema": "actiongate-c01-language-worker-receipt/v1",
+  "evidence_kind": "FIXTURE",
+  "repository": "ed3c/ActionGate",
+  "issue": 18,
+  "language": "kotlin",
+  "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "head_sha": "1111111111111111111111111111111111111111",
+  "tree_sha": "2222222222222222222222222222222222222222",
+  "branch": "ag/C01-kotlin-vectors",
+  "lease": {
+    "paths": [
+      "contracts/impl/kotlin/**"
+    ],
+    "resources": [
+      "kotlin canonicalizer"
+    ]
+  },
+  "changed_paths": [
+    "contracts/impl/kotlin/src/Canonicalizer.kt"
+  ],
+  "runtime": {
+    "state": "PASS",
+    "commands": [
+      {
+        "argv": [
+          "kotlinc",
+          "-version"
+        ],
+        "exit": 0
+      }
+    ],
+    "versions": {
+      "kotlinc": "1.9.0",
+      "java": "21.0.11"
+    },
+    "runtime_scope": "fixture",
+    "transferable": false
+  },
+  "contract_digests": {
+    "profile_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "schema_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "vectors_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "positive_results": [
+    {
+      "id": "arguments_hash",
+      "state": "PASS",
+      "expected": "x",
+      "actual": "x"
+    },
+    {
+      "id": "action_digest",
+      "state": "PASS",
+      "expected": "y",
+      "actual": "y"
+    },
+    {
+      "id": "authorization_signing_input_sha256",
+      "state": "PASS",
+      "expected": "z",
+      "actual": "z"
+    }
+  ],
+  "negative_results": [
+    {
+      "id": "ordering",
+      "state": "PASS"
+    },
+    {
+      "id": "float_rejected",
+      "state": "PASS"
+    },
+    {
+      "id": "unsafe_integer_rejected",
+      "state": "PASS"
+    },
+    {
+      "id": "invalid_key_rejected",
+      "state": "PASS"
+    },
+    {
+      "id": "unsupported_value_rejected",
+      "state": "PASS"
+    },
+    {
+      "id": "duplicate_key_control",
+      "state": "NOT_REPRESENTABLE_WITH_REASON",
+      "reason": "typed value model cannot preserve raw duplicate tokens"
+    },
+    {
+      "id": "unicode_no_normalization",
+      "state": "PASS"
+    }
+  ],
+  "denominator": {
+    "required": 10,
+    "pass": 8,
+    "fail": 0,
+    "not_exercised": 0,
+    "not_representable": 1
+  },
+  "dependencies": [],
+  "rights_state": "NO_THIRD_PARTY_DEPENDENCY_DECLARED",
+  "clean_room_state": "CLEAN_ROOM_PRECHECK_PASS",
+  "shadow": {
+    "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+    "independence_claimed": false,
+    "deltas": [],
+    "dissent": []
+  },
+  "evidence_lane": "local-deterministic canonicalization only",
+  "evidence_state": "PASS",
+  "blockers": [],
+  "rollback": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "human_owned": [
+    "merge",
+    "release",
+    "contract semantic change",
+    "security/legal acceptance"
+  ]
+}

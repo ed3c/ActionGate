@@ -1,0 +1,61 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 37,
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "checkpoint": "C01 execution-control preparation before Draft publication",
+  "findings": [
+    {
+      "id": "SH-C01-EXEC-001",
+      "class": "RESOURCE_DELTA",
+      "finding": "Toolchain presence in an ephemeral runtime could be reused as capability evidence for another Session or host.",
+      "resolution": "Capability receipt is non-transferable and every actual Worker Session must re-probe.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-EXEC-002",
+      "class": "EVIDENCE_DELTA",
+      "finding": "JSON Schema PASS could be promoted to semantic freshness, signature validity or authorization.",
+      "resolution": "Schema receipt explicitly lists wrong audience and invalid expiry as semantic controls outside schema and denies authorization claims.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-EXEC-003",
+      "class": "DENOMINATOR_DELTA",
+      "finding": "Language-specific parser limitations could silently delete negative controls.",
+      "resolution": "Common checker requires three positive and seven negative IDs and retains NOT_REPRESENTABLE_WITH_REASON in the denominator.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-EXEC-004",
+      "class": "AUTHORITY_DELTA",
+      "finding": "Technical clean-room preparation could be mistaken for employer-IP/legal clearance.",
+      "resolution": "Clean-room lane remains HUMAN_REVIEW_REQUIRED and cannot self-grant legal acceptance.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-EXEC-005",
+      "class": "CONCURRENCY_DELTA",
+      "finding": "One Local Handoff queue could falsely serialize the three language sibling branches.",
+      "resolution": "Queue controls launch/admission checkpoints only; session packets remain independent siblings with disjoint leases.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-EXEC-006",
+      "class": "LIFECYCLE_DELTA",
+      "finding": "K01 preparation could be activated from readable Draft contracts before semantic convergence.",
+      "resolution": "K01 handoff requires the exact Issue #24 C01_ADMITTED key and remains blocked otherwise.",
+      "disposition": "VERIFIED_REPAIRED"
+    }
+  ],
+  "remaining_dissent": [
+    "Kotlin, Swift and TypeScript implementation/vector receipts are NOT_EXERCISED.",
+    "Clean-room Human attestation is not present.",
+    "Independent Shadow Issue #26 is NOT_EXERCISED.",
+    "C01 convergence is blocked.",
+    "K01, hardware, MCP, merge, release and production remain blocked or Human-owned."
+  ],
+  "verdict": "C01_EXECUTION_CONTROL_PLANE_READY_NOT_P2_COMPLETE"
+}

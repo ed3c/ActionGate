@@ -1,0 +1,48 @@
+{
+  "schema": "actiongate-c01-schema-engine-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 23,
+  "contract_subject": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "inputs": {
+    "profile_blob_sha1": "c75d6e9abb6cab52cc0c2ecb105cadd5392f86bf",
+    "profile_sha256": "b668ba347b117c2dce2c5fa4f405631c5a776d4c368e295f1cbeeba0ff2dbd83",
+    "schema_blob_sha1": "5151a4319a194d378528d9191312a88ecf51134f",
+    "schema_sha256": "1e4ff81e90eeba6e40fcc26d0b203ef700cfc5b9c38b9bb4f7b39c9bb9940221",
+    "vectors_blob_sha1": "01f2427db58809fa03321abf1d5ce3afb808291a",
+    "vectors_sha256": "e934d0755979f5281fdf11b760e683a01bf8b935f45a300ccdafc299c9d46cf9",
+    "reference_checker_blob_sha1": "31507dc260c06b338c8ff91d7139ba00c719da31"
+  },
+  "runtime": {
+    "lane": "current-chat-ephemeral-container",
+    "os": "Linux",
+    "arch": "x86_64",
+    "python": "3.13.5",
+    "validator": "jsonschema 4.26.0",
+    "validator_license_expression": "MIT",
+    "validator_license_file": "jsonschema-4.26.0.dist-info/licenses/COPYING",
+    "validator_license_sha256": "4f92a015a13c4d1a040bef018aa13430b4f1bc73b41b16bb846c346766de7439",
+    "network_or_install_executed": false,
+    "transferable": false
+  },
+  "results": {
+    "draft_2020_12_schema_compile": "PASS",
+    "positive_definitions": "8/8 PASS",
+    "frozen_action_and_challenge_vectors": "PASS",
+    "non_string_pattern_mutations": "2/2 REJECTED",
+    "unknown_field_mutation": "REJECTED",
+    "missing_required_mutation": "REJECTED",
+    "wrong_audience": "SCHEMA_VALID_SEMANTIC_CONTROL_REQUIRED",
+    "invalid_expiry": "SCHEMA_VALID_SEMANTIC_CONTROL_REQUIRED",
+    "grant_authenticity": "NOT_PROVEN_BY_SCHEMA"
+  },
+  "evidence_state": "PASS",
+  "evidence_ceiling": "JSON Schema engine parity for the exact blobs only",
+  "not_proven": [
+    "generic RFC 8785 parity",
+    "Kotlin/Swift/TypeScript canonical bytes",
+    "signature or integrity-proof validity",
+    "freshness, policy, replay or authorization",
+    "Android/iOS hardware behavior",
+    "MCP or service integration"
+  ]
+}
