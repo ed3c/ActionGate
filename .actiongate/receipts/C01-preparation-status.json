@@ -1,0 +1,16 @@
+{
+  "schema": "actiongate-preparation-status/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 4,
+  "atom": "C01",
+  "state": "READY_FOR_DRAFT_PUBLICATION",
+  "evidence_lane": "cloud/static",
+  "reference_checker": "contracts/v1/reference/verify_vectors.py",
+  "reference_checker_observed_before_publication": "PASS_IN_PREP_RUNTIME",
+  "exact_head_execution": "NOT_EXERCISED",
+  "cross_language": "NOT_EXERCISED",
+  "json_schema_engine": "NOT_EXERCISED",
+  "platform_signing": "NOT_EXERCISED",
+  "independent_shadow": "NOT_EXERCISED",
+  "note": "Preparation-runtime PASS is not an exact-head hosted receipt and cannot close P2."
+}
