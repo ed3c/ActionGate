@@ -2,13 +2,15 @@
 
 Current queue subject: the ActionGate bootstrap/stack. Repository-only automation has reached real local/physical/Human boundaries.
 
-Exactly one item is `ACTIVE`. Successors remain blocked until the predecessor's durable exit receipt validates. The machine authority is `.actiongate/local-handoff-queue.json`; this document is the human-readable projection and must not widen it.
+Exactly one item is `ACTIVE`. After its valid receipt closes, the controller may activate exactly one eligible item from that item's `next_candidates`. A blocked sibling never becomes active merely because another sibling completed, and no item auto-executes. The machine authority is `.actiongate/local-handoff-queue.json`; this document is the human-readable projection and must not widen it.
 
 ## Execution boundary
 
 Run `LH-001` and `LH-002` only from a dedicated, empty, personal clean-room working directory that contains no employer repository, confidential document, credential export, or unrelated source tree. The queue does not authorize destructive cleanup of an existing checkout.
 
 No queue item authorizes `git reset`, rebase, sync, push, merge, branch deletion, semantic-conflict resolution, permission changes, release, production deployment, or rollback unless a later Human-owned item explicitly admits that operation.
+
+A command template is not executable until every placeholder has an explicit non-shell binding. Environment-variable names may be recorded; secret or identity-bearing values must not be copied into public receipts.
 
 ## LH-001 — local clean checkout and bootstrap read-back
 
@@ -57,7 +59,7 @@ Use Python or the host-native SHA-256 utility if a receipt digest is needed; do 
 
 **Exit:** the durable receipt binds the exact expected C00 subject/tree and every named check is `PASS`.
 
-**Next:** `LH-002`.
+**Next candidates:** `LH-002` only.
 
 ## LH-002 — local branch/stack and Git Town capability receipt
 
@@ -87,44 +89,55 @@ It records the Git Town version as `PASS` or `ABSENT`, each ancestry result inde
 
 **Exit:** stack ancestry is confirmed and Git Town capability is honestly `PASS` or `BLOCKED_ABSENT_EXECUTABLE`.
 
-**Next:** implementation-dependent physical lanes remain blocked until exact candidates exist.
+**Next candidates:** `LH-003`, `LH-004`, or `LH-005`, but the controller may activate only one whose entry contract is actually satisfied. This preserves true dependencies instead of forcing Android before iOS or vice versa.
 
 ## LH-003 — Android physical-device lane
 
 **State:** `BLOCKED_BY_IMPLEMENTATION`
 
-**Entry:** Issue #7 exact candidate SHA exists; `packages/sdk-android/` and its connected test task are implemented; a trusted personal Android device is connected.
+**Entry:** Issue #7 exact candidate SHA exists; the Android connected-test task is frozen by A02; a trusted personal Android device is connected.
 
-**Commands:**
+**Command template:**
 
-```bash
-cd ActionGate
+```text
 adb devices -l
-./gradlew :packages:sdk-android:connectedCheck
+./gradlew <ANDROID_CONNECTED_TEST_TASK>
 ```
 
-The owning implementation atom freezes the exact Gradle task and receipt parser before this item becomes `ACTIVE`. Capture only the minimum redacted device/build class, hardware-key security level, test result, and Play Integrity evidence required by the test contract. Never capture private keys, tokens, account identifiers, or stable personal identifiers.
+`<ANDROID_CONNECTED_TEST_TASK>` is taken from the exact A02 / Issue #7 handoff receipt before activation. It is not guessed by the queue and is passed as an argv value, not shell-expanded text.
+
+Capture only the minimum redacted device/build class, hardware-key security level, test result, and Play Integrity evidence required by the test contract. Never capture private keys, tokens, account identifiers, or stable personal identifiers.
 
 **Exit:** own-lane physical receipt admitted by Issue #13.
 
-**Next:** `LH-005` only after every prerequisite named by its entry contract closes. `LH-004` may run independently when its own entry closes.
+**Next candidates:** any still-eligible `LH-004`, `LH-005`, or `LH-006` entry. Completion of Android does not imply iOS/security/Human admission.
 
 ## LH-004 — iOS physical-device lane
 
 **State:** `BLOCKED_BY_IMPLEMENTATION`
 
-**Entry:** Issue #8 exact candidate SHA exists; `packages/sdk-ios/` and scheme are implemented; `ACTIONGATE_IOS_DESTINATION` is bound locally to an approved physical-device destination string.
+**Entry:** Issue #8 exact candidate SHA exists; the Xcode scheme is frozen by A03; the local physical destination binding exists.
 
-**Command:**
+**Command template:**
 
-```bash
-cd ActionGate
-xcodebuild -scheme ActionGateSDK -destination "$ACTIONGATE_IOS_DESTINATION" test
+```text
+xcodebuild -scheme <IOS_SCHEME> -destination <IOS_DESTINATION> test
 ```
 
-The exact scheme/destination and receipt parser are frozen by A03 before activation. No simulator receipt satisfies this lane.
+Bindings before activation:
+
+```text
+<IOS_SCHEME>      <- exact A03 / Issue #8 handoff receipt
+<IOS_DESTINATION> <- local ACTIONGATE_IOS_DESTINATION value
+```
+
+The executor substitutes these values before process launch and passes them as argv. It must not rely on a shell expanding `$ACTIONGATE_IOS_DESTINATION`, and the destination value is not copied into a public receipt unless the evidence contract explicitly permits a redacted form.
+
+No simulator receipt satisfies this lane.
 
 **Exit:** own-lane physical receipt admitted by Issue #13.
+
+**Next candidates:** any still-eligible `LH-003`, `LH-005`, or `LH-006` entry.
 
 ## LH-005 — independent security and clean-room review
 
@@ -136,11 +149,13 @@ The exact scheme/destination and receipt parser are frozen by A03 before activat
 
 **Exit:** a signed or hashed review receipt states `PASS`, `FAIL`, or typed blockers and binds the exact candidate. Technical self-review cannot satisfy independence. Employer-IP/legal acceptance remains a separate Human-owned lane.
 
+**Next candidates:** remaining required physical lanes or `LH-006`, according to the release/admission policy. Security review does not silently waive missing physical evidence.
+
 ## LH-006 — Human merge/release admission
 
 **State:** `HUMAN_ADMIT_REQUIRED`
 
-**Entry:** all required technical, local, physical, rights and security receipts are presented together with unresolved blockers and rollback identity.
+**Entry:** all policy-required technical, local, physical, rights and security receipts are presented together with unresolved blockers and rollback identity.
 
 **Authority:** repository owner and applicable organizational/legal/security authorities.
 
