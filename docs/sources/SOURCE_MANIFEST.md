@@ -30,6 +30,8 @@ Private source URLs are resolved only through the ignored private-context bindin
 |---|---|---|---|---|
 | `SRC-MCP-SPEC` | PRIMARY_SPEC | https://modelcontextprotocol.io/specification/2025-11-25 | MCP lifecycle, JSON-RPC messages and current transport | `VERIFY_AT_IMPLEMENTATION` |
 | `SRC-MCP-AUTH` | PRIMARY_SPEC | https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization | remote authorization/resource binding | `VERIFY_AT_IMPLEMENTATION` |
+| `SRC-JCS-8785` | PRIMARY_SPEC | https://www.rfc-editor.org/rfc/rfc8785.html | JSON Canonicalization Scheme (JCS), I-JSON constraints, deterministic property sorting and cryptographic canonical bytes | `READ_FOR_P2_CANDIDATE`; exact ActionGate profile still requires P2 decision and vectors |
+| `SRC-CBOR-8949` | PRIMARY_SPEC | https://www.rfc-editor.org/rfc/rfc8949.html#section-4.2 | CBOR core deterministic encoding requirements; alternative binary canonicalization basis | `READ_AS_P2_ALTERNATIVE`; not selected by source admission alone |
 | `SRC-ANDROID-PI` | PRIMARY_PLATFORM_DOC | https://developer.android.com/google/play/integrity/standard | request hash/content binding and integrity tokens | `VERIFY_AT_IMPLEMENTATION` |
 | `SRC-ANDROID-KEY` | PRIMARY_PLATFORM_DOC | https://developer.android.com/privacy-and-security/keystore | Android Keystore and hardware-backed key behavior | `VERIFY_AT_IMPLEMENTATION` |
 | `SRC-ANDROID-ATTEST` | PRIMARY_PLATFORM_DOC | https://developer.android.com/privacy-and-security/security-key-attestation | key attestation and verification constraints | `VERIFY_AT_IMPLEMENTATION` |
@@ -37,6 +39,8 @@ Private source URLs are resolved only through the ignored private-context bindin
 | `SRC-APPLE-SEP` | PRIMARY_PLATFORM_DOC | https://developer.apple.com/documentation/cryptokit/secureenclave | Secure Enclave signing API | `VERIFY_AT_IMPLEMENTATION` |
 | `SRC-APPLE-LA` | PRIMARY_PLATFORM_DOC | https://developer.apple.com/documentation/localauthentication | LocalAuthentication lifecycle | `VERIFY_AT_IMPLEMENTATION` |
 | `SRC-APPLE-ATTEST` | PRIMARY_PLATFORM_DOC | https://developer.apple.com/documentation/devicecheck/validating-apps-that-connect-to-your-server | App Attest enrollment/challenge/assertion | `VERIFY_AT_IMPLEMENTATION` |
+
+`SRC-JCS-8785` and `SRC-CBOR-8949` are source candidates, not a P2 architecture decision. P2 must state why one canonical representation is selected, define any stricter ActionGate profile, and preserve cross-language falsifiers. RFC 8785 is informational rather than IETF Standards Track; source classification does not upgrade its status.
 
 ## Private source bundle
 
