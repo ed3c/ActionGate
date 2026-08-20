@@ -1,0 +1,31 @@
+{
+  "schema": "actiongate-c01-preimplementation-handoff/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 4,
+  "stage": "P2",
+  "atom": "C01",
+  "subject_branch": "ag/C01-action-contracts",
+  "base_branch": "ag/S01-source-rights",
+  "base_sha": "6cd18694878e6db3ee65034d8e86fe990ade02c0",
+  "current_phase": "CONTRACT_PREPARATION_DRAFT",
+  "completed_preparation": [
+    "contract-plane AGENTS route",
+    "restricted JCS profile and domain separation",
+    "combined schema for required C01 envelopes",
+    "positive and mutation vectors",
+    "dependency-free Python restricted-profile checker",
+    "downstream port ownership map",
+    "same-context read-only Shadow preflight"
+  ],
+  "not_yet_admitted": [
+    "Kotlin canonicalization reproduction",
+    "Swift canonicalization reproduction",
+    "TypeScript canonicalization reproduction",
+    "JSON-Schema engine parity",
+    "platform ES256 signing conversion",
+    "hosted exact-head workflow",
+    "independent Shadow"
+  ],
+  "next_entry_condition": "Draft PR is readable; profile/schema subject is frozen; dispatch path-disjoint Kotlin, Swift and TypeScript reproduction workers against the same exact vectors.",
+  "human_owned": ["merge", "release", "security/legal acceptance"]
+}
