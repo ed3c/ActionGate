@@ -86,8 +86,8 @@
       "type":"object","additionalProperties":false,
       "required":["version","repository","issue","stage","atom","base_ref","subject_sha","branch","lease","inputs","outputs","verification","shadow","blockers","next_entry_condition","human_owned_operations"],
       "properties": {
-        "version":{"const":"actiongate/v1"},"repository":{"const":"ed3c/ActionGate"},"issue":{"type":"integer","minimum":1},"stage":{"pattern":"^P[0-8]$"},"atom":{"$ref":"#/$defs/asciiToken"},
-        "base_ref":{"type":"string","minLength":1,"maxLength":256},"subject_sha":{"pattern":"^[0-9a-f]{40}$"},"subject_tree":{"oneOf":[{"pattern":"^[0-9a-f]{40}$"},{"const":"ABSENT"}]},
+        "version":{"const":"actiongate/v1"},"repository":{"const":"ed3c/ActionGate"},"issue":{"type":"integer","minimum":1},"stage":{"type":"string","pattern":"^P[0-8]$"},"atom":{"$ref":"#/$defs/asciiToken"},
+        "base_ref":{"type":"string","minLength":1,"maxLength":256},"subject_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},"subject_tree":{"oneOf":[{"type":"string","pattern":"^[0-9a-f]{40}$"},{"const":"ABSENT"}]},
         "branch":{"type":"string","minLength":1,"maxLength":256},"pr":{"type":"string","maxLength":512},
         "lease":{"type":"object","additionalProperties":false,"required":["paths","resources"],"properties":{"paths":{"type":"array","items":{"type":"string"}},"resources":{"type":"array","items":{"type":"string"}}}},
         "inputs":{"type":"object","additionalProperties":false,"required":["receipts"],"properties":{"receipts":{"type":"array","items":{"type":"string"}}}},
