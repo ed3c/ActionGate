@@ -4,7 +4,7 @@
   "atom": "D00",
   "issue": 2,
   "pr": 16,
-  "audited_subject_sha": "97b606dd045c070a8f33049088f8509b2677b2da",
+  "audited_subject_sha": "0daec791602f4a4f4b83470d22482270d5865332",
   "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
   "independence": "NOT_CLAIMED",
   "implementation_ownership": "NONE",
@@ -42,15 +42,32 @@
       "finding": "Machine and Markdown queue projections must describe the same authority ceiling and must not imply queue execution.",
       "falsifier": "Both projections explicitly state that validation/readability is cloud/static evidence only and local/physical/Human lanes remain unexecuted.",
       "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-D00-005",
+      "class": "OWNERSHIP_DELTA",
+      "severity": "BLOCKER_BEFORE_FANOUT",
+      "finding": "The original scalar LH-002 next edge forced Android before iOS even though P8 defines the mobile physical lanes as independent siblings.",
+      "falsifier": "Queue v2 exposes next_candidates and an exactly-one-ACTIVE selection policy; the controller may choose any eligible sibling without inventing a false serial dependency.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-D00-006",
+      "class": "RESOURCE_DELTA",
+      "severity": "BLOCKER_BEFORE_IOS_EXECUTION",
+      "finding": "The original argv array contained a literal $ACTIONGATE_IOS_DESTINATION token, which a direct process executor would not shell-expand.",
+      "falsifier": "Queue v2 uses explicit command templates and non-shell parameter bindings; the destination and scheme must be resolved before activation and passed as argv values.",
+      "disposition": "VERIFIED_REPAIRED"
     }
   ],
   "remaining_dissent": [
     "LH-001 has not executed on a trusted local host.",
     "Git Town executable/version/provenance is not admitted by this receipt.",
+    "Blocked Android/iOS command templates are not executable until A02/A03 freeze their exact task/scheme bindings.",
     "Android and iOS physical lanes remain NOT_EXERCISED.",
     "Independent security/clean-room review remains NOT_EXERCISED.",
     "Merge, release, legal acceptance and production remain HUMAN_ADMIT_REQUIRED."
   ],
-  "verdict": "D00_HANDOFF_CONTRACT_REPAIRED_CLOUD_STATIC_ONLY",
+  "verdict": "D00_HANDOFF_CONTRACT_V2_REPAIRED_CLOUD_STATIC_ONLY",
   "next_entry_condition": "Execute LH-001 on the trusted personal clean-room host and bind its durable exact-subject receipt before activating LH-002."
 }
