@@ -1,0 +1,38 @@
+{
+  "schema": "actiongate-runtime-capability-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 22,
+  "contract_base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "observed_at_utc": "2026-08-20T19:08:02Z",
+  "runtime_lane": "current-chat-ephemeral-container",
+  "runtime_identity": {
+    "os": "Linux",
+    "arch": "x86_64",
+    "hostname_redacted": true,
+    "stable_identifier_recorded": false
+  },
+  "capabilities": {
+    "kotlin": {
+      "state": "PASS",
+      "commands": [["kotlinc", "-version"], ["java", "-version"]],
+      "versions": {"kotlinc": "1.9.0", "java": "21.0.11"}
+    },
+    "swift": {
+      "state": "PASS",
+      "commands": [["swift", "--version"]],
+      "versions": {"swift": "6.2.1"}
+    },
+    "typescript": {
+      "state": "PASS",
+      "commands": [["node", "--version"], ["tsc", "--version"]],
+      "versions": {"node": "22.16.0", "tsc": "5.8.3"}
+    }
+  },
+  "installation_or_download_executed": false,
+  "transferable": false,
+  "next_session_must_reprobe": true,
+  "evidence_ceiling": "tool presence in this exact ephemeral runtime only; no implementation or vector correctness",
+  "blockers": [
+    "Capability evidence cannot be copied to a different ChatGPT/Codex/local Session or host."
+  ]
+}
