@@ -1,0 +1,113 @@
+{
+  "schema": "actiongate-c01-session-packets/v1",
+  "repository": "ed3c/ActionGate",
+  "stage": "P2",
+  "issue": 27,
+  "contract_epoch": {
+    "branch": "ag/C01-action-contracts",
+    "sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a"
+  },
+  "packets": [
+    {
+      "id": "C01-KOTLIN",
+      "issue": 18,
+      "pr": "https://github.com/ed3c/ActionGate/pull/34",
+      "branch": "ag/C01-kotlin-vectors",
+      "head_sha": "0136936e7d63ba0c538d2cb40db60409107ababc",
+      "tree_sha": "d5d9a7d4a4d6f725b80f324035ef8880bb347240",
+      "lease": {"paths": ["contracts/impl/kotlin/**"], "resources": ["C01 Kotlin canonicalization candidate"]},
+      "read_only_inputs": ["contracts/v1/PROFILE.md", "contracts/v1/DECISIONS.md", "contracts/v1/actiongate-contracts.schema.json", "contracts/v1/vectors.json"],
+      "capability_checks": [["kotlinc", "-version"], ["java", "-version"]],
+      "runtime_capability": "REPROBE_IN_ACTUAL_SESSION",
+      "receipt_schema": "contracts/evidence/common/language-worker-receipt.schema.json",
+      "receipt_gate": "contracts/evidence/common/check_language_worker_receipt.py",
+      "receipt_path": "contracts/impl/kotlin/RECEIPT.json",
+      "evidence_lane": "local-deterministic canonicalization only",
+      "evidence_ceiling": "no Android, JNI, NDK, hardware or integration claim",
+      "blockers": ["clean-room Human attestation absent", "implementation not started"],
+      "next_entry_condition": "actual Session re-probes runtime and records clean-room PASS or typed blocker",
+      "rollback": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "cleanup": "remove only atom-local build output; preserve failed receipt and source branch",
+      "human_owned": ["tool installation", "dependency/license admission", "merge", "release", "contract semantic change"]
+    },
+    {
+      "id": "C01-SWIFT",
+      "issue": 19,
+      "pr": "https://github.com/ed3c/ActionGate/pull/35",
+      "branch": "ag/C01-swift-vectors",
+      "head_sha": "76b10b5a05898410ed361761626b381158edb306",
+      "tree_sha": "d71add9be3bea0149347e2f3dd81d2ba183e4bd7",
+      "lease": {"paths": ["contracts/impl/swift/**"], "resources": ["C01 Swift canonicalization candidate"]},
+      "read_only_inputs": ["contracts/v1/PROFILE.md", "contracts/v1/DECISIONS.md", "contracts/v1/actiongate-contracts.schema.json", "contracts/v1/vectors.json"],
+      "capability_checks": [["swift", "--version"]],
+      "runtime_capability": "REPROBE_IN_ACTUAL_SESSION",
+      "receipt_schema": "contracts/evidence/common/language-worker-receipt.schema.json",
+      "receipt_gate": "contracts/evidence/common/check_language_worker_receipt.py",
+      "receipt_path": "contracts/impl/swift/RECEIPT.json",
+      "evidence_lane": "local-deterministic canonicalization only",
+      "evidence_ceiling": "no Secure Enclave, LocalAuthentication, App Attest or physical-device claim",
+      "blockers": ["clean-room Human attestation absent", "implementation not started"],
+      "next_entry_condition": "actual Session re-probes runtime and records clean-room PASS or typed blocker",
+      "rollback": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "cleanup": "remove only atom-local build output; preserve failed receipt and source branch",
+      "human_owned": ["tool installation", "dependency/license admission", "merge", "release", "contract semantic change"]
+    },
+    {
+      "id": "C01-TYPESCRIPT",
+      "issue": 20,
+      "pr": "https://github.com/ed3c/ActionGate/pull/36",
+      "branch": "ag/C01-typescript-vectors",
+      "head_sha": "c62e24ffa0ceb2224fe6931929bfaeeceabe3c39",
+      "tree_sha": "e69eb7fcd2162c7d07a674677a3433eeb2aa9e57",
+      "lease": {"paths": ["contracts/impl/typescript/**"], "resources": ["C01 TypeScript canonicalization candidate"]},
+      "read_only_inputs": ["contracts/v1/PROFILE.md", "contracts/v1/DECISIONS.md", "contracts/v1/actiongate-contracts.schema.json", "contracts/v1/vectors.json"],
+      "capability_checks": [["node", "--version"], ["tsc", "--version"]],
+      "runtime_capability": "REPROBE_IN_ACTUAL_SESSION",
+      "receipt_schema": "contracts/evidence/common/language-worker-receipt.schema.json",
+      "receipt_gate": "contracts/evidence/common/check_language_worker_receipt.py",
+      "receipt_path": "contracts/impl/typescript/RECEIPT.json",
+      "evidence_lane": "local-deterministic canonicalization only",
+      "evidence_ceiling": "no MCP SDK, protected-tool middleware or service-integration claim",
+      "blockers": ["clean-room Human attestation absent", "implementation not started"],
+      "next_entry_condition": "actual Session re-probes runtime and records clean-room PASS or typed blocker",
+      "rollback": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "cleanup": "remove only atom-local build output; preserve failed receipt and source branch",
+      "human_owned": ["tool installation", "dependency/license admission", "merge", "release", "contract semantic change"]
+    },
+    {
+      "id": "C01-SCHEMA-ENGINE",
+      "issue": 23,
+      "state": "PASS_EXACT_BLOBS_ONLY",
+      "receipt": "contracts/evidence/schema/C01-schema-engine.receipt.json",
+      "next_entry_condition": "consume as one evidence lane during Issue #24 convergence; do not promote to semantic authorization"
+    },
+    {
+      "id": "C01-INDEPENDENT-SHADOW",
+      "issue": 26,
+      "state": "READY_FOR_SEPARATE_READ_ONLY_SESSION",
+      "inputs": ["three exact Worker heads/trees", "common receipt gate", "schema receipt", "C01 contract epoch"],
+      "receipt_path": ".actiongate/c01-execution/independent-shadow.receipt.json",
+      "blockers": ["language Worker receipts absent"],
+      "human_owned": ["reviewer/session selection", "waiver", "merge"]
+    },
+    {
+      "id": "C01-CONVERGENCE",
+      "issue": 24,
+      "state": "BLOCKED_BY_WORKER_RECEIPTS",
+      "required_receipts": ["Kotlin", "Swift", "TypeScript", "schema-engine", "independent Shadow"],
+      "verdicts": ["C01_ADMITTED", "HOLD", "REJECT"],
+      "next_entry_condition": "all required exact-subject receipts validate"
+    },
+    {
+      "id": "K01-BLOCKED-HANDOFF",
+      "issues": [25, 28],
+      "state": "BLOCKED_BY_C01_ADMISSION",
+      "admission_key": "Issue #24 exact C01_ADMITTED receipt",
+      "forbidden": ["K01 implementation dispatch", "adapter start promotion", "merge or release"]
+    }
+  ],
+  "queue_authority": ".actiongate/c01-execution/execution-preflight.json",
+  "queue_validation_is_not_execution": true,
+  "private_urls_or_secrets_present": false,
+  "human_owned": ["clean-room attestation", "tool installation", "legal/security acceptance", "merge", "release", "production"]
+}
