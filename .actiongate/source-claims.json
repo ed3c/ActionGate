@@ -1,0 +1,26 @@
+{
+  "schema": "actiongate-source-claims/v1",
+  "repository": "ed3c/ActionGate",
+  "private_source_ids": ["PRIVATE-SOURCE-001"],
+  "private_urls_allowed": false,
+  "claims": [
+    {"id":"CLM-001","class":"DESIGN_REQUIREMENT","text":"planner is outside the authorization boundary","state":"ADMITTED_AS_REQUIREMENT"},
+    {"id":"CLM-002","class":"DESIGN_REQUIREMENT","text":"R3 proof binds canonical action, audience, subject, policy version, nonce and expiry","state":"BLOCKED_ON_C01"},
+    {"id":"CLM-003","class":"DESIGN_REQUIREMENT","text":"authentication, authorization, signing and integrity are separate controls","state":"BLOCKED_ON_C01_E01"},
+    {"id":"CLM-004","class":"DESIGN_PROPOSAL","text":"processes may be stateless while trust/replay/audit state is persisted","state":"BLOCKED_ON_A01_E01"},
+    {"id":"CLM-005","class":"HYPOTHESIS","text":"compromised planner cannot execute protected tool without valid grant","state":"BLOCKED_ON_X01"},
+    {"id":"CLM-010","class":"REJECTED_OVERCLAIM","text":"ActionGate prevents all prompt injection","state":"REJECTED"},
+    {"id":"CLM-012","class":"REJECTED_OVERCLAIM","text":"llama.cpp plus GGUF plus KMP is universal best practice","state":"REJECTED_AS_UNIVERSAL"},
+    {"id":"CLM-013","class":"CONTRADICTION","text":"permissive OSS license alone clears employer IP risk","state":"REJECTED"}
+  ],
+  "negative_controls": [
+    "title_or_snippet_only",
+    "same_origin_corroboration",
+    "unsupported_performance_number",
+    "unsupported_market_or_blue_ocean_claim",
+    "unsupported_productivity_percentage",
+    "license_by_reputation",
+    "latest_branch_as_pinned_release"
+  ],
+  "stage": "P1_SOURCE_ADMISSION_DRAFT"
+}
