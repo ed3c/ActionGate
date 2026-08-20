@@ -8,20 +8,9 @@
   "base_sha": "6cd18694878e6db3ee65034d8e86fe990ade02c0",
   "work_branch": "ag/C01-action-contracts",
   "objective": "freeze language-neutral exact-action authorization contracts and deterministic vectors before implementation",
-  "non_goals": [
-    "HTTP server",
-    "database adapter",
-    "MCP SDK integration",
-    "Android/iOS implementation",
-    "business action",
-    "merge/release"
-  ],
+  "non_goals": ["HTTP server","database adapter","MCP SDK integration","Android/iOS implementation","business action","merge/release"],
   "lease": {
-    "paths": [
-      "contracts/**",
-      ".actiongate/c01-task-contract.json",
-      ".actiongate/receipts/shadow/C01-contract-preflight.json"
-    ],
+    "paths": ["contracts/v1/**","contracts/AGENTS.md","contracts/README.md",".actiongate/c01-task-contract.json",".actiongate/c01-handoff.json",".actiongate/receipts/C01-preparation-status.json",".actiongate/receipts/shadow/C01-contract-preflight.json"],
     "resources": ["C01 schema/interface authority"]
   },
   "inputs": {
@@ -37,14 +26,16 @@
     "positive vectors reproduce fixed SHA-256 values",
     "parameter/audience/missing-field/expiry/duplicate-key/float controls turn red",
     "grant authenticity is not inferred from schema validity",
-    "physical/cross-language/integration evidence remains NOT_EXERCISED"
+    "physical/cross-language/integration evidence remains NOT_EXERCISED until own-lane receipts exist"
   ],
   "next_workers": [
-    {"id":"C01-KOTLIN","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/kotlin/**"],"evidence":"local-deterministic"},
-    {"id":"C01-SWIFT","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/swift/**"],"evidence":"local-deterministic"},
-    {"id":"C01-TYPESCRIPT","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/typescript/**"],"evidence":"local-deterministic"},
-    {"id":"C01-PYTHON-REFERENCE","relation":"CURRENT_OWNER_REFERENCE","owns":["contracts/v1/reference/**"],"evidence":"local-deterministic"}
+    {"id":"C01-KOTLIN","issue":18,"branch":"ag/C01-kotlin-vectors","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/kotlin/**"],"evidence":"local-deterministic"},
+    {"id":"C01-SWIFT","issue":19,"branch":"ag/C01-swift-vectors","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/swift/**"],"evidence":"local-deterministic"},
+    {"id":"C01-TYPESCRIPT","issue":20,"branch":"ag/C01-typescript-vectors","relation":"SIBLING_AFTER_SCHEMA_FREEZE","owns":["contracts/impl/typescript/**"],"evidence":"local-deterministic"},
+    {"id":"C01-PYTHON-REFERENCE","issue":4,"branch":"ag/C01-action-contracts","relation":"CURRENT_OWNER_REFERENCE","owns":["contracts/v1/reference/**"],"evidence":"preparation-runtime only"}
   ],
+  "worker_prompt": "contracts/v1/LANGUAGE_WORKER_PROMPT.md",
+  "convergence_owner": "Issue #4 / ag/C01-action-contracts",
   "human_owned": ["merge", "release", "security/legal acceptance"],
-  "evidence_ceiling": "cloud/static contract publication plus local deterministic reference only"
+  "evidence_ceiling": "cloud/static contract publication plus preparation-runtime reference; exact-head cross-language evidence still required"
 }
