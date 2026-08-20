@@ -1,0 +1,49 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "atom": "C01",
+  "issue": 4,
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "cloud/static design preflight",
+  "checkpoint": "before C01 Draft publication",
+  "findings": [
+    {
+      "id": "SH-C01-001",
+      "class": "IDENTITY_DELTA",
+      "finding": "Generic JCS number handling creates avoidable cross-language ambiguity for security payloads.",
+      "resolution": "V1 narrows canonical numbers to signed integers within ±(2^53-1) and rejects floats.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-002",
+      "class": "BOUNDARY_DELTA",
+      "finding": "Android ECDSA commonly exposes DER while a portable wire contract needs one format.",
+      "resolution": "V1 freezes IEEE-P1363 R||S; DER conversion is platform-adapter-local and cannot export private keys.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-003",
+      "class": "AUTHORITY_DELTA",
+      "finding": "A schema-valid ExecutionGrant could be mistaken for an authenticated grant.",
+      "resolution": "PROFILE explicitly requires authenticated container or trusted resolution; raw JSON is never authorization.",
+      "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-C01-004",
+      "class": "EVIDENCE_DELTA",
+      "finding": "A Python fixture checker could be promoted to cross-language or hardware proof.",
+      "resolution": "Contract docs and checker emit explicit NOT_EXERCISED states for those lanes.",
+      "disposition": "VERIFIED_REPAIRED"
+    }
+  ],
+  "remaining_dissent": [
+    "Cross-language Kotlin/Swift/TypeScript canonicalization is NOT_EXERCISED.",
+    "JSON-Schema engine execution is NOT_EXERCISED.",
+    "ES256 platform signing and DER/P1363 conversions are NOT_EXERCISED.",
+    "No C01 exact-head hosted workflow exists yet.",
+    "Independent Shadow is NOT_EXERCISED."
+  ],
+  "verdict": "C01_READY_FOR_DRAFT_PUBLICATION_NOT_P2_COMPLETE"
+}
