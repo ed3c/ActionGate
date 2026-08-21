@@ -1,0 +1,29 @@
+{
+  "schema": "actiongate-clean-room-session-declaration/v1",
+  "template": true,
+  "repository": "ed3c/ActionGate",
+  "contract_epoch": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "worker_issue": 0,
+  "worker_language": "UNSET",
+  "worker_branch": "UNSET",
+  "session_id": "UNSET",
+  "declared_by_human": "UNSET",
+  "declarations": {
+    "personal_or_authorized_context": false,
+    "fresh_session_without_prior_private_context": false,
+    "public_inputs_only": false,
+    "no_employer_repository_or_internal_document_open": false,
+    "no_private_protocol_or_private_test_vector_supplied": false,
+    "no_customer_data_credentials_or_company_resource_used": false,
+    "dependency_and_license_list_reviewed": false,
+    "suspicious_similarity_stop_condition_accepted": false
+  },
+  "dependencies": [],
+  "public_inputs": [
+    "https://github.com/ed3c/ActionGate/tree/b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+    "https://github.com/ed3c/ActionGate/tree/9f41038240837ea2dd9dcdb9befd13e6ba81a78e"
+  ],
+  "technical_disposition": "HUMAN_REVIEW_REQUIRED",
+  "legal_clearance": "HUMAN_ADMIT_REQUIRED",
+  "note": "An Agent may validate structure but may not set Human declarations or grant legal clearance."
+}
