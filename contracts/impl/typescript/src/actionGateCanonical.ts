@@ -4,6 +4,11 @@ declare const Buffer: any;
 const { createHash } = require("node:crypto");
 
 const MAX_SAFE_INTEGER = 9_007_199_254_740_991;
+const MAX_SAFE_INTEGER_TEXT = "9007199254740991";
+const ARGUMENTS_DOMAIN = "ActionGate-Arguments-v1\0";
+const ACTION_ENVELOPE_DOMAIN = "ActionGate-ActionEnvelope-v1\0";
+const AUTHORIZATION_CHALLENGE_DOMAIN = "ActionGate-AuthorizationChallenge-v1\0";
+const DIGEST_DOMAINS = new Set([ARGUMENTS_DOMAIN, ACTION_ENVELOPE_DOMAIN]);
 const KEY_PATTERN = /^[A-Za-z0-9_.:-]+$/;
 const ARRAY_INDEX_PATTERN = /^(0|[1-9][0-9]*)$/;
 
@@ -26,7 +31,7 @@ export function canonicalBytes(value: unknown): Uint8Array {
 }
 
 export function digestBase64Url(domain: string, value: unknown): string {
-  const domainBytes = exactAsciiDomainBytes(domain);
+  const domainBytes = exactAsciiDomainBytes(domain, DIGEST_DOMAINS);
   return createHash("sha256")
     .update(domainBytes)
     .update(Buffer.from(canonicalBytes(value)))
@@ -35,7 +40,7 @@ export function digestBase64Url(domain: string, value: unknown): string {
 
 export function authorizationSigningInput(challenge: unknown): Uint8Array {
   return Buffer.concat([
-    exactAsciiDomainBytes("ActionGate-AuthorizationChallenge-v1\0"),
+    exactAsciiDomainBytes(AUTHORIZATION_CHALLENGE_DOMAIN, new Set([AUTHORIZATION_CHALLENGE_DOMAIN])),
     Buffer.from(canonicalBytes(challenge)),
   ]);
 }
@@ -44,11 +49,15 @@ export function sha256Base64Url(bytes: Uint8Array): string {
   return createHash("sha256").update(Buffer.from(bytes)).digest("base64url");
 }
 
-export function assertNoDuplicateKeys(raw: string): void {
-  new DuplicateKeyParser(raw).parseDocument();
+export function assertCanonicalJsonInput(raw: string): void {
+  new RestrictedJsonParser(raw).parseDocument();
 }
 
-function exactAsciiDomainBytes(domain: string): Uint8Array {
+export function assertNoDuplicateKeys(raw: string): void {
+  assertCanonicalJsonInput(raw);
+}
+
+function exactAsciiDomainBytes(domain: string, allowed: ReadonlySet<string>): Uint8Array {
   if (domain.length === 0 || domain.charCodeAt(domain.length - 1) !== 0) {
     throw new CanonicalizationError("domain must end with NUL");
   }
@@ -56,6 +65,9 @@ function exactAsciiDomainBytes(domain: string): Uint8Array {
     if (domain.charCodeAt(index) > 0x7f) {
       throw new CanonicalizationError("domain must contain exact ASCII bytes");
     }
+  }
+  if (!allowed.has(domain)) {
+    throw new CanonicalizationError("unregistered domain label");
   }
   return Buffer.from(domain, "ascii");
 }
@@ -207,7 +219,7 @@ function validateUnicode(value: string, path: string): void {
   }
 }
 
-class DuplicateKeyParser {
+class RestrictedJsonParser {
   private index = 0;
 
   constructor(private readonly source: string) {}
@@ -229,7 +241,7 @@ class DuplicateKeyParser {
     else if (token === "t") this.expectLiteral("true");
     else if (token === "f") this.expectLiteral("false");
     else if (token === "n") this.expectLiteral("null");
-    else if (token === "-" || /[0-9]/.test(token)) this.parseNumber();
+    else if (token === "-" || /[0-9]/.test(token)) this.parseInteger();
     else this.fail("invalid value");
   }
 
@@ -241,6 +253,7 @@ class DuplicateKeyParser {
     while (true) {
       this.skipWhitespace();
       const key = this.parseString();
+      if (!KEY_PATTERN.test(key)) this.fail("invalid object key");
       if (keys.has(key)) throw new CanonicalizationError(`duplicate object key: ${key}`);
       keys.add(key);
       this.skipWhitespace();
@@ -299,23 +312,25 @@ class DuplicateKeyParser {
     return String.fromCharCode(Number.parseInt(hex, 16));
   }
 
-  private parseNumber(): void {
+  private parseInteger(): void {
     this.consume("-");
+    const digitStart = this.index;
     if (this.consume("0")) {
       if (/[0-9]/.test(this.source[this.index] ?? "")) this.fail("leading zero");
     } else {
       if (!/[1-9]/.test(this.source[this.index] ?? "")) this.fail("bad number");
       while (/[0-9]/.test(this.source[this.index] ?? "")) this.index += 1;
     }
-    if (this.consume(".")) {
-      if (!/[0-9]/.test(this.source[this.index] ?? "")) this.fail("bad fraction");
-      while (/[0-9]/.test(this.source[this.index] ?? "")) this.index += 1;
+    if ([".", "e", "E"].includes(this.source[this.index] ?? "")) {
+      this.fail("fraction or exponent number is forbidden");
     }
-    if ((this.source[this.index] ?? "").toLowerCase() === "e") {
-      this.index += 1;
-      if (["+", "-"].includes(this.source[this.index] ?? "")) this.index += 1;
-      if (!/[0-9]/.test(this.source[this.index] ?? "")) this.fail("bad exponent");
-      while (/[0-9]/.test(this.source[this.index] ?? "")) this.index += 1;
+    const rawDigits = this.source.slice(digitStart, this.index);
+    const magnitude = rawDigits.replace(/^0+/, "") || "0";
+    if (
+      magnitude.length > MAX_SAFE_INTEGER_TEXT.length ||
+      (magnitude.length === MAX_SAFE_INTEGER_TEXT.length && magnitude > MAX_SAFE_INTEGER_TEXT)
+    ) {
+      this.fail("integer outside safe range");
     }
   }
 
