@@ -5,6 +5,7 @@ const { createHash } = require("node:crypto");
 
 const MAX_SAFE_INTEGER = 9_007_199_254_740_991;
 const KEY_PATTERN = /^[A-Za-z0-9_.:-]+$/;
+const ARRAY_INDEX_PATTERN = /^(0|[1-9][0-9]*)$/;
 
 export class CanonicalizationError extends Error {}
 
@@ -17,7 +18,7 @@ export type CanonicalValue =
   | { readonly [key: string]: CanonicalValue };
 
 export function canonicalString(value: unknown): string {
-  return encode(validate(value, "$"));
+  return encode(validate(value, "$", new WeakSet<object>()));
 }
 
 export function canonicalBytes(value: unknown): Uint8Array {
@@ -25,10 +26,7 @@ export function canonicalBytes(value: unknown): Uint8Array {
 }
 
 export function digestBase64Url(domain: string, value: unknown): string {
-  const domainBytes = Buffer.from(domain, "ascii");
-  if (domainBytes.length === 0 || domainBytes[domainBytes.length - 1] !== 0) {
-    throw new CanonicalizationError("domain must end with NUL");
-  }
+  const domainBytes = exactAsciiDomainBytes(domain);
   return createHash("sha256")
     .update(domainBytes)
     .update(Buffer.from(canonicalBytes(value)))
@@ -37,7 +35,7 @@ export function digestBase64Url(domain: string, value: unknown): string {
 
 export function authorizationSigningInput(challenge: unknown): Uint8Array {
   return Buffer.concat([
-    Buffer.from("ActionGate-AuthorizationChallenge-v1\0", "ascii"),
+    exactAsciiDomainBytes("ActionGate-AuthorizationChallenge-v1\0"),
     Buffer.from(canonicalBytes(challenge)),
   ]);
 }
@@ -50,7 +48,19 @@ export function assertNoDuplicateKeys(raw: string): void {
   new DuplicateKeyParser(raw).parseDocument();
 }
 
-function validate(value: unknown, path: string): CanonicalValue {
+function exactAsciiDomainBytes(domain: string): Uint8Array {
+  if (domain.length === 0 || domain.charCodeAt(domain.length - 1) !== 0) {
+    throw new CanonicalizationError("domain must end with NUL");
+  }
+  for (let index = 0; index < domain.length; index += 1) {
+    if (domain.charCodeAt(index) > 0x7f) {
+      throw new CanonicalizationError("domain must contain exact ASCII bytes");
+    }
+  }
+  return Buffer.from(domain, "ascii");
+}
+
+function validate(value: unknown, path: string, active: WeakSet<object>): CanonicalValue {
   if (value === null) return null;
   switch (typeof value) {
     case "boolean":
@@ -64,24 +74,70 @@ function validate(value: unknown, path: string): CanonicalValue {
       validateUnicode(value, path);
       return value;
     case "object":
-      if (Array.isArray(value)) {
-        return value.map((item, index) => validate(item, `${path}[${index}]`));
-      }
-      if (Object.getPrototypeOf(value) !== Object.prototype && Object.getPrototypeOf(value) !== null) {
-        throw new CanonicalizationError(`unsupported object at ${path}`);
-      }
-      const result: Record<string, CanonicalValue> = Object.create(null);
-      for (const key of Object.keys(value as object)) {
-        if (!KEY_PATTERN.test(key)) throw new CanonicalizationError(`invalid key ${key} at ${path}`);
-        if (Object.prototype.hasOwnProperty.call(result, key)) {
-          throw new CanonicalizationError(`duplicate key ${key} at ${path}`);
+      if (active.has(value)) throw new CanonicalizationError(`cyclic container at ${path}`);
+      active.add(value);
+      try {
+        if (Array.isArray(value)) {
+          return validateArray(value, path, active);
         }
-        result[key] = validate((value as Record<string, unknown>)[key], `${path}.${key}`);
+        return validateObject(value, path, active);
+      } finally {
+        active.delete(value);
       }
-      return result;
     default:
       throw new CanonicalizationError(`unsupported type ${typeof value} at ${path}`);
   }
+}
+
+function validateArray(value: unknown[], path: string, active: WeakSet<object>): CanonicalValue[] {
+  const allowedKeys = new Set<string>(["length"]);
+  const result: CanonicalValue[] = [];
+  for (let index = 0; index < value.length; index += 1) {
+    const key = String(index);
+    allowedKeys.add(key);
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (!descriptor || !descriptor.enumerable || !("value" in descriptor)) {
+      throw new CanonicalizationError(`sparse or accessor array element at ${path}[${index}]`);
+    }
+    result.push(validate(descriptor.value, `${path}[${index}]`, active));
+  }
+  for (const ownKey of Reflect.ownKeys(value)) {
+    if (typeof ownKey !== "string") {
+      throw new CanonicalizationError(`symbol array property at ${path}`);
+    }
+    if (!allowedKeys.has(ownKey)) {
+      if (!ARRAY_INDEX_PATTERN.test(ownKey)) {
+        throw new CanonicalizationError(`extra array property ${ownKey} at ${path}`);
+      }
+      throw new CanonicalizationError(`out-of-range array property ${ownKey} at ${path}`);
+    }
+  }
+  return result;
+}
+
+function validateObject(value: object, path: string, active: WeakSet<object>): CanonicalValue {
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== Object.prototype && prototype !== null) {
+    throw new CanonicalizationError(`unsupported object at ${path}`);
+  }
+  const result: Record<string, CanonicalValue> = Object.create(null);
+  for (const ownKey of Reflect.ownKeys(value)) {
+    if (typeof ownKey !== "string") {
+      throw new CanonicalizationError(`symbol object key at ${path}`);
+    }
+    if (!KEY_PATTERN.test(ownKey)) {
+      throw new CanonicalizationError(`invalid key ${ownKey} at ${path}`);
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(value, ownKey);
+    if (!descriptor || !descriptor.enumerable || !("value" in descriptor)) {
+      throw new CanonicalizationError(`non-data or non-enumerable property ${ownKey} at ${path}`);
+    }
+    if (Object.prototype.hasOwnProperty.call(result, ownKey)) {
+      throw new CanonicalizationError(`duplicate key ${ownKey} at ${path}`);
+    }
+    result[ownKey] = validate(descriptor.value, `${path}.${ownKey}`, active);
+  }
+  return result;
 }
 
 function encode(value: CanonicalValue): string {
@@ -213,7 +269,10 @@ class DuplicateKeyParser {
     let output = "";
     while (this.index < this.source.length) {
       const char = this.source[this.index++];
-      if (char === '"') return output;
+      if (char === '"') {
+        validateUnicode(output, "$raw-string");
+        return output;
+      }
       if (char === "\\") {
         const escaped = this.source[this.index++];
         if (escaped === undefined) this.fail("bad escape");
@@ -243,7 +302,7 @@ class DuplicateKeyParser {
   private parseNumber(): void {
     this.consume("-");
     if (this.consume("0")) {
-      // zero prefix handled.
+      if (/[0-9]/.test(this.source[this.index] ?? "")) this.fail("leading zero");
     } else {
       if (!/[1-9]/.test(this.source[this.index] ?? "")) this.fail("bad number");
       while (/[0-9]/.test(this.source[this.index] ?? "")) this.index += 1;

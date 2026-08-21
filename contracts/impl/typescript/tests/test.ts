@@ -29,6 +29,11 @@ function expectRejected(id: string, body: () => void): void {
   }
 }
 
+function expectAccepted(id: string, body: () => void): void {
+  body();
+  console.log(`POSITIVE ${id} PASS`);
+}
+
 const argumentsA = {
   environment: "production",
   image: "registry.example/actiongate/demo:v1",
@@ -86,7 +91,32 @@ expectRejected("unsupported_value_rejected", () => canonicalBytes({ bytes: new U
 expectRejected("duplicate_key_control", () =>
   assertNoDuplicateKeys('{"tool":"deploy.production","tool":"delete.production"}'),
 );
+expectRejected("escaped_duplicate_key_control", () => assertNoDuplicateKeys('{"a":1,"\\u0061":2}'));
 expectRejected("lone_surrogate", () => canonicalBytes({ v: "\ud800" }));
+expectRejected("raw_lone_surrogate", () => assertNoDuplicateKeys('{"\\uD800":1}'));
+expectRejected("non_ascii_domain_rejected", () => digestBase64Url("ActionGate-Arguménts-v1\0", argumentsA));
+expectRejected("missing_domain_nul_rejected", () => digestBase64Url("ActionGate-Arguments-v1", argumentsA));
+
+const cycle: unknown[] = [];
+cycle.push(cycle);
+expectRejected("cyclic_container_rejected", () => canonicalBytes(cycle));
+
+const sparse = new Array(2);
+sparse[1] = "value";
+expectRejected("sparse_array_rejected", () => canonicalBytes(sparse));
+
+const accessor: Record<string, unknown> = {};
+Object.defineProperty(accessor, "value", { enumerable: true, get: () => "side-effect" });
+expectRejected("accessor_property_rejected", () => canonicalBytes(accessor));
+
+const symbolObject: Record<string | symbol, unknown> = { value: 1 };
+symbolObject[Symbol("hidden")] = 2;
+expectRejected("symbol_property_rejected", () => canonicalBytes(symbolObject));
+
+expectAccepted("raw_surrogate_pair_accepted", () => assertNoDuplicateKeys('{"\\uD83D\\uDE00":1}'));
+expectRejected("escaped_surrogate_duplicate_detected", () =>
+  assertNoDuplicateKeys('{"😀":1,"\\uD83D\\uDE00":2}'),
+);
 
 const composed = Buffer.from(canonicalBytes({ v: "\u00e9" })).toString("hex");
 const decomposed = Buffer.from(canonicalBytes({ v: "e\u0301" })).toString("hex");
@@ -95,5 +125,5 @@ check(canonicalString({ v: "\u00e9" }).includes("é"), "composed value missing")
 check(canonicalString({ v: "e\u0301" }).includes("e\u0301"), "decomposed value missing");
 console.log("NEGATIVE unicode_no_normalization PASS");
 
-console.log("C01 TypeScript canonical vectors: PASS");
+console.log("C01 TypeScript canonical vectors + Shadow hardening: PASS");
 process.exitCode = 0;
