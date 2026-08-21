@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:actiongate:provenance:outside-project-review-receipt:v1",
+  "title": "Redacted outside-project review receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "review_id",
+    "repository",
+    "reviewed_at",
+    "employment_agreement_reviewed",
+    "public_upstream_only",
+    "employer_resources_used",
+    "employer_confidential_material_used",
+    "business_overlap_state",
+    "legal_admission",
+    "private_urls_echoed"
+  ],
+  "properties": {
+    "schema": {"const": "outside-project-review-receipt/v1"},
+    "review_id": {"type": "string", "minLength": 1},
+    "repository": {"const": "ed3c/ActionGate"},
+    "reviewed_at": {"type": "string", "format": "date"},
+    "employment_agreement_reviewed": {"type": "boolean"},
+    "public_upstream_only": {"type": "boolean"},
+    "employer_resources_used": {"const": false},
+    "employer_confidential_material_used": {"const": false},
+    "business_overlap_state": {"enum": ["PRIVATE_REVIEW_REQUIRED", "PRIVATE_REVIEW_COMPLETE", "UNRESOLVED"]},
+    "legal_admission": {"enum": ["HUMAN_COUNSEL_REQUIRED", "HUMAN_ADMITTED", "BLOCKED"]},
+    "private_urls_echoed": {"const": false}
+  }
+}
