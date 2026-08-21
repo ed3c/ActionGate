@@ -13,6 +13,11 @@ func expectRejected(_ id: String, _ body: () throws -> Void) throws {
     }
 }
 
+func expectAccepted(_ id: String, _ body: () throws -> Void) throws {
+    try body()
+    print("POSITIVE \(id) PASS")
+}
+
 let argumentsA: [String: Any?] = [
     "environment": "production",
     "image": "registry.example/actiongate/demo:v1",
@@ -75,6 +80,27 @@ try expectRejected("unsupported_value_rejected") { _ = try ActionGateCanonical.c
 try expectRejected("duplicate_key_control") {
     try ActionGateCanonical.assertNoDuplicateKeys("{\"tool\":\"deploy.production\",\"tool\":\"delete.production\"}")
 }
+try expectRejected("escaped_duplicate_key_control") {
+    try ActionGateCanonical.assertNoDuplicateKeys("{\"a\":1,\"\\u0061\":2}")
+}
+try expectRejected("raw_lone_high_surrogate") {
+    try ActionGateCanonical.assertNoDuplicateKeys("{\"\\uD800\":1}")
+}
+try expectRejected("raw_lone_low_surrogate") {
+    try ActionGateCanonical.assertNoDuplicateKeys("{\"\\uDC00\":1}")
+}
+try expectRejected("non_ascii_domain_rejected") {
+    _ = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Arguménts-v1\0", value: argumentsA)
+}
+try expectRejected("missing_domain_nul_rejected") {
+    _ = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Arguments-v1", value: argumentsA)
+}
+try expectAccepted("raw_surrogate_pair_accepted") {
+    try ActionGateCanonical.assertNoDuplicateKeys("{\"\\uD83D\\uDE00\":1}")
+}
+try expectRejected("escaped_surrogate_duplicate_detected") {
+    try ActionGateCanonical.assertNoDuplicateKeys("{\"😀\":1,\"\\uD83D\\uDE00\":2}")
+}
 
 let numberBool = NSNumber(value: true)
 let numberInt = NSNumber(value: 1)
@@ -84,6 +110,11 @@ let canonicalNumberInt = try ActionGateCanonical.canonicalString(["v": numberInt
 precondition(canonicalNumberInt == "{\"v\":1}")
 print("NEGATIVE NSNumber_boolean_number_distinction PASS")
 
+precondition(ActionGateCanonical.sha256Base64URL([]) == "47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU")
+precondition(ActionGateCanonical.sha256Base64URL(Array("abc".utf8)) == "ungWv48Bz-pBQUDeXa4iI7ADYaOWF3qctBD_YfIAFa0")
+precondition(ActionGateCanonical.sha256Base64URL(Array(repeating: Character("a"), count: 64).flatMap { String($0).utf8 }) == "_-BU_nrgy23GXDr5th1SCfQ5hR20PQulmXM33xVGaOs")
+print("POSITIVE sha256_known_vectors PASS")
+
 let composed = try ActionGateCanonical.canonicalData(["v": "\u{00E9}"])
 let decomposed = try ActionGateCanonical.canonicalData(["v": "e\u{0301}"])
 precondition(composed != decomposed)
@@ -91,4 +122,4 @@ precondition(String(data: composed, encoding: .utf8)!.contains("é"))
 precondition(String(data: decomposed, encoding: .utf8)!.contains("e\u{0301}"))
 print("NEGATIVE unicode_no_normalization PASS")
 
-print("C01 Swift canonical vectors: PASS")
+print("C01 Swift canonical vectors + Shadow hardening: PASS")

@@ -33,16 +33,13 @@ enum ActionGateCanonical {
     }
 
     static func digestBase64URL(domain: String, value: Any?) throws -> String {
-        guard domain.utf8.last == 0 else {
-            throw CanonicalizationError.invalid("domain must end with NUL")
-        }
-        var bytes = Array(domain.utf8)
+        var bytes = try domainBytes(domain)
         bytes.append(contentsOf: try canonicalData(value))
         return base64URL(SHA256.hash(bytes))
     }
 
     static func authorizationSigningInput(_ challenge: Any?) throws -> [UInt8] {
-        var bytes = Array("ActionGate-AuthorizationChallenge-v1\0".utf8)
+        var bytes = try domainBytes("ActionGate-AuthorizationChallenge-v1\0")
         bytes.append(contentsOf: try canonicalData(challenge))
         return bytes
     }
@@ -54,6 +51,17 @@ enum ActionGateCanonical {
     static func assertNoDuplicateKeys(_ raw: String) throws {
         var parser = DuplicateKeyParser(raw)
         try parser.parseDocument()
+    }
+
+    private static func domainBytes(_ domain: String) throws -> [UInt8] {
+        guard domain.unicodeScalars.allSatisfy({ $0.value <= 0x7f }) else {
+            throw CanonicalizationError.invalid("domain must contain exact ASCII bytes")
+        }
+        let bytes = Array(domain.utf8)
+        guard bytes.last == 0 else {
+            throw CanonicalizationError.invalid("domain must end with NUL")
+        }
+        return bytes
     }
 
     private static func fromAny(_ value: Any?) throws -> CanonicalValue {
@@ -316,7 +324,7 @@ private struct DuplicateKeyParser {
                 case "n": output.append("\n")
                 case "r": output.append("\r")
                 case "t": output.append("\t")
-                case "u": output.unicodeScalars.append(try parseUnicodeEscape())
+                case "u": output += try parseUnicodeEscapeSequence()
                 default: throw error("bad escape")
                 }
             } else {
@@ -327,19 +335,36 @@ private struct DuplicateKeyParser {
         throw error("unterminated string")
     }
 
-    private mutating func parseUnicodeEscape() throws -> UnicodeScalar {
+    private mutating func parseUnicodeEscapeSequence() throws -> String {
+        let first = try readUnicodeCodeUnit()
+        if first >= 0xD800 && first <= 0xDBFF {
+            guard consume("\\"), consume("u") else { throw error("high surrogate without low surrogate") }
+            let second = try readUnicodeCodeUnit()
+            guard second >= 0xDC00 && second <= 0xDFFF else { throw error("invalid low surrogate") }
+            let scalarValue = 0x10000 + ((first - 0xD800) << 10) + (second - 0xDC00)
+            guard let scalar = UnicodeScalar(scalarValue) else { throw error("invalid surrogate pair") }
+            return String(scalar)
+        }
+        if first >= 0xDC00 && first <= 0xDFFF {
+            throw error("lone low surrogate")
+        }
+        guard let scalar = UnicodeScalar(first) else { throw error("bad unicode escape") }
+        return String(scalar)
+    }
+
+    private mutating func readUnicodeCodeUnit() throws -> UInt32 {
         guard index + 4 <= scalars.count else { throw error("short unicode escape") }
         let text = String(String.UnicodeScalarView(scalars[index..<(index + 4)]))
-        guard let value = UInt32(text, radix: 16), let scalar = UnicodeScalar(value) else { throw error("bad unicode escape") }
+        guard let value = UInt32(text, radix: 16) else { throw error("bad unicode escape") }
         index += 4
-        return scalar
+        return value
     }
 
     private mutating func parseNumber() throws {
         _ = consume("-")
         guard index < scalars.count else { throw error("bad number") }
         if consume("0") {
-            // zero prefix accepted only as this single digit before suffix.
+            if index < scalars.count && isDigit(scalars[index]) { throw error("leading zero") }
         } else {
             guard isDigit(scalars[index]), scalars[index] != "0" else { throw error("bad number") }
             while index < scalars.count && isDigit(scalars[index]) { index += 1 }
