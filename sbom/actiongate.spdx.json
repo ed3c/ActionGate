@@ -1,0 +1,32 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "ActionGate-provenance-baseline",
+  "documentNamespace": "https://github.com/ed3c/ActionGate/sbom/provenance-control-v1",
+  "creationInfo": {
+    "created": "2026-08-21T00:00:00Z",
+    "creators": [
+      "Tool: ActionGate provenance control plane"
+    ]
+  },
+  "packages": [
+    {
+      "name": "ActionGate",
+      "SPDXID": "SPDXRef-Package-ActionGate",
+      "versionInfo": "70573aed229404772827829a1ce069a6e72184fa",
+      "downloadLocation": "https://github.com/ed3c/ActionGate",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-ActionGate"
+    }
+  ]
+}

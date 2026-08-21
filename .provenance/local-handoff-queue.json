@@ -1,0 +1,76 @@
+{
+  "schema": "actiongate-provenance-handoff/v1",
+  "repository": "ed3c/ActionGate",
+  "active_item": "ABSENT",
+  "selection_policy": "No item becomes ACTIVE without its Human-owned entry material; no operation auto-executes.",
+  "items": [
+    {
+      "id": "PV-UPSTREAM-001",
+      "state": "BLOCKED_BY_HUMAN_SELECTION",
+      "entry": "Human names one public upstream and intended relationship.",
+      "required_input": [
+        "public repository URL",
+        "exact commit SHA",
+        "exact tree SHA",
+        "release/tag or ABSENT",
+        "relationship",
+        "license and NOTICE paths",
+        "intended source/import paths"
+      ],
+      "output": ".provenance/receipts/upstream/<upstream-id>.json",
+      "next_candidates": [
+        "PV-CLEANROOM-002"
+      ],
+      "human_owned": [
+        "upstream selection",
+        "relationship classification"
+      ]
+    },
+    {
+      "id": "PV-CLEANROOM-002",
+      "state": "BLOCKED_BY_UPSTREAM",
+      "entry": "PV-UPSTREAM-001 admitted and one implementation atom selected.",
+      "required_input": [
+        "personal/authorized environment declaration",
+        "permitted public-source allowlist",
+        "forbidden-source declaration",
+        "changed-path lease"
+      ],
+      "output": ".provenance/receipts/clean-room/<session-id>.json",
+      "next_candidates": [
+        "PV-INDEPENDENT-003"
+      ],
+      "human_owned": [
+        "truthfulness of declaration"
+      ]
+    },
+    {
+      "id": "PV-INDEPENDENT-003",
+      "state": "BLOCKED_BY_CANDIDATE",
+      "entry": "immutable candidate, upstream lock, import map, license copies, SBOM and DCO history exist.",
+      "runtime": "independent read-only provenance reviewer",
+      "output": ".provenance/receipts/review/<review-id>.json",
+      "next_candidates": [
+        "PV-LEGAL-004"
+      ],
+      "human_owned": [
+        "reviewer selection"
+      ]
+    },
+    {
+      "id": "PV-LEGAL-004",
+      "state": "HUMAN_ADMIT_REQUIRED",
+      "entry": "private employment/IP/business-overlap review and all public provenance receipts are available.",
+      "output": "redacted outside-project review state; no private agreement or locator enters public Git",
+      "next_candidates": [],
+      "human_owned": [
+        "legal admission",
+        "merge",
+        "release",
+        "production"
+      ]
+    }
+  ],
+  "private_urls_forbidden": true,
+  "employer_details_forbidden": true
+}

@@ -1,0 +1,32 @@
+name: Provenance Guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "ag/**"
+
+permissions:
+  contents: read
+
+jobs:
+  provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate provenance control plane
+        run: python3 scripts/check_provenance.py --root .
+
+      - name: Run mutation tests
+        run: python3 -m unittest discover -s tests/provenance -p 'test_*.py'
+
+      - name: Validate DCO for pull-request commits
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 scripts/check_provenance.py --root . --commit-range "${BASE_SHA}..${HEAD_SHA}"

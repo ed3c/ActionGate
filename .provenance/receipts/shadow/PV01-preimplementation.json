@@ -1,0 +1,59 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 48,
+  "atom": "PV01",
+  "audit_input": {
+    "base_sha": "70573aed229404772827829a1ce069a6e72184fa",
+    "base_tree": "e31f35bf0b60977df995df6f97dde941dfe529f9"
+  },
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE_DURING_AUDIT",
+  "findings": [
+    {
+      "id": "PV-SH-001",
+      "class": "PROVENANCE_DELTA",
+      "severity": "L3_BLOCK",
+      "finding": "No exact third-party upstream was named; a Fork/derived baseline would be fabricated.",
+      "repair": "Default lock state is NO_DERIVED_UPSTREAM_ADMITTED and derived imports fail closed."
+    },
+    {
+      "id": "PV-SH-002",
+      "class": "EVIDENCE_DELTA",
+      "severity": "L3_BLOCK",
+      "finding": "Existing clean-room prose did not mechanically bind upstream commit/tree, import map, license digest and SBOM.",
+      "repair": "Machine lock, import map, SPDX baseline and validator were added."
+    },
+    {
+      "id": "PV-SH-003",
+      "class": "AUTHORITY_DELTA",
+      "severity": "L3_BLOCK",
+      "finding": "An Agent-authored declaration could be mistaken for Human employment/IP truth.",
+      "repair": "Templates use null/HUMAN_INPUT_REQUIRED and release remains Human-admitted."
+    },
+    {
+      "id": "PV-SH-004",
+      "class": "LIFECYCLE_DELTA",
+      "severity": "L2_REVIEW",
+      "finding": "DCO, PR provenance and release checks were not automated.",
+      "repair": "DCO-aware CI, PR template, validator and mutation tests were added."
+    },
+    {
+      "id": "PV-SH-005",
+      "class": "STATE_DELTA",
+      "severity": "L1_WARN",
+      "finding": "Root P2 projection predated bounded language implementation wave #47.",
+      "repair": "AGENTS current-state block now records the three Draft implementation candidates without promoting them to C01 admission."
+    }
+  ],
+  "remaining_dissent": [
+    "No public upstream is selected or imported.",
+    "The current repository is not a GitHub Fork of a selected upstream.",
+    "Private employment agreement and business-overlap review are not exercised.",
+    "Independent provenance/legal/security review is not exercised.",
+    "The candidate workflow has not yet run on an exact GitHub PR head.",
+    "Merge and release remain Human-owned."
+  ],
+  "verdict": "PV01_PROVENANCE_CONTROL_PLANE_CANDIDATE_READY_FOR_LOCAL_TEST_AND_DRAFT_PUBLICATION"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "actiongate-provenance-release-gate/v1",
+  "repository": "ed3c/ActionGate",
+  "state": "BLOCKED",
+  "structural_control_plane": "IMPLEMENTED_CANDIDATE",
+  "required_states": {
+    "upstream_selection": "REQUIRED_BEFORE_DERIVED_IMPORT",
+    "upstream_license_notice_sbom": "REQUIRED_BEFORE_DERIVED_IMPORT",
+    "clean_room_sessions": "REQUIRED_PER_IMPLEMENTATION_ATOM",
+    "independent_provenance_review": "NOT_EXERCISED",
+    "private_employment_ip_review": "HUMAN_INPUT_REQUIRED",
+    "human_legal_admission": "HUMAN_ADMIT_REQUIRED",
+    "security_admission": "SEPARATE_LANE",
+    "merge": "HUMAN_OWNED",
+    "release": "HUMAN_OWNED",
+    "production": "HUMAN_OWNED"
+  },
+  "blockers": [
+    "UPSTREAM_SELECTION_REQUIRED_FOR_DERIVED_SOURCE",
+    "INDEPENDENT_PROVENANCE_REVIEW_NOT_EXERCISED",
+    "PRIVATE_EMPLOYMENT_IP_REVIEW_REQUIRED",
+    "HUMAN_LEGAL_ADMIT_REQUIRED"
+  ]
+}

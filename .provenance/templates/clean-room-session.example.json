@@ -1,0 +1,27 @@
+{
+  "schema": "actiongate-clean-room-session-receipt/v1",
+  "session_id": "HUMAN_INPUT_REQUIRED",
+  "repository": "ed3c/ActionGate",
+  "issue": 0,
+  "base_sha": "HUMAN_INPUT_REQUIRED",
+  "base_tree": "HUMAN_INPUT_REQUIRED",
+  "runtime": "HUMAN_INPUT_REQUIRED",
+  "permitted_public_sources": [],
+  "forbidden_source_classes": [
+    "EMPLOYER_SOURCE",
+    "EMPLOYER_PRIVATE_DOCUMENT",
+    "EMPLOYER_PROTOCOL_OR_TEST_VECTOR",
+    "EMPLOYER_CUSTOMER_DATA",
+    "EMPLOYER_CREDENTIAL_OR_BUILD_ARTIFACT",
+    "PRIVATE_PROMPT_CONTEXT"
+  ],
+  "personal_or_authorized_environment": null,
+  "employer_source_accessed": null,
+  "employer_resource_used": null,
+  "private_material_included": null,
+  "changed_paths": [],
+  "dependencies": [],
+  "suspicious_similarity_state": "HUMAN_INPUT_REQUIRED",
+  "declaration_state": "HUMAN_INPUT_REQUIRED",
+  "legal_admission": "HUMAN_ADMIT_REQUIRED"
+}

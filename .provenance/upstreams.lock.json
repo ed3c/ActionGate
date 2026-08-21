@@ -1,0 +1,15 @@
+{
+  "schema": "actiongate-upstream-lock/v1",
+  "repository": "ed3c/ActionGate",
+  "state": "NO_DERIVED_UPSTREAM_ADMITTED",
+  "policy": {
+    "exact_commit_required": true,
+    "exact_tree_required": true,
+    "license_digest_required": true,
+    "notice_readback_required": true,
+    "sbom_mapping_required": true,
+    "import_mapping_required_for_derived_source": true,
+    "mutable_ref_is_evidence": false
+  },
+  "upstreams": []
+}

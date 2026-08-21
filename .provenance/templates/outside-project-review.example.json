@@ -1,0 +1,17 @@
+{
+  "schema": "actiongate-outside-project-review/v1",
+  "review_id": "HUMAN_INPUT_REQUIRED",
+  "repository": "ed3c/ActionGate",
+  "private_review_completed": null,
+  "employment_agreement_reviewed": null,
+  "invention_assignment_reviewed": null,
+  "confidentiality_terms_reviewed": null,
+  "moonlighting_or_conflict_terms_reviewed": null,
+  "business_overlap_state": "PRIVATE_REVIEW_REQUIRED",
+  "employer_resources_used": null,
+  "employer_confidential_material_used": null,
+  "public_upstream_only": null,
+  "public_receipt_disclosure": "REDACTED_STATE_ONLY",
+  "private_urls_echoed": false,
+  "legal_admission": "HUMAN_COUNSEL_REQUIRED"
+}
