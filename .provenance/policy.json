@@ -1,0 +1,47 @@
+{
+  "schema": "actiongate-provenance-policy/v1",
+  "repository": "ed3c/ActionGate",
+  "current_control_state": "PROVENANCE_CONTROL_PLANE_IMPLEMENTED",
+  "upstream_state": "UPSTREAM_SELECTION_REQUIRED",
+  "allowed_relationships": [
+    "DERIVED_SOURCE",
+    "DEPENDENCY",
+    "REFERENCE_IMPLEMENTATION",
+    "SPECIFICATION_ONLY",
+    "BUILD_TOOLING"
+  ],
+  "forbidden_source_classes": [
+    "EMPLOYER_SOURCE",
+    "EMPLOYER_PRIVATE_DOCUMENT",
+    "EMPLOYER_PROTOCOL",
+    "EMPLOYER_TEST_VECTOR",
+    "CUSTOMER_DATA",
+    "EMPLOYER_CREDENTIAL",
+    "EMPLOYER_BUILD_ARTIFACT",
+    "NON_PUBLIC_REMEMBERED_IMPLEMENTATION"
+  ],
+  "forbidden_public_substrings": [
+    "https://docs.google.com/",
+    "https://drive.google.com/",
+    "company.internal"
+  ],
+  "private_scan_exclusions": [
+    ".provenance/policy.json",
+    "scripts/check_provenance_control.py",
+    "tests/test_provenance_control.py"
+  ],
+  "dco": {
+    "required_when_source_or_product_code_changes": true,
+    "machine_must_not_invent_human_signoff": true
+  },
+  "release_requirements": [
+    "UPSTREAM_LICENSE_VERIFIED",
+    "BASELINE_SHA_TREE_PINNED",
+    "IMPORT_PATHS_CLASSIFIED",
+    "CLEAN_ROOM_SESSION_RECEIPTS_PRESENT",
+    "NOTICE_AND_SBOM_VERIFIED",
+    "INDEPENDENT_PROVENANCE_REVIEWED",
+    "HUMAN_LEGAL_ADMITTED"
+  ],
+  "release_authority": "HUMAN_ONLY"
+}
