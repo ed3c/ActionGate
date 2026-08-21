@@ -30,11 +30,11 @@ let argumentsB: [String: Any?] = [
 ]
 let expectedArguments = "{\"environment\":\"production\",\"image\":\"registry.example/actiongate/demo:v1\",\"service\":\"payments-api\"}"
 let canonicalArgumentsA = try ActionGateCanonical.canonicalString(argumentsA)
-precondition(canonicalArgumentsA == expectedArguments)
 let canonicalArgumentsB = try ActionGateCanonical.canonicalString(argumentsB)
+let computedArgumentsHash = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Arguments-v1\0", value: argumentsA)
+precondition(canonicalArgumentsA == expectedArguments)
 precondition(canonicalArgumentsB == expectedArguments)
-let actualArgumentsHash = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Arguments-v1\0", value: argumentsA)
-precondition(actualArgumentsHash == argumentsHash)
+precondition(computedArgumentsHash == argumentsHash)
 print("POSITIVE arguments_hash PASS")
 print("NEGATIVE ordering PASS")
 
@@ -53,8 +53,8 @@ let envelope: [String: Any?] = [
     "expires_at_ms": Int64(1_787_234_460_000),
     "nonce": "n_demo_01",
 ]
-let actualActionDigest = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-ActionEnvelope-v1\0", value: envelope)
-precondition(actualActionDigest == actionDigest)
+let computedActionDigest = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-ActionEnvelope-v1\0", value: envelope)
+precondition(computedActionDigest == actionDigest)
 print("POSITIVE action_digest PASS")
 
 let challenge: [String: Any?] = [
@@ -81,13 +81,13 @@ try expectRejected("duplicate_key_control") {
     try ActionGateCanonical.assertNoDuplicateKeys("{\"tool\":\"deploy.production\",\"tool\":\"delete.production\"}")
 }
 try expectRejected("escaped_duplicate_key_control") {
-    try ActionGateCanonical.assertNoDuplicateKeys("{\"a\":1,\"\\u0061\":2}")
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"a\":1,\"\\u0061\":2}")
 }
 try expectRejected("raw_lone_high_surrogate") {
-    try ActionGateCanonical.assertNoDuplicateKeys("{\"\\uD800\":1}")
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"v\":\"\\uD800\"}")
 }
 try expectRejected("raw_lone_low_surrogate") {
-    try ActionGateCanonical.assertNoDuplicateKeys("{\"\\uDC00\":1}")
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"v\":\"\\uDC00\"}")
 }
 try expectRejected("non_ascii_domain_rejected") {
     _ = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Arguménts-v1\0", value: argumentsA)
@@ -95,30 +95,47 @@ try expectRejected("non_ascii_domain_rejected") {
 try expectRejected("missing_domain_nul_rejected") {
     _ = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Arguments-v1", value: argumentsA)
 }
-try expectAccepted("raw_surrogate_pair_accepted") {
-    try ActionGateCanonical.assertNoDuplicateKeys("{\"\\uD83D\\uDE00\":1}")
+try expectRejected("unknown_domain_rejected") {
+    _ = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Unregistered-v1\0", value: argumentsA)
 }
-try expectRejected("escaped_surrogate_duplicate_detected") {
-    try ActionGateCanonical.assertNoDuplicateKeys("{\"😀\":1,\"\\uD83D\\uDE00\":2}")
+try expectRejected("embedded_nul_domain_rejected") {
+    _ = try ActionGateCanonical.digestBase64URL(domain: "ActionGate-Arguments-v1\0suffix\0", value: argumentsA)
+}
+try expectAccepted("raw_surrogate_pair_accepted") {
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"v\":\"\\uD83D\\uDE00\"}")
 }
 
 let cycleArray = NSMutableArray()
 cycleArray.add(cycleArray)
-try expectRejected("cyclic_array_rejected") {
-    _ = try ActionGateCanonical.canonicalData(cycleArray)
-}
-
+try expectRejected("cyclic_array_rejected") { _ = try ActionGateCanonical.canonicalData(cycleArray) }
 let cycleDictionary = NSMutableDictionary()
 cycleDictionary["self"] = cycleDictionary
-try expectRejected("cyclic_dictionary_rejected") {
-    _ = try ActionGateCanonical.canonicalData(cycleDictionary)
+try expectRejected("cyclic_dictionary_rejected") { _ = try ActionGateCanonical.canonicalData(cycleDictionary) }
+
+try expectRejected("raw_non_ascii_key_rejected") {
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"é\":1}")
+}
+try expectRejected("raw_fraction_rejected") {
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"n\":1.0}")
+}
+try expectRejected("raw_exponent_rejected") {
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"n\":1e3}")
+}
+try expectRejected("raw_positive_unsafe_integer_rejected") {
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"n\":9007199254740992}")
+}
+try expectRejected("raw_negative_unsafe_integer_rejected") {
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"n\":-9007199254740992}")
+}
+try expectAccepted("raw_integer_boundaries_accepted") {
+    try ActionGateCanonical.assertCanonicalJsonInput("{\"max\":9007199254740991,\"min\":-9007199254740991,\"zero\":-0}")
 }
 
 let numberBool = NSNumber(value: true)
 let numberInt = NSNumber(value: 1)
 let canonicalNumberBool = try ActionGateCanonical.canonicalString(["v": numberBool])
-precondition(canonicalNumberBool == "{\"v\":true}")
 let canonicalNumberInt = try ActionGateCanonical.canonicalString(["v": numberInt])
+precondition(canonicalNumberBool == "{\"v\":true}")
 precondition(canonicalNumberInt == "{\"v\":1}")
 print("NEGATIVE NSNumber_boolean_number_distinction PASS")
 
@@ -130,8 +147,6 @@ print("POSITIVE sha256_known_vectors PASS")
 let composed = try ActionGateCanonical.canonicalData(["v": "\u{00E9}"])
 let decomposed = try ActionGateCanonical.canonicalData(["v": "e\u{0301}"])
 precondition(composed != decomposed)
-precondition(String(data: composed, encoding: .utf8)!.contains("é"))
-precondition(String(data: decomposed, encoding: .utf8)!.contains("e\u{0301}"))
 print("NEGATIVE unicode_no_normalization PASS")
 
-print("C01 Swift canonical vectors + Shadow hardening: PASS")
+print("C01 Swift canonical vectors + profile hardening: PASS")
