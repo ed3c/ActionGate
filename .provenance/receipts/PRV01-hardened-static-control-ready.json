@@ -52,7 +52,7 @@
     "verdict": "HARDENED_CANDIDATE_VERIFIED"
   },
   "evidence_ceiling": "cloud/static plus hosted deterministic provenance-control verification",
-  "next_entry_condition": "A separate reviewer who did not implement PR #54 executes Issue #55 against the final exact PR head and returns ADMIT_STATIC_CONTROL, BLOCK_STATIC_CONTROL, or REPLAN_REQUIRED.",
+  "next_entry_condition": "A separate reviewer who did not implement PR #54 executes Issue #55 against the final exact PR head and returns ADMIT_STATIC_PROVENANCE, BLOCK, or REPLAN.",
   "human_owned": [
     "upstream selection and relationship classification",
     "employment/IP/business-overlap/legal admission",
