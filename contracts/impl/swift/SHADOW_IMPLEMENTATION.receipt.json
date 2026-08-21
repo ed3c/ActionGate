@@ -1,0 +1,25 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 19,
+  "implementation_wave_issue": 47,
+  "atom": "C01-SWIFT",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "local-deterministic canonicalization only",
+  "findings": [
+    {"id": "SH-S-001", "class": "ORDERING_DELTA", "disposition": "VERIFIED", "evidence": "ASCII object keys are explicitly sorted"},
+    {"id": "SH-S-002", "class": "NUMBER_DELTA", "disposition": "VERIFIED", "evidence": "NSNumber booleans are distinguished from integer NSNumber values; floating point and unsafe integers are rejected"},
+    {"id": "SH-S-003", "class": "CRYPTO_RUNTIME_DELTA", "disposition": "VERIFIED", "evidence": "CryptoKit was unavailable; dependency-free pure Swift SHA-256 is covered by all three frozen vectors"},
+    {"id": "SH-S-004", "class": "UNICODE_DELTA", "disposition": "VERIFIED", "evidence": "Unicode scalar values are emitted without normalization"},
+    {"id": "SH-S-005", "class": "DUPLICATE_KEY_DELTA", "disposition": "VERIFIED", "evidence": "raw JSON duplicate-key parser rejects repeated members"},
+    {"id": "SH-S-006", "class": "AUTHORITY_DELTA", "disposition": "VERIFIED", "evidence": "no Secure Enclave/App Attest/hardware/MCP/integration or independent-review claim"}
+  ],
+  "remaining_dissent": [
+    "Independent Shadow Issue #26 is NOT_EXERCISED.",
+    "C01 convergence Issue #24 is BLOCKED until all Worker receipts exist.",
+    "Merge, release and legal/security acceptance remain Human-owned."
+  ],
+  "verdict": "IMPLEMENTATION_CANDIDATE_ELIGIBLE_FOR_RECEIPT"
+}
