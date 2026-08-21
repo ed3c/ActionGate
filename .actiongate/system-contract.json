@@ -1,0 +1,26 @@
+{
+  "schema": "actiongate-system-contract/v1",
+  "repository": "ed3c/ActionGate",
+  "global_objective": "separate probabilistic planning from deterministic protected-action authority",
+  "security_invariant": "R3 tools require a fresh audience-bound exact-action-bound proof accepted under the current policy version",
+  "public_private_boundary": {
+    "public_authority": "GitHub technical exact-subject state",
+    "private_authority": "CodexDoc private intent and private source context",
+    "private_urls_in_public_tree": "FORBIDDEN",
+    "missing_private_context": "PRIVATE_CONTEXT_UNAVAILABLE"
+  },
+  "stages": [
+    {"id":"P0","name":"AUTHORITY_BOUND","issue":2,"state":"IN_PROGRESS","evidence_lane":"cloud/static"},
+    {"id":"P1","name":"SOURCE_ADMITTED","issue":3,"state":"BLOCKED","evidence_lane":"cloud/static+primary-source"},
+    {"id":"P2","name":"CONTRACTS_BOUND","issue":4,"state":"BLOCKED","evidence_lane":"local-deterministic"},
+    {"id":"P3","name":"CORE_IMPLEMENTED","issue":5,"state":"BLOCKED","evidence_lane":"local-deterministic"},
+    {"id":"P4","name":"ADAPTERS_IMPLEMENTED","issues":[6,7,8,9],"state":"BLOCKED","evidence_lane":"local/physical"},
+    {"id":"P5","name":"EVIDENCE_VERIFIED","issue":10,"state":"BLOCKED","evidence_lane":"adversarial"},
+    {"id":"P6","name":"E2E_VERIFIED","issue":11,"state":"BLOCKED","evidence_lane":"local-integration"},
+    {"id":"P7","name":"CONVERGED_AND_HANDED_OFF","issue":12,"state":"BLOCKED","evidence_lane":"exact-head/multi-lane"},
+    {"id":"P8","name":"LIVE_OR_HUMAN_ADMITTED","issue":13,"state":"NOT_EXERCISED","evidence_lane":"physical/security/legal/Human"}
+  ],
+  "evidence_states": ["PASS","FAIL","ABSENT","NOT_IMPLEMENTED","NOT_EXERCISED","SKIPPED_BY_POLICY","HUMAN_ADMIT_REQUIRED"],
+  "human_owned": ["merge","release","production promotion","repository visibility","legal acceptance","security acceptance","private/public boundary changes"],
+  "current_evidence_ceiling": "documentation/schema preparation"
+}

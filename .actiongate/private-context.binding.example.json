@@ -1,0 +1,9 @@
+{
+  "schema": "actiongate-private-context-binding/v1",
+  "document_url": "${ACTIONGATE_PRIVATE_DOC_URL}",
+  "spreadsheet_url": "${ACTIONGATE_PRIVATE_SHEET_URL}",
+  "folder_url": "${ACTIONGATE_PRIVATE_FOLDER_URL}",
+  "authority": "private intent and private source context only",
+  "public_projection_policy": "technical delta only; redact private URLs, strategy, customer data, career material and roadmap",
+  "missing_context_state": "PRIVATE_CONTEXT_UNAVAILABLE"
+}
