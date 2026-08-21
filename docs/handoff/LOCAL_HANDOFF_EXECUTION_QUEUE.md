@@ -1,35 +1,26 @@
 # Local Handoff Execution Queue
 
-The machine authority is `.actiongate/local-handoff-queue.json`. This document is its human-readable projection and cannot widen it.
+Machine authority: `.actiongate/local-handoff-queue.json`. This file cannot widen it.
 
-Exactly one item is `ACTIVE`. A valid receipt may make several sibling items eligible, but the controller activates at most one item whose own entry conditions are satisfied. Queue order does not create Git ancestry and no item auto-executes.
+Exactly one item is ACTIVE. A receipt may make siblings eligible, but no item auto-executes and queue order does not create Git ancestry.
 
-## Execution boundary
+## Boundary
 
-Use a dedicated, empty, personal clean-room directory. Do not open employer repositories, confidential documents, private protocols, customer data or company credentials in an implementation Session.
+Use an empty personal clean-room directory. Keep employer/private source, credentials, customer data and private protocols outside implementation Sessions.
 
-No queue item grants `reset`, rebase, sync, push, merge, branch deletion, semantic-conflict resolution, dependency installation, SDK-license acceptance, release, production deployment or rollback unless its own Human authority explicitly admits that operation.
+No item grants reset, rebase, sync, push, merge, branch deletion, semantic-conflict resolution, dependency installation/license acceptance, release, production or rollback without explicit Human authority.
 
-A prompt or launch packet remains `LAUNCH_REQUESTED`; it is not `SESSION_OBSERVED`.
+## LH-MAIN-001 — ACTIVE
 
-## `LH-MAIN-001` — merged-main exact readback
-
-**State:** `ACTIVE`
-
-**Entry:** trusted clean host with Git, Python 3 and GitHub network; dedicated empty directory; no private/employer source in the same context.
-
-The queue resolves `origin/main` only at execution time, then stores the exact SHA and tree in the receipt. Mutable `main` by itself is never completion evidence.
-
-Required ancestor receipts:
+Resolve `origin/main` at execution time and bind exact SHA/tree. Required stable ancestors:
 
 ```text
-fee8c290061542bfb93e27ddcc33cce7fbf8c653  # C00 / PR #14
-8810fe41f66ad1b4fe80db5f93bf9539e2a38899  # S01 / PR #15
-76efa9297d147712bb9dfbb9e797d69ca9432a99  # D00 / PR #16
-71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99  # first main convergence / PR #42
+fee8c290061542bfb93e27ddcc33cce7fbf8c653  # C00/#14
+8810fe41f66ad1b4fe80db5f93bf9539e2a38899  # S01/#15
+76efa9297d147712bb9dfbb9e797d69ca9432a99  # D00/#16
+71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99  # D00-MAIN/#42
+53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d  # D00-DELTA/#44
 ```
-
-Commands:
 
 ```bash
 git clone https://github.com/ed3c/ActionGate.git ActionGate
@@ -41,6 +32,7 @@ git -C ActionGate merge-base --is-ancestor fee8c290061542bfb93e27ddcc33cce7fbf8c
 git -C ActionGate merge-base --is-ancestor 8810fe41f66ad1b4fe80db5f93bf9539e2a38899 HEAD
 git -C ActionGate merge-base --is-ancestor 76efa9297d147712bb9dfbb9e797d69ca9432a99 HEAD
 git -C ActionGate merge-base --is-ancestor 71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99 HEAD
+git -C ActionGate merge-base --is-ancestor 53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d HEAD
 git -C ActionGate diff --check
 python3 -m json.tool ActionGate/.actiongate/system-contract.json >/dev/null
 python3 -m json.tool ActionGate/.actiongate/task-dag.json >/dev/null
@@ -49,100 +41,42 @@ python3 -m json.tool ActionGate/.actiongate/source-claims.json >/dev/null
 python3 -m json.tool ActionGate/.actiongate/technology-candidates.json >/dev/null
 ```
 
-Receipt:
+Receipt: `ActionGate/.actiongate/receipts/local/LH-MAIN-001.json`.
 
-```text
-ActionGate/.actiongate/receipts/local/LH-MAIN-001.json
-```
+It records exact SHA/tree, ancestor and parse results, required document presence, PR #41 state, public/private review and clean-room separation without private locator values.
 
-It binds the resolved SHA/tree, ancestor checks, JSON/Markdown presence, PR #41 exact state, public/private leak review, clean-room separation and exact command exits. It does not record private locator values.
+Next: at most one of `LH-STACK-002` or `C01-SESSION-003`.
 
-**Exit:** exact current main readback passes.
+## LH-STACK-002 — BLOCKED_BY_PREDECESSOR
 
-**Next candidates:** `LH-STACK-002` or `C01-SESSION-003`; at most one may become active.
+After LH-MAIN-001, observe Git Town capability and the S01 → C01 → PR #38 → PR #41 graph plus the three language siblings. No sync/rebase/reset/push/merge. Tool absence may be recorded as `BLOCKED_ABSENT_EXECUTABLE` without installing it.
 
-## `LH-STACK-002` — Git Town and C01 branch graph
+## C01-SESSION-003 — BLOCKED_BY_HUMAN_CLEANROOM_AND_FRESH_SESSION
 
-**State:** `BLOCKED_BY_PREDECESSOR`
-
-**Entry:** `LH-MAIN-001` valid and open PR #17/#34/#35/#36/#38/#41 heads still match the Molecular Stack index, or an explicit state-delta packet supersedes them.
-
-Checks:
-
-```bash
-git -C ActionGate fetch origin --prune
-git -C ActionGate town --version
-git -C ActionGate merge-base --is-ancestor 6cd18694878e6db3ee65034d8e86fe990ade02c0 origin/ag/C01-action-contracts
-git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-kotlin-vectors
-git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-swift-vectors
-git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-typescript-vectors
-git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-execution-preflight
-git -C ActionGate merge-base --is-ancestor origin/ag/C01-execution-preflight origin/ag/C01-worker-launch-packets
-```
-
-`git town --version` may end as `BLOCKED_ABSENT_EXECUTABLE`. Tool absence does not invalidate raw Git ancestry observations and does not authorize installation. No sync, rebase, push, reset or merge runs.
-
-## `C01-SESSION-003` — clean-room language Worker Session
-
-**State:** `BLOCKED_BY_HUMAN_CLEANROOM_AND_FRESH_SESSION`
-
-**Exact launch source:**
+Exact launch source:
 
 ```text
 Issue #39  CLOSED_PREPARATION_ONLY
-PR #41     ag/C01-worker-launch-packets@98c9545c0dd2bbfdabdaf27c8a992822a78b3840
+PR #41     98c9545c0dd2bbfdabdaf27c8a992822a78b3840
 ```
 
-**Entry:**
+Entry:
 
 ```text
-PR #41 exact head remains current
-+ selected PR #34/#35/#36 head and lease are current
-+ Human supplies the clean-room declaration
-+ a new public-input-only Session re-probes its own runtime
+PR #41 exact head current
++ selected PR #34/#35/#36 head/lease current
++ Human clean-room declaration
++ new public-input-only Session
++ target Session runtime re-probe
 ```
 
-This private-context conversation cannot satisfy the clean-room implementation-session gate. The declaration must not be fabricated by the Agent.
+This private-context conversation cannot satisfy that gate. A launch packet/request is not `SESSION_OBSERVED`. The selected Session may implement one language lease and return one Worker receipt; it cannot close another language, independent Shadow, C01 convergence, hardware, MCP, legal, merge or release.
 
-The selected Session records a distinct Session observation receipt, the launch packet digest, target branch/head/lease and runtime probe. It may implement one language lease and return one Worker-local receipt. It cannot close another language, independent Shadow, C01 convergence, hardware, MCP, legal, merge or release.
+## Later lanes
 
-## `LH-ANDROID-004`
+- `LH-ANDROID-004`: physical Android, blocked by implementation;
+- `LH-IOS-005`: physical iOS, blocked by implementation;
+- `LH-SECURITY-006`: independent security/clean-room review, blocked by immutable candidate;
+- `LH-HUMAN-007`: explicit legal/security/merge/release/production/rollback/public-private decision.
 
-**State:** `BLOCKED_BY_IMPLEMENTATION`
-
-Requires Issue #7 exact candidate, frozen connected-test task and a trusted physical Android device. Emulator evidence does not satisfy this lane.
-
-```text
-adb devices -l
-./gradlew <ANDROID_CONNECTED_TEST_TASK>
-```
-
-## `LH-IOS-005`
-
-**State:** `BLOCKED_BY_IMPLEMENTATION`
-
-Requires Issue #8 exact candidate, frozen scheme and physical destination binding. Simulator evidence does not satisfy this lane.
-
-```text
-xcodebuild -scheme <IOS_SCHEME> -destination <IOS_DESTINATION> test
-```
-
-Both values are resolved before process launch. The queue does not depend on shell expansion and does not publish the destination value by default.
-
-## `LH-SECURITY-006`
-
-**State:** `BLOCKED_BY_CANDIDATE`
-
-Requires an immutable candidate SHA/tree, threat model, dependency-rights packet, SBOM and declared denominator. The reviewer is independent and read-only. Self-review cannot satisfy this item. Legal acceptance remains Human-owned.
-
-## `LH-HUMAN-007`
-
-**State:** `HUMAN_ADMIT_REQUIRED`
-
-All policy-required technical, local, physical, rights and security receipts, unresolved blockers and rollback identity are presented together.
-
-Only an explicit Human decision may authorize merge, release, production, rollback or public/private-boundary changes. Silence is not approval.
-
-## Evidence ceiling
-
-Queue correctness proves only that the handoff is typed and reviewable. It does not prove any command ran, a Session exists, Git Town is installed, a language implementation is correct, a physical device behaved correctly, independent security/legal review passed, or release/production was admitted.
+Queue correctness is not command execution, Session existence, implementation correctness, physical proof, independent review, legal clearance or release/production admission.

@@ -1,0 +1,28 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "atom": "D00-FINALIZE-PR44",
+  "issue": 45,
+  "audit_input": {
+    "main_commit": "53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d",
+    "main_tree": "c74e911898086eddcd19bb292dbaf6ccd6bb435d"
+  },
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "finding": {
+    "class": "STATE_DELTA",
+    "finding": "Post-merge aggregate projections still marked Issue #43 as IN_PROGRESS and omitted PR #44 from the Local Handoff ancestor set.",
+    "falsifier": "Long-lived aggregate files record #43/#44 MERGED/CLOSED and LH-MAIN-001 requires the stable PR #44 merge receipt.",
+    "disposition": "REPAIRED_IN_CANDIDATE"
+  },
+  "remaining_dissent": [
+    "LH-MAIN-001 is NOT_EXERCISED.",
+    "PR #41 exact-head hosted execution is NOT_EXERCISED.",
+    "No language Worker Session has launched.",
+    "Independent Shadow #26 and C01 convergence #24 remain open.",
+    "Product, hardware, MCP, legal, user/paid, release and production lanes remain open."
+  ],
+  "verdict": "POST_PR44_STATUS_READY_FOR_DOCUMENTATION_REVIEW_ONLY",
+  "next_entry_condition": "merge this bookkeeping candidate, read back current main, then execute LH-MAIN-001 on a trusted clean host"
+}
