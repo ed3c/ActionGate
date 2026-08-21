@@ -1,0 +1,71 @@
+name: Provenance Control
+
+on:
+  pull_request:
+    paths:
+      - ".provenance/**"
+      - "docs/provenance/**"
+      - "docs/handoff/PROVENANCE_LOCAL_HANDOFF.md"
+      - "LICENSES/**"
+      - "sbom/**"
+      - "CONTRIBUTING.md"
+      - "scripts/check_provenance_control.py"
+      - "tests/test_provenance_control.py"
+      - ".github/PULL_REQUEST_TEMPLATE/provenance.md"
+      - ".github/workflows/provenance-control.yml"
+      - "packages/**"
+      - "src/**"
+      - "contracts/**"
+      - "vendor/**"
+      - "third_party/**"
+      - "package.json"
+      - "pyproject.toml"
+      - "Package.swift"
+      - "Cargo.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provenance:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fetch exact subject without third-party Actions
+        shell: bash
+        env:
+          REPOSITORY: ${{ github.repository }}
+          EVENT_PATH: ${{ github.event_path }}
+          EVENT_NAME: ${{ github.event_name }}
+          CURRENT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            HEAD_SHA="$(python3 -c 'import json,os; print(json.load(open(os.environ["EVENT_PATH"]))["pull_request"]["head"]["sha"])')"
+            BASE_SHA="$(python3 -c 'import json,os; print(json.load(open(os.environ["EVENT_PATH"]))["pull_request"]["base"]["sha"])')"
+          else
+            HEAD_SHA="$CURRENT_SHA"
+            BASE_SHA="${CURRENT_SHA}^"
+          fi
+          git init checkout
+          git -C checkout remote add origin "https://github.com/${REPOSITORY}.git"
+          git -C checkout fetch --no-tags --depth=2 origin "$HEAD_SHA"
+          git -C checkout checkout --detach FETCH_HEAD
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            git -C checkout fetch --no-tags --depth=1 origin "$BASE_SHA"
+          fi
+          printf '%s\n' "$HEAD_SHA" > checkout/.provenance-head
+          printf '%s\n' "$BASE_SHA" > checkout/.provenance-base
+
+      - name: Validate provenance control
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd checkout
+          python3 scripts/check_provenance_control.py
+          python3 -m unittest tests/test_provenance_control.py
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            python3 scripts/check_provenance_control.py \
+              --check-commits "$(cat .provenance-base)" "$(cat .provenance-head)"
+          fi
+          git diff --check
