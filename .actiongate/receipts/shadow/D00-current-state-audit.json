@@ -1,0 +1,41 @@
+{
+  "schema": "actiongate-shadow-current-state-audit/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 64,
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "subject_base": {
+    "commit": "70573aed229404772827829a1ce069a6e72184fa",
+    "tree": "e31f35bf0b60977df995df6f97dde941dfe529f9"
+  },
+  "findings": [
+    {"id":"SH-D64-001","class":"STATE_DELTA","disposition":"RECONCILE","detail":"main README/AGENTS/DAG/Stack still described Kotlin/Swift/TypeScript as preparation-only/not-implemented although current PRs #34/#35/#36 are profile-hardened local-deterministic candidates."},
+    {"id":"SH-D64-002","class":"LIFECYCLE_DELTA","disposition":"CLOSED_LEAVES","detail":"Issues #18/#19/#20 reached their declared local-deterministic exit and were closed without implying C01 admission; candidate PRs remain Draft/open."},
+    {"id":"SH-D64-003","class":"LIFECYCLE_DELTA","disposition":"HISTORICAL","detail":"PR #38 and PR #41 completed preparation roles and were closed unmerged; their exact commits remain historical evidence."},
+    {"id":"SH-D64-004","class":"EVIDENCE_DELTA","disposition":"KEEP_DRAFT","detail":"PR #61 is hosted-green profile-v2 independent-review dispatch, but Issue #26 remains NOT_EXERCISED."},
+    {"id":"SH-D64-005","class":"AUTHORITY_DELTA","disposition":"KEEP_DRAFT","detail":"PR #63 convergence control is hosted-green but cannot emit C01_ADMITTED without an external Issue #26 receipt and Issue #24 semantic ownership."},
+    {"id":"SH-D64-006","class":"EVIDENCE_DELTA","disposition":"KEEP_DRAFT","detail":"PR #54 provenance control is hosted deterministic static evidence; independent Issue #55 and explicit Human merge remain required."},
+    {"id":"SH-D64-007","class":"OWNERSHIP_DELTA","disposition":"REPAIRED_IN_PROJECTION","detail":"Current Stack index uses SIBLING/TRUE_CHILD/CONVERGENCE/PROCESS_DEPENDENCY/EXTERNAL_EVIDENCE/HISTORICAL and does not serialize language siblings."},
+    {"id":"SH-D64-008","class":"EVIDENCE_DELTA","disposition":"REPAIRED_IN_PROJECTION","detail":"Problem Closure Matrix distinguishes locally closed canonical/profile mechanisms from still-open independent, core, distributed, MCP, hardware, physical, legal, user and paid lanes."},
+    {"id":"SH-D64-009","class":"LIFECYCLE_DELTA","disposition":"REPAIRED_IN_QUEUE","detail":"Local Handoff keeps exactly one ACTIVE trusted-main readback and lists independent C01/provenance reviews as selectable external candidates without creating Git ancestry."}
+  ],
+  "pr_disposition": {
+    "merge_now": ["Issue #64 documentation-only convergence PR after exact validation"],
+    "close_unmerged": [38,41],
+    "keep_draft": [17,34,35,36,54,61,63],
+    "do_not_merge_reason": "semantic/independent/Human admission gates remain unsatisfied"
+  },
+  "issue_disposition": {
+    "closed_completed_this_audit": [18,19,20],
+    "already_closed_relevant": [37,39,47,49,57,60,62],
+    "keep_open": [1,4,5,6,7,8,9,10,11,12,13,21,24,25,26,28,51,55,56]
+  },
+  "evidence_ceiling": "documentation/current-state reconciliation only",
+  "human_owned": ["independent reviewer selection where required","semantic conflict resolution","legal/security acceptance","merge of admission-gated implementation PRs","release","production"],
+  "dissent": [
+    "Issue #26 independent review is NOT_EXERCISED.",
+    "Issue #55 independent provenance review is NOT_EXERCISED.",
+    "C01_ADMITTED is absent and K01 remains blocked.",
+    "Android/iOS hardware, MCP, distributed execution, E2E, physical, legal, user/paid, release and production remain unearned."
+  ]
+}
