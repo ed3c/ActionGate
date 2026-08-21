@@ -2,21 +2,30 @@
   "schema": "actiongate-phase-status/v1",
   "repository": "ed3c/ActionGate",
   "issue": 39,
+  "draft_pr": 41,
   "phase": "C01_WORKER_SESSION_LAUNCH_PREPARATION",
-  "state": "READY_FOR_DRAFT_PUBLICATION",
+  "state": "C01_WORKER_SESSION_LAUNCH_PACKETS_READY_NOT_LAUNCHED",
+  "publication_state": "DRAFT_PUBLISHED",
   "base_sha": "9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
-  "expected_outputs": [
-    "zero-placeholder language prompts",
-    "clean-room declaration template",
+  "completed_outputs": [
+    "zero-placeholder Kotlin/Swift/TypeScript prompts",
+    "clean-room Human declaration template",
     "machine launch registry",
     "launch packet validator and planted mutations",
     "independent Shadow prompt",
     "C01 convergence prompt",
-    "same-context Shadow preflight"
+    "same-context Shadow preflight",
+    "Local Handoff queue with exactly one ACTIVE item"
   ],
+  "preparation_runtime_checks": {
+    "packet_checker": "PASS",
+    "selftest": "PASS_7_OF_7",
+    "exact_head_hosted_execution": "NOT_EXERCISED"
+  },
   "evidence_ceiling": "launch-packet preparation only",
   "not_exercised": [
     "fresh clean-room Worker Session",
+    "Human clean-room declaration",
     "runtime re-probe in actual Worker Session",
     "language implementation",
     "language vector receipt",
@@ -25,5 +34,6 @@
     "K01",
     "hardware/MCP/integration",
     "merge/release"
-  ]
+  ],
+  "next_entry_condition": "Human creates a fresh public-input-only Worker Session, supplies the clean-room declaration, and that Session re-probes its own runtime and exact Worker subject."
 }
