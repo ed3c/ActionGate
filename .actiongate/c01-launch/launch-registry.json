@@ -1,0 +1,194 @@
+{
+  "schema": "actiongate-c01-worker-launch-registry/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 39,
+  "state": "C01_WORKER_SESSION_LAUNCH_PACKETS_READY",
+  "contract_epoch": {
+    "branch": "ag/C01-action-contracts",
+    "sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a"
+  },
+  "execution_control": {
+    "branch": "ag/C01-execution-preflight",
+    "sha": "9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
+    "pr": 38
+  },
+  "launch_branch": {
+    "branch": "ag/C01-worker-launch-packets",
+    "base_sha": "9f41038240837ea2dd9dcdb9befd13e6ba81a78e"
+  },
+  "current_conversation_eligibility": {
+    "implementation_session_allowed": false,
+    "reason_code": "PRIVATE_CONTEXT_PRESENT_REQUIRES_FRESH_PUBLIC_INPUT_ONLY_SESSION",
+    "may_prepare_packets": true,
+    "may_fabricate_human_attestation": false
+  },
+  "worker_relation": "PATH_DISJOINT_SIBLINGS_NO_INTER_WORKER_GIT_PARENT",
+  "workers": [
+    {
+      "id": "C01-KOTLIN",
+      "language": "kotlin",
+      "issue": 18,
+      "pr": 34,
+      "branch": "ag/C01-kotlin-vectors",
+      "preparation_head": "0136936e7d63ba0c538d2cb40db60409107ababc",
+      "preparation_tree": "d5d9a7d4a4d6f725b80f324035ef8880bb347240",
+      "lease": {
+        "paths": ["contracts/impl/kotlin/**"],
+        "resources": ["C01 kotlin canonicalization candidate"]
+      },
+      "runtime_probe": [["kotlinc", "-version"], ["java", "-version"]],
+      "prompt": ".actiongate/c01-launch/prompts/kotlin.md",
+      "receipt_path": "contracts/impl/kotlin/RECEIPT.json",
+      "state": "LAUNCH_PACKET_READY_NOT_LAUNCHED",
+      "clean_room_state": "HUMAN_DECLARATION_REQUIRED",
+      "runtime_state": "REPROBE_IN_ACTUAL_SESSION",
+      "implementation_state": "NOT_IMPLEMENTED",
+      "evidence_ceiling": "local-deterministic canonicalization only"
+    },
+    {
+      "id": "C01-SWIFT",
+      "language": "swift",
+      "issue": 19,
+      "pr": 35,
+      "branch": "ag/C01-swift-vectors",
+      "preparation_head": "76b10b5a05898410ed361761626b381158edb306",
+      "preparation_tree": "d71add9be3bea0149347e2f3dd81d2ba183e4bd7",
+      "lease": {
+        "paths": ["contracts/impl/swift/**"],
+        "resources": ["C01 swift canonicalization candidate"]
+      },
+      "runtime_probe": [["swift", "--version"]],
+      "prompt": ".actiongate/c01-launch/prompts/swift.md",
+      "receipt_path": "contracts/impl/swift/RECEIPT.json",
+      "state": "LAUNCH_PACKET_READY_NOT_LAUNCHED",
+      "clean_room_state": "HUMAN_DECLARATION_REQUIRED",
+      "runtime_state": "REPROBE_IN_ACTUAL_SESSION",
+      "implementation_state": "NOT_IMPLEMENTED",
+      "evidence_ceiling": "local-deterministic canonicalization only"
+    },
+    {
+      "id": "C01-TYPESCRIPT",
+      "language": "typescript",
+      "issue": 20,
+      "pr": 36,
+      "branch": "ag/C01-typescript-vectors",
+      "preparation_head": "c62e24ffa0ceb2224fe6931929bfaeeceabe3c39",
+      "preparation_tree": "e69eb7fcd2162c7d07a674677a3433eeb2aa9e57",
+      "lease": {
+        "paths": ["contracts/impl/typescript/**"],
+        "resources": ["C01 typescript canonicalization candidate"]
+      },
+      "runtime_probe": [["node", "--version"], ["tsc", "--version"]],
+      "prompt": ".actiongate/c01-launch/prompts/typescript.md",
+      "receipt_path": "contracts/impl/typescript/RECEIPT.json",
+      "state": "LAUNCH_PACKET_READY_NOT_LAUNCHED",
+      "clean_room_state": "HUMAN_DECLARATION_REQUIRED",
+      "runtime_state": "REPROBE_IN_ACTUAL_SESSION",
+      "implementation_state": "NOT_IMPLEMENTED",
+      "evidence_ceiling": "local-deterministic canonicalization only"
+    }
+  ],
+  "common_read_only_evidence": {
+    "subject": "ag/C01-execution-preflight@9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
+    "receipt_schema": "contracts/evidence/common/language-worker-receipt.schema.json",
+    "receipt_checker": "contracts/evidence/common/check_language_worker_receipt.py",
+    "schema_receipt": "contracts/evidence/schema/C01-schema-engine.receipt.json",
+    "access_rule": "read from an exact read-only sidecar checkout or GitHub exact-subject fetch; do not cherry-pick into Worker branches"
+  },
+  "independent_shadow": {
+    "issue": 26,
+    "prompt": ".actiongate/c01-launch/prompts/independent-shadow.md",
+    "state": "BLOCKED_BY_WORKER_RECEIPTS",
+    "same_context_may_satisfy": false
+  },
+  "convergence": {
+    "issue": 24,
+    "prompt": ".actiongate/c01-launch/prompts/convergence.md",
+    "state": "BLOCKED_BY_WORKER_AND_INDEPENDENT_SHADOW_RECEIPTS",
+    "verdicts": ["C01_ADMITTED", "HOLD", "REJECT"]
+  },
+  "local_handoff_queue": {
+    "active_item": "CLH-001",
+    "items": [
+      {
+        "id": "CLH-001",
+        "state": "ACTIVE",
+        "entry": "Human creates a fresh public-input-only Worker Session and selects one or more sibling lanes",
+        "operation": "Human supplies the clean-room declaration; each selected Session re-probes its own runtime and exact branch/head",
+        "exit": "each selected lane emits CLEAN_ROOM_PRECHECK_PASS or a typed blocker and binds a Session-local runtime receipt",
+        "next_candidates": ["CLH-002-K", "CLH-002-S", "CLH-002-T"]
+      },
+      {
+        "id": "CLH-002-K",
+        "state": "BLOCKED_BY_PREDECESSOR",
+        "lane": "kotlin",
+        "entry": "CLH-001 valid for Kotlin",
+        "operation": "launch Kotlin prompt packet in a fresh Session",
+        "exit": "first validated Kotlin Worker receipt",
+        "next_candidates": ["CLH-003"]
+      },
+      {
+        "id": "CLH-002-S",
+        "state": "BLOCKED_BY_PREDECESSOR",
+        "lane": "swift",
+        "entry": "CLH-001 valid for Swift",
+        "operation": "launch Swift prompt packet in a fresh Session",
+        "exit": "first validated Swift Worker receipt",
+        "next_candidates": ["CLH-003"]
+      },
+      {
+        "id": "CLH-002-T",
+        "state": "BLOCKED_BY_PREDECESSOR",
+        "lane": "typescript",
+        "entry": "CLH-001 valid for TypeScript",
+        "operation": "launch TypeScript prompt packet in a fresh Session",
+        "exit": "first validated TypeScript Worker receipt",
+        "next_candidates": ["CLH-003"]
+      },
+      {
+        "id": "CLH-003",
+        "state": "BLOCKED_BY_WORKERS",
+        "entry": "all required Worker receipts validate on exact heads",
+        "operation": "run Issue #26 in a separate read-only reviewer Session",
+        "exit": "independent Shadow verdict receipt",
+        "next_candidates": ["CLH-004"]
+      },
+      {
+        "id": "CLH-004",
+        "state": "BLOCKED_BY_RECEIPTS",
+        "entry": "Worker, schema and independent Shadow receipts are present",
+        "operation": "Issue #24 convergence emits C01_ADMITTED, HOLD or REJECT",
+        "exit": "exact convergence receipt",
+        "next_candidates": ["CLH-005"]
+      },
+      {
+        "id": "CLH-005",
+        "state": "BLOCKED_BY_C01_ADMISSION",
+        "entry": "Issue #24 exact verdict is C01_ADMITTED",
+        "operation": "activate K01 preparation Issues #25/#28",
+        "exit": "K01 preparation packets may proceed; implementation remains separately gated",
+        "next_candidates": []
+      }
+    ]
+  },
+  "human_owned": [
+    "clean-room declaration",
+    "tool installation",
+    "dependency/license admission",
+    "semantic conflict resolution",
+    "merge",
+    "release",
+    "security/legal acceptance",
+    "production"
+  ],
+  "non_claims": [
+    "no Worker Session launched",
+    "no language code implemented",
+    "no Worker vector receipt",
+    "no independent Shadow",
+    "no C01 admission",
+    "no K01 start",
+    "no hardware or MCP evidence",
+    "no merge or release"
+  ]
+}
