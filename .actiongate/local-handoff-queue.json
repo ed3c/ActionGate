@@ -1,0 +1,146 @@
+{
+  "schema": "actiongate-local-handoff-queue/v2",
+  "repository": "ed3c/ActionGate",
+  "subject": "bootstrap-stack",
+  "active_item": "LH-001",
+  "selection_policy": "exactly one item is ACTIVE; after its valid receipt closes, the controller may activate exactly one eligible item named by next_candidates; blocked siblings remain blocked and no item auto-executes",
+  "items": [
+    {
+      "id": "LH-001",
+      "state": "ACTIVE",
+      "entry": "trusted local host; executor starts in a dedicated empty clean-room directory with git, python3 and GitHub network access",
+      "cwd": ".",
+      "expected_subject": {
+        "ref": "origin/ag/C00-technical-control-plane",
+        "sha": "3b8f08f6fc179ea4a8166a24574a506269151586"
+      },
+      "commands": [
+        ["git", "clone", "https://github.com/ed3c/ActionGate.git", "ActionGate"],
+        ["git", "-C", "ActionGate", "fetch", "origin", "--prune"],
+        ["git", "-C", "ActionGate", "switch", "--detach", "origin/ag/C00-technical-control-plane"],
+        ["git", "-C", "ActionGate", "rev-parse", "HEAD"],
+        ["git", "-C", "ActionGate", "rev-parse", "HEAD^{tree}"],
+        ["git", "-C", "ActionGate", "diff", "--check"],
+        ["python3", "-m", "json.tool", "ActionGate/.actiongate/system-contract.json"],
+        ["python3", "-m", "json.tool", "ActionGate/.actiongate/task-dag.json"]
+      ],
+      "receipt": "ActionGate/.actiongate/receipts/local/LH-001.json",
+      "receipt_contract": [
+        "subject_sha equals expected_subject.sha",
+        "tree_sha recorded",
+        "diff_check PASS",
+        "system_contract_json PASS",
+        "task_dag_json PASS",
+        "clean_room_path contains no employer/private source"
+      ],
+      "exit": "exact C00 subject/tree plus diff and JSON checks PASS",
+      "next_candidates": ["LH-002"],
+      "evidence_ceiling": "local-deterministic bootstrap read-back",
+      "human_owned": []
+    },
+    {
+      "id": "LH-002",
+      "state": "BLOCKED_BY_PREDECESSOR",
+      "entry": "LH-001 valid and Draft PRs 14, 15 and 16 exist",
+      "cwd": ".",
+      "commands": [
+        ["git", "-C", "ActionGate", "town", "--version"],
+        ["git", "-C", "ActionGate", "merge-base", "--is-ancestor", "origin/main", "origin/ag/C00-technical-control-plane"],
+        ["git", "-C", "ActionGate", "merge-base", "--is-ancestor", "origin/ag/C00-technical-control-plane", "origin/ag/S01-source-rights"],
+        ["git", "-C", "ActionGate", "merge-base", "--is-ancestor", "origin/ag/C00-technical-control-plane", "origin/ag/D00-prompts-handoff"]
+      ],
+      "receipt": "ActionGate/.actiongate/receipts/local/LH-002.json",
+      "receipt_contract": [
+        "Git Town version is recorded as PASS or ABSENT",
+        "main_to_C00 ancestry PASS",
+        "C00_to_S01 ancestry PASS",
+        "C00_to_D00 ancestry PASS",
+        "no sync, push, merge, rebase, reset, branch deletion or semantic conflict resolution executed"
+      ],
+      "exit": "ancestry PASS; Git Town capability is PASS or BLOCKED_ABSENT_EXECUTABLE",
+      "next_candidates": ["LH-003", "LH-004", "LH-005"],
+      "evidence_ceiling": "local tool/ancestry capability; no sync/push/merge authority",
+      "human_owned": []
+    },
+    {
+      "id": "LH-003",
+      "state": "BLOCKED_BY_IMPLEMENTATION",
+      "entry": "Issue 7 exact candidate and Android connected-test task are frozen; trusted personal Android device is connected",
+      "cwd": "ActionGate",
+      "command_template": [
+        ["adb", "devices", "-l"],
+        ["./gradlew", "<ANDROID_CONNECTED_TEST_TASK>"]
+      ],
+      "parameter_bindings": {
+        "<ANDROID_CONNECTED_TEST_TASK>": {
+          "source": "Issue #7 / A02 handoff receipt",
+          "required_before_activation": true,
+          "shell_expansion": false
+        }
+      },
+      "receipt": ".actiongate/receipts/local/LH-003-android.json",
+      "exit": "Issue 13 admits Android physical receipt",
+      "next_candidates": ["LH-004", "LH-005", "LH-006"],
+      "evidence_ceiling": "live/physical Android",
+      "human_owned": []
+    },
+    {
+      "id": "LH-004",
+      "state": "BLOCKED_BY_IMPLEMENTATION",
+      "entry": "Issue 8 exact candidate, scheme and physical destination binding are frozen",
+      "cwd": "ActionGate",
+      "command_template": [
+        ["xcodebuild", "-scheme", "<IOS_SCHEME>", "-destination", "<IOS_DESTINATION>", "test"]
+      ],
+      "parameter_bindings": {
+        "<IOS_SCHEME>": {
+          "source": "Issue #8 / A03 handoff receipt",
+          "required_before_activation": true,
+          "shell_expansion": false
+        },
+        "<IOS_DESTINATION>": {
+          "source": "local environment ACTIONGATE_IOS_DESTINATION",
+          "required_before_activation": true,
+          "shell_expansion": false,
+          "record_value_in_receipt": false
+        }
+      },
+      "receipt": ".actiongate/receipts/local/LH-004-ios.json",
+      "exit": "Issue 13 admits iOS physical receipt",
+      "next_candidates": ["LH-003", "LH-005", "LH-006"],
+      "evidence_ceiling": "live/physical iOS",
+      "human_owned": []
+    },
+    {
+      "id": "LH-005",
+      "state": "BLOCKED_BY_CANDIDATE",
+      "entry": "P7 immutable SHA/tree, threat model, dependency-rights packet and SBOM exist",
+      "runtime_lane": "independent read-only security and clean-room reviewer",
+      "receipt": ".actiongate/receipts/local/LH-005-review.json",
+      "exit": "independent receipt admitted; legal clearance separate",
+      "next_candidates": ["LH-003", "LH-004", "LH-006"],
+      "evidence_ceiling": "adversarial/security or rights review",
+      "human_owned": ["legal acceptance"]
+    },
+    {
+      "id": "LH-006",
+      "state": "HUMAN_ADMIT_REQUIRED",
+      "entry": "all policy-required technical, local, physical, rights and security receipts are presented together with unresolved blockers",
+      "runtime_lane": "repository/legal/security Human authorities",
+      "receipt": ".actiongate/receipts/local/LH-006-human-decision.json",
+      "exit": "explicit merge/release/rollback decision",
+      "next_candidates": [],
+      "evidence_ceiling": "Human admit",
+      "human_owned": [
+        "merge",
+        "release",
+        "production promotion",
+        "rollback",
+        "public/private boundary changes"
+      ]
+    }
+  ],
+  "rollback_identity": "exact pre-operation branch heads and candidate SHA",
+  "cleanup_required": true,
+  "private_urls_forbidden": true
+}
