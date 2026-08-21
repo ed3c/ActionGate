@@ -1,0 +1,51 @@
+{
+  "schema": "actiongate-c01-profile-shadow-phase/v2",
+  "repository": "ed3c/ActionGate",
+  "issue": 60,
+  "state": "C01_PROFILE_HARDENED_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW",
+  "base_dispatch": {
+    "issue": 58,
+    "pr": 59,
+    "head": "ce57d5db1e71223f18d1095024297391a36611f3",
+    "tree": "8412e5c05beb37c4e43846b24da7a9795262d124",
+    "state": "SUPERSEDED_STALE_PROFILE"
+  },
+  "contract_epoch": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "worker_heads": {
+    "kotlin": "cf589a0990aaaa6422be9c649b52b44230d570f6",
+    "swift": "039827061f54aa72e2b81365a4c904d25833f83e",
+    "typescript": "3ed9f0307df0937028bbf52fe8fbd2a6621acafe"
+  },
+  "dispatch_pr": 61,
+  "first_red": {
+    "receipt_head": "029c6566d44d92538fc7afadefa7c18051a95bcb",
+    "workflow_run_id": 32464263106,
+    "workflow_job_id": 96717425610,
+    "failure": "READY_BINDING_ASSUMED_HEAD_WAS_BRANCH_HEAD_IN_PULL_REQUEST_MERGE_CHECKOUT"
+  },
+  "dispatch_candidate": {
+    "commit": "23ee1763bea2703f732482952b6312d751faf8cb",
+    "tree": "bd34215ad036be41b5a2333b9b36b076bcddabc6"
+  },
+  "hosted_validation": {
+    "name": "C01 Profile Shadow Dispatch",
+    "run_id": 32464552175,
+    "job_id": 96718286898,
+    "head_sha": "23ee1763bea2703f732482952b6312d751faf8cb",
+    "conclusion": "success"
+  },
+  "independent_review": "NOT_EXERCISED",
+  "convergence": "BLOCKED_BY_INDEPENDENT_REVIEW_RECEIPT",
+  "c01_admitted": false,
+  "k01_started": false,
+  "evidence_ceiling": "profile-hardened independent-review dispatch only",
+  "next_entry_condition": "A separate read-only non-Builder context executes Issue #26 and emits a validated profile-v2 receipt.",
+  "human_owned": [
+    "reviewer selection or waiver",
+    "semantic conflict resolution",
+    "security/legal acceptance",
+    "merge",
+    "release",
+    "production"
+  ]
+}
