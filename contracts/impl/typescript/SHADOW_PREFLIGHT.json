@@ -1,0 +1,21 @@
+{
+  "schema": "actiongate-worker-shadow-preflight/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 20,
+  "branch": "ag/C01-typescript-vectors",
+  "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "checkpoint": "before TypeScript implementation",
+  "findings": [
+    {"id":"SH-TS-001","risk":"Object insertion order or JSON.stringify used as canonical order","required_falsifier":"explicit sorted-key output matches frozen bytes"},
+    {"id":"SH-TS-002","risk":"float or unsafe integer accepted by JavaScript Number","required_falsifier":"Number.isSafeInteger and float/range controls"},
+    {"id":"SH-TS-003","risk":"JSON.parse erases duplicate-key evidence","required_falsifier":"raw-token duplicate detection or explicit unclosed control"},
+    {"id":"SH-TS-004","risk":"Unicode normalization or implicit encoding changes bytes","required_falsifier":"explicit UTF-8 and non-normalization control"},
+    {"id":"SH-TS-005","risk":"MCP implementation leaks into language-only worker","required_falsifier":"changed-path/import scan contains no MCP SDK"},
+    {"id":"SH-TS-006","risk":"toolchain absence hidden by npm/npx download","required_falsifier":"exact node/tsc capability receipt or typed blocker"}
+  ],
+  "verdict": "PREIMPLEMENTATION_READY_NOT_EXECUTED",
+  "remaining": ["toolchain", "implementation", "vector execution", "independent Shadow", "C01 convergence"]
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 20,
+  "implementation_wave_issue": 47,
+  "hardening_issue": 49,
+  "profile_hardening_issue": 57,
+  "atom": "C01-TYPESCRIPT",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "local-deterministic canonicalization only",
+  "exact_profile_hardened_subject": {
+    "commit": "dbdcfdcd8f100c3135730bc828700ffc8239994e",
+    "tree": "39a40aab9f13fdcae04d3164669667aa7322029c"
+  },
+  "verified_blobs": {
+    "sources": ["0a263d85ad2d54e9ea5b1c8bddfb583febef3f3f"],
+    "tests": ["de103079678888e0dfedd51399ffb221da012d1c"]
+  },
+  "findings": [
+    {
+      "id": "SH-T-P01",
+      "class": "DOMAIN_ALLOWLIST_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Digest helpers accept only registered labels; unknown and embedded-NUL suffix labels reject."
+    },
+    {
+      "id": "SH-T-P02",
+      "class": "RAW_NUMBER_PROFILE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "The raw gate rejects fraction/exponent tokens and unsafe integer magnitude before JSON.parse can coerce them."
+    },
+    {
+      "id": "SH-T-P03",
+      "class": "RAW_KEY_PROFILE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Raw keys enforce the same ASCII profile as structured object descriptors."
+    },
+    {
+      "id": "SH-T-P04",
+      "class": "EVIDENCE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Frozen hashes, the common denominator and prior cycle/sparse/accessor/symbol/Unicode controls remain green."
+    }
+  ],
+  "verification": {
+    "command": "bash contracts/impl/typescript/run.sh",
+    "result": "PASS",
+    "frozen_positive_hashes": "3/3 PASS",
+    "common_negative_denominator": "7/7 PASS",
+    "extra_profile_controls": [
+      "unknown-domain rejection",
+      "embedded-NUL domain rejection",
+      "raw non-ASCII-key rejection",
+      "raw fraction/exponent rejection",
+      "raw positive/negative unsafe-integer rejection",
+      "raw safe integer boundaries and -0 acceptance",
+      "cycle/sparse/accessor/symbol/Unicode controls retained"
+    ]
+  },
+  "remaining_dissent": [
+    "This is a same-context implementation Shadow; independent review Issue #26 is NOT_EXERCISED.",
+    "C01 convergence Issue #24 remains blocked on independent review.",
+    "MCP, mobile, security/legal acceptance, merge, release and production are not proven."
+  ],
+  "verdict": "PROFILE_HARDENED_IMPLEMENTATION_ELIGIBLE_FOR_SUCCESSOR_RECEIPT"
+}
