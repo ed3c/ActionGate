@@ -1,133 +1,111 @@
 # Issue DAG
 
-## Edge semantics
+## Edge classes
 
-The graph carries separate edge classes:
+- **start:** exact interface readable;
+- **completion:** prerequisite receipt admitted in its own lane;
+- **process/evidence:** runtime, Shadow, local, projection or Human receipt; no Git ancestry;
+- **publication:** branch/PR published without implementation completion.
 
-- **start edge** — an exact prerequisite interface is readable and a disjoint lease may begin;
-- **completion edge** — the child may claim completion only after the prerequisite's exact-subject receipt is admitted in its own lane;
-- **process/evidence edge** — a runtime, Shadow, projection, local or Human receipt is required but does not create Git ancestry;
-- **publication edge** — a branch/PR may be published without satisfying implementation completion.
+## Stage nodes
 
-A startable, published or mergeable atom is not therefore completable.
-
-## Primary stage nodes
-
-| Node | Atom | Issue | Owner | Required lane | Current state |
-|---|---|---:|---|---|---|
-| `N00` | Epic/global objective | #1 | final Tech Lead + Human convergence | multi-lane | `OPEN` |
-| `N01` | C00 authority/routes | #2 | control-plane owner | cloud/static | `MERGED / CLOSED` |
-| `N02` | S01 source/claim/rights | #3 | source-rights owner | cloud/static + source read-back | `MERGED / CLOSED` |
-| `N02D` | D00 prompts/handoff | #2 | prompt/handoff owner | cloud/static | `MERGED`; execution not exercised |
-| `N03` | C01 canonical contracts | #4 | one semantic contract owner | local-deterministic | `DRAFT_PREPARATION` |
-| `N04` | K01 deterministic core | #5 | core owner | local-deterministic | `BLOCKED_BY_C01_ADMISSION` |
-| `N05` | A01 gateway/persistence | #6 | gateway owner | integration | `NOT_IMPLEMENTED` |
-| `N06` | A02 Android | #7 | Android owner | deterministic + physical | `NOT_IMPLEMENTED` |
-| `N07` | A03 iOS | #8 | iOS owner | deterministic + physical | `NOT_IMPLEMENTED` |
-| `N08` | A04 MCP | #9 | MCP owner | integration | `NOT_IMPLEMENTED` |
-| `N09` | E01 evidence harness | #10 | evidence owner | adversarial/deterministic | `NOT_IMPLEMENTED` |
-| `N10` | X01 protected DevOps E2E | #11 | E2E owner | integration | `NOT_IMPLEMENTED` |
-| `N11` | final aggregate convergence | #12 | one D01 writer | exact-head multi-lane | `OPEN / BLOCKED` |
-| `N12` | physical/security/legal/Human | #13 | external/Human authorities | physical/security/Human | `NOT_EXERCISED` |
-| `N40` | bootstrap-main partial convergence | #40 / PR #42 | temporary aggregate writer | exact-head documentation | `MERGED / CLOSED` |
-| `N43` | launch-packet state delta | #43 | temporary aggregate writer | exact-head documentation | `IN_PROGRESS` |
+| Node | Issue | Atom | State |
+|---|---:|---|---|
+| N00 | #1 | Epic | OPEN |
+| N01 | #2 | C00 | MERGED / CLOSED |
+| N02 | #3 | S01 | MERGED / CLOSED |
+| N02D | #2 | D00 | MERGED; queue not exercised |
+| N03 | #4 | C01 | DRAFT_PREPARATION |
+| N04 | #5 | K01 | BLOCKED_BY_C01_ADMISSION |
+| N05 | #6 | A01 | NOT_IMPLEMENTED |
+| N06 | #7 | A02 | NOT_IMPLEMENTED |
+| N07 | #8 | A03 | NOT_IMPLEMENTED |
+| N08 | #9 | A04 | NOT_IMPLEMENTED |
+| N09 | #10 | E01 | NOT_IMPLEMENTED |
+| N10 | #11 | X01 | NOT_IMPLEMENTED |
+| N11 | #12 | final D01 | OPEN / BLOCKED |
+| N12 | #13 | H01 | NOT_EXERCISED |
+| N40 | #40 / PR #42 | partial main convergence | MERGED / CLOSED |
+| N43 | #43 / PR #44 | PR #41 state delta | MERGED / CLOSED |
 
 ## C01 subgraph
 
-| Node | Issue / PR | Purpose | Git relation | Current state |
-|---|---|---|---|---|
-| `C01-K` | #18 / PR #34 | Kotlin canonical-vector candidate | sibling after frozen C01 | `PREPARATION_ONLY` |
-| `C01-S` | #19 / PR #35 | Swift canonical-vector candidate | sibling after frozen C01 | `PREPARATION_ONLY` |
-| `C01-T` | #20 / PR #36 | TypeScript canonical-vector candidate | sibling after frozen C01 | `PREPARATION_ONLY` |
-| `C01-EP` | #37 / PR #38 | capability/schema/receipt/convergence preparation | true child of C01; process sibling of language candidates | `DRAFT_PREPARATION` |
-| `C01-LP` | #39 / PR #41 | zero-placeholder clean-room Session packets | true child of PR #38; routing sibling of language candidates | `DRAFT_PUBLISHED / NOT_LAUNCHED` |
-| `C01-SH` | #26 | independent read-only Shadow | no writer / no Git parent | `NOT_EXERCISED` |
-| `C01-CV` | #24 | semantic convergence and admission | one convergence owner | `BLOCKED_BY_WORKERS` |
-| `K01-PREP` | #25/#28 | core packets and Shadow falsifiers | process successor after C01 | `BLOCKED_BY_C01_ADMISSION` |
+| Node | Issue/PR | Relation | State |
+|---|---|---|---|
+| C01-K | #18/#34 | language sibling after frozen C01 | PREPARATION_ONLY |
+| C01-S | #19/#35 | language sibling after frozen C01 | PREPARATION_ONLY |
+| C01-T | #20/#36 | language sibling after frozen C01 | PREPARATION_ONLY |
+| C01-EP | #37/#38 | true child of C01; process sibling of languages | DRAFT_PREPARATION |
+| C01-LP | #39/#41 | true child of PR #38; routing sibling of languages | DRAFT_PUBLISHED / NOT_LAUNCHED |
+| C01-SH | #26 | independent read-only; no Git parent | NOT_EXERCISED |
+| C01-CV | #24 | one semantic convergence owner | BLOCKED_BY_WORKERS |
+| K01-PREP | #25/#28 | process successor after C01 | BLOCKED_BY_C01_ADMISSION |
 
-## Start-readiness DAG
+## Start DAG
 
 ```text
-N01 -> N02
-N01 -> N02D
-N01 + N02 -> N03
-
-N03 -> C01-K
-N03 -> C01-S
-N03 -> C01-T
-N03 -> C01-EP
+N01 -> N02/N02D/N03
+N02 -> N03
+N03 -> C01-K/C01-S/C01-T/C01-EP
 C01-EP -> C01-LP
-C01-LP -> fresh Kotlin Session
-C01-LP -> fresh Swift Session
-C01-LP -> fresh TypeScript Session
-
-readable C01 plus stable port -> N06/N07 preparation only
+C01-LP -> fresh Kotlin/Swift/TypeScript Sessions
 C01-CV(C01_ADMITTED) -> N04
 N04 -> N05/N08
+N03 -> N06/N07 preparation
 N03 + N04 -> N09
 N05 + N08 + N09 -> N10
-selected admitted C/K/A/E/X -> N11
-N11 -> N12
+N10 -> N11
+N06 + N07 + N11 -> N12
 ```
 
-## Completion-readiness DAG
+## Completion DAG
 
 ```text
-N01 + N02 + N02D exact-main readback -> bootstrap-control/source checkpoint
-
-Kotlin implementation receipt
-+ Swift implementation receipt
-+ TypeScript implementation receipt
+Kotlin receipt
++ Swift receipt
++ TypeScript receipt
 + exact schema/receipt evidence
-+ C01-SH independent receipt
++ independent C01-SH receipt
 -> C01-CV
 
-C01-CV == C01_ADMITTED
--> N04 completion may begin
-
-N03 + N04 -> N05/N08/N09 completion
-N03 -> deterministic part of N06/N07
+C01-CV == C01_ADMITTED -> N04
+N03 + N04 -> N05/N08/N09
 N03 + N04 + N05 + N08 + N09 -> N10
-selected admitted terminal receipts -> N11
+N10 -> N11
 N11 + required physical/security/legal/Human receipts -> N12
-all required terminals + explicit Human admit -> N00
+all required terminals + Human admit -> N00
 ```
 
-## Process and evidence dependencies
+## Non-substitution laws
 
 ```text
-D00 queue readability != local queue execution
-toolchain presence != language-vector correctness
-PR #41 launch packet != Session observed
-Human clean-room declaration cannot be fabricated by an Agent
+queue contract != queue execution
+toolchain presence != vector correctness
+PR #41 packet/request != Session observed
+Agent cannot fabricate Human clean-room declaration
 schema shape != signature/auth/replay correctness
 same-context Shadow != independent Shadow
-prompt packet != observed Session
+source disposition != implementation
 bootstrap/profile PASS != provider/user/paid PASS
-source disposition != technical implementation
 ```
 
 ## Convergence ownership
 
-- Issue #43 is the single writer for this late-arriving state delta only.
-- Issue #12 remains the final P7 aggregate owner.
-- Issue #4/#24 remains the only C01 semantic convergence authority.
-- Terminal C/K/A/E/X Workers do not update root README, AGENTS, Issue DAG or Molecular Stack index.
+- #24: C01 semantic admission;
+- #12: final repository convergence;
+- terminal Workers do not update aggregate README/AGENTS/DAG/Stack.
 
-## Current terminal summary
+## Current summary
 
 ```text
-P0/C00               MERGED / CLOSED at cloud-static ceiling
-P1/S01               MERGED / CLOSED at source-disposition ceiling
-D00                   MERGED / queue execution NOT_EXERCISED
-P2/C01                OPEN / DRAFT_PREPARATION
-C01 execution prep    PR #38 DRAFT_PREPARATION
-C01 launch prep       Issue #39 CLOSED_PREP_ONLY / PR #41 DRAFT / NOT_LAUNCHED
-C01 language code     NOT_IMPLEMENTED
-C01 independent SH    NOT_EXERCISED
-P3-P6                 NOT_IMPLEMENTED
-P7 final              OPEN / BLOCKED
-P8                    NOT_EXERCISED / HUMAN_ADMIT_REQUIRED
+P0/P1               MERGED / CLOSED at declared ceilings
+D00                  MERGED / execution NOT_EXERCISED
+C01 contract         DRAFT_PREPARATION
+C01 execution prep   PR #38 DRAFT
+C01 launch prep      #39 CLOSED_PREP_ONLY / PR #41 DRAFT / NOT_LAUNCHED
+C01 language code    NOT_IMPLEMENTED
+C01 independent SH   NOT_EXERCISED
+P3-P6                NOT_IMPLEMENTED
+P7 final             OPEN / BLOCKED
+P8                   NOT_EXERCISED / HUMAN_ADMIT_REQUIRED
 ```
-
-Issue UI state remains coordination metadata; exact Git and owning receipts determine closure.

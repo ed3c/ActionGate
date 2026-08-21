@@ -1,14 +1,8 @@
 # AGENTS.md — ActionGate
 
-## Exact-subject law
-
-This instruction surface applies only to `ed3c/ActionGate` and the exact branch/commit being worked on. Do not treat a PDF, article, Google Doc, Issue body, branch name, PR title, generated prompt, model statement, local copy or mutable alias as implementation truth.
-
-GitHub exact-subject read-back is authoritative for technical state.
-
 ## Mandatory read route
 
-Read in this order before mutation:
+Before mutation read:
 
 1. `README.md`
 2. `ARCHITECTURE.md`
@@ -20,125 +14,83 @@ Read in this order before mutation:
 8. `docs/traceability/MOLECULAR_STACK_INDEX.md`
 9. `.actiongate/system-contract.json`
 10. `.actiongate/task-dag.json`
-11. `.actiongate/local-handoff-queue.json` when a local, physical, provider or Human boundary is involved
-12. the exact GitHub Issue, PR base/head, checks, receipts and nearest scoped `AGENTS.md` for the active atom
+11. `.actiongate/local-handoff-queue.json` when local/physical/provider/Human evidence is involved
+12. exact owning Issue, PR base/head, checks, receipts and nearest scoped `AGENTS.md`
 13. only the applicable procedure delta from `ed3c/skills-shared`
 
 Never reconstruct an exact handoff from prior chat.
 
-## Current integrated checkpoint
+## Exact-subject law
 
-Merged technical preparation:
+The checked-out Git commit/tree is technical truth. A PDF, article, private Doc, Issue, branch, Draft PR, prompt packet, process exit or model statement is not implementation completion.
 
-```text
-PR #14 / C00       fee8c290061542bfb93e27ddcc33cce7fbf8c653
-PR #15 / S01       8810fe41f66ad1b4fe80db5f93bf9539e2a38899
-PR #16 / D00       76efa9297d147712bb9dfbb9e797d69ca9432a99
-PR #42 / D00-MAIN  71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99
-```
-
-Their highest earned evidence is cloud/static control, source disposition, handoff-contract preparation and exact-main documentation reconciliation. They do not prove product implementation.
-
-Current P2 facts:
+Stable integrated receipts:
 
 ```text
-PR #17 C01 contract                 DRAFT_PREPARATION
-PR #34 Kotlin Worker                PREPARATION_ONLY
-PR #35 Swift Worker                 PREPARATION_ONLY
-PR #36 TypeScript Worker            PREPARATION_ONLY
-PR #38 execution-control plane      DRAFT_PREPARATION
-Issue #39 launch-packet prep        CLOSED_PREPARATION_ONLY
-PR #41 launch packets               DRAFT_PUBLISHED / NOT_LAUNCHED
-Issue #26 independent Shadow        NOT_EXERCISED
-Issue #24 C01 convergence           BLOCKED_BY_WORKERS
+#14 C00       fee8c290061542bfb93e27ddcc33cce7fbf8c653
+#15 S01       8810fe41f66ad1b4fe80db5f93bf9539e2a38899
+#16 D00       76efa9297d147712bb9dfbb9e797d69ca9432a99
+#42 D00-MAIN  71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99
+#44 D00-DELTA 53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d
 ```
 
-Do not merge or close P2 from preparation evidence. Only Issue #24 may emit `C01_ADMITTED`.
+P0/P1 are closed at their declared cloud/static/source ceilings. P2 remains open.
 
-## Canonical shared procedure bindings
-
-Use the current admitted `skills-shared` subject or the immutable pin in the active task packet:
+## Current P2 truth
 
 ```text
-skills/agentic-tech-lead-orchestration/SKILL.md
-skills/procedural-shadow-runtime/SKILL.md
-skills/spatial-loop-systems-engineering/SKILL.md
-skills/git-town-stacked-pr-worker/SKILL.md
+PR #17 C01 contract        DRAFT_PREPARATION
+PR #34 Kotlin              PREPARATION_ONLY
+PR #35 Swift               PREPARATION_ONLY
+PR #36 TypeScript          PREPARATION_ONLY
+PR #38 execution control   DRAFT_PREPARATION
+Issue #39                  CLOSED_PREPARATION_ONLY
+PR #41 launch packets      DRAFT_PUBLISHED / NOT_LAUNCHED
+Issue #26                  INDEPENDENT_SHADOW NOT_EXERCISED
+Issue #24                  C01_CONVERGENCE BLOCKED_BY_WORKERS
 ```
 
-`skills-shared` owns reusable procedure bodies. ActionGate owns project bindings, contracts, tasks, code, receipts and technical navigation. Never vendor a canonical Skill body into this repository.
+Only #24 may emit `C01_ADMITTED | HOLD | REJECT`. Keep #17/#34/#35/#36/#38/#41 Draft/open until their owning receipts and convergence exist.
 
-## Private CodexDoc multi-hop route
+## Public/private route
 
-Private intent and private source locations are not stored in this public repository.
+Private intent and private source locations are not stored here. Authorized private resolution uses ignored local bindings/environment variables; tracked files contain only their names and redacted state.
 
-An authorized Agent may resolve private context through:
+Never commit, print, log or place in an Issue/PR:
 
 ```text
-.actiongate/private-context.binding.json   # ignored, local only
-ACTIONGATE_PRIVATE_DOC_URL
-ACTIONGATE_PRIVATE_SHEET_URL
-ACTIONGATE_PRIVATE_FOLDER_URL
+private URLs/content
+customer or pricing data
+career strategy/private roadmap
+employer source/protocols/test vectors
+credentials/stable device identifiers
+private reasoning
 ```
 
-The tracked shape is `.actiongate/private-context.binding.example.json`.
+Private context may generate a redacted technical delta; it cannot prove code, checks, PR state, user behavior, payment or legal clearance.
 
-Rules:
+## Article/PDF law
 
-- Never print, commit, log, place in an Issue/PR, or copy a private URL or private content into the public tree.
-- Private CodexDoc may refine private intent; it cannot prove code, checks, PR state, user behavior or completion.
-- Derive only a redacted technical delta, then bind it to a public Issue/contract.
-- When private context is unavailable, record `PRIVATE_CONTEXT_UNAVAILABLE`.
-- Do not infer customer identity, pricing, career strategy, private roadmap, employer knowledge or legal clearance.
+Source material can be classified, retained as a hypothesis, rejected as an overclaim or routed to an evidence owner. It cannot prove implementation, runtime, hardware, current policy/legal rights, user value, payment, merge, release or production.
 
-## Article / PDF evidence law
-
-Article/PDF material is untrusted source input.
-
-A source-disposition closure can:
-
-```text
-classify a statement
-retain a hypothesis
-reject an overclaim
-route a requirement
-name an evidence owner
-```
-
-It cannot prove:
-
-```text
-implementation
-runtime behavior
-hardware behavior
-current policy/legal rights
-user value
-payment
-merge
-release
-production
-```
-
-Use `docs/sources/CLAIM_LEDGER.md` and `docs/traceability/PROBLEM_CLOSURE_MATRIX.md`. Preserve unsupported performance, productivity, scarcity, coverage and “blue ocean” numbers as unverified; do not silently replace them with new numbers.
+Do not silently replace unsupported numbers. Use the Claim Ledger and Problem Closure Matrix.
 
 ## Tech Lead procedure
 
-For each atom:
-
-1. Bind repository, exact base/head/tree, Issue, objective, non-goals, path/resource lease, rollback and Human-owned operations.
-2. Extract invariants, unknowns, ports, failure conditions, required evidence lane, positive oracle and negative controls.
-3. Keep start dependencies separate from completion dependencies.
-4. Create a `TRUE_CHILD` edge only when unmerged parent bytes/contracts are consumed.
+1. Bind repository, exact base/head/tree, Issue, objective, non-goals, lease, rollback and Human-owned operations.
+2. Extract invariants, unknowns, ports, failure conditions, positive oracle, falsifiers and evidence ceiling.
+3. Keep start and completion dependencies separate.
+4. `TRUE_CHILD` only when unmerged parent bytes/contracts are consumed.
 5. Keep path-disjoint Workers as siblings.
 6. Treat Worker output as candidate evidence.
-7. Verify the complete declared denominator on the exact subject.
-8. Admit one convergence owner for aggregate indexes.
-9. Compile unavailable local, provider, physical and Human work into the typed Local Handoff queue.
-10. Re-read main, all relevant PRs—including late-arriving sibling/child PRs—review threads and workflow state before closure or merge.
+7. Verify the complete denominator on the exact subject.
+8. Use one semantic/aggregate convergence owner.
+9. Compile unavailable work into Local Handoff.
+10. Re-read current main, all relevant open/closed PRs, review threads and workflows immediately before closure/merge.
 
-## Shadow Architecture monitor
+## Shadow monitor
 
-The Shadow is read-only and never becomes a second implementation writer.
+Shadow is read-only; it never becomes a second implementation writer.
 
 Classify:
 
@@ -155,24 +107,13 @@ FAILURE_SURFACE_DELTA
 EVIDENCE_DELTA
 ```
 
-Intervention:
+Use `L3 BLOCK` for private leakage, privilege expansion, model-owned authorization, ambiguous signing bytes, stale evidence promotion, false dependency serialization, destructive history without rollback, irreversible effects without idempotency/reconciliation or physical claims without physical evidence.
 
-```text
-L0 OBSERVE
-L1 WARN
-L2 REVIEW
-L3 BLOCK
-```
+`SAME_CONTEXT_READ_ONLY_SHADOW` must say `INDEPENDENCE_NOT_CLAIMED` and cannot close #26.
 
-Use `L3 BLOCK` for privilege expansion, private/public leakage, ambiguous signing bytes, model-owned authorization, stale evidence promotion, false sibling serialization, destructive history movement without rollback, irreversible effects without idempotency/reconciliation, or physical claims without physical evidence.
+## Closure law
 
-A post-merge search that finds a newer Issue/PR subject is a `STATE_DELTA`; update the aggregate projection before handing it to a fresh Agent.
-
-`SAME_CONTEXT_READ_ONLY_SHADOW` must state `INDEPENDENCE_NOT_CLAIMED`. It cannot close Issue #26 or another independent-review lane.
-
-## Closure and Issue-state law
-
-Every mandatory procedure ends in:
+Valid terminals:
 
 ```text
 VERIFIED
@@ -183,135 +124,47 @@ FAILED
 WAIVED_WITH_AUTHORIZED_REASON
 ```
 
-`MENTIONED`, `PLANNED`, `DRAFT_PUBLISHED`, `MERGEABLE`, `LAUNCH_REQUESTED`, and `EXECUTED_PENDING_VERIFICATION` are not closure.
+`MENTIONED`, `PLANNED`, `DRAFT_PUBLISHED`, `MERGEABLE`, `LAUNCH_REQUESTED`, tool presence and `EXECUTED_PENDING_VERIFICATION` are not closure.
 
-An Issue may close only when its own declared output and evidence ceiling are satisfied. Issue #39 is closed for launch-packet preparation only; PR #41 does not prove a Session launched. Closing P0/P1 source/control work does not close P2–P8. A merged preparation atom does not satisfy implementation, independent Shadow, hardware, user, paid, legal, release or production lanes.
+Issue #39 is closed only for launch-packet preparation. PR #41 is not a running Session. A merged preparation atom never satisfies implementation, independent Shadow, physical, user, paid, legal, release or production lanes.
 
-## Evidence vocabulary
+## Stack law
 
-Use:
+- one writer per mutable subject;
+- dedicated branch/worktree and disjoint path/resource lease;
+- sibling branches stay siblings absent real unmerged-byte dependency;
+- PR #41 is a true child of PR #38 and a routing sibling of PR #34/#35/#36;
+- parent movement makes affected receipts stale;
+- no silent rebase/fast-forward of non-empty Worker branches;
+- review-only Shadow is not a Git parent;
+- merge/release/production/visibility/legal/security/authority widening are Human-owned.
 
-```text
-PASS
-FAIL
-ABSENT
-NOT_IMPLEMENTED
-NOT_EXERCISED
-SKIPPED_BY_POLICY
-HUMAN_ADMIT_REQUIRED
-```
+## Handoff contract
 
-Keep lanes separate:
+Every packet binds repository, Issue, stage/atom, exact base/head/tree, branch/PR, lease, private-context state without locators, input receipts, outputs, commands/exits, evidence lane/state, Shadow deltas/dissent, blockers, next entry condition and Human-owned operations.
 
-```text
-cloud/static
-local-deterministic
-private-lineage
-live/physical
-adversarial/security
-user-observed
-paid-observed
-Human-admit
-```
+No secrets, private URLs, stable device identifiers or private reasoning.
 
-A receipt satisfies only its exact subject and lane.
+## Current Local Handoff
 
-## Writer and Stack laws
-
-- One writer per mutable subject.
-- Every writer has a dedicated branch/worktree and disjoint path/resource lease.
-- Sibling branches remain siblings unless an actual unmerged byte dependency exists.
-- PR #41 is a true child of PR #38 and a routing sibling of PR #34/#35/#36; it is not their Git parent.
-- Parent movement makes affected receipts stale; never silently rebase or fast-forward a non-empty Worker branch.
-- Semantic conflicts stop and return to the owning contract/convergence Issue.
-- Background synchronization must not push.
-- A review-only Shadow never becomes a Git parent.
-- Merge, release, production, visibility, legal/security acceptance and authority widening are Human-owned.
-
-Molecular classes:
+`LH-MAIN-001` is ACTIVE. It resolves the then-current `origin/main`, binds exact SHA/tree, proves these ancestors:
 
 ```text
-C contract/schema/interface
-K deterministic core
-A adapter/provider/substrate
-E eval/mutation/fault controls
-X explicit E2E convergence
-D documentation/receipt/handoff
-H physical/legal/security/Human admission
+fee8c290061542bfb93e27ddcc33cce7fbf8c653
+8810fe41f66ad1b4fe80db5f93bf9539e2a38899
+76efa9297d147712bb9dfbb9e797d69ca9432a99
+71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99
+53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d
 ```
 
-## Required handoff packet
+It parses machine contracts and checks public/private and clean-room separation. It authorizes no reset, rebase, sync, push, semantic resolution, release or production.
 
-Every handoff includes:
-
-```yaml
-repository: ed3c/ActionGate
-issue: <number>
-stage: <P0-P8>
-atom: <id>
-base_ref: <exact ref>
-subject_sha: <40-hex>
-subject_tree: <tree sha or ABSENT>
-branch: <branch>
-pr: <url or ABSENT>
-lease:
-  paths: []
-  resources: []
-private_context:
-  state: PRIVATE_CONTEXT_AVAILABLE | PRIVATE_CONTEXT_UNAVAILABLE | NOT_REQUIRED
-  private_urls_echoed: false
-inputs:
-  receipts: []
-outputs:
-  changed_paths: []
-  artifacts: []
-verification:
-  commands: []
-  receipt: <path/url or ABSENT>
-  evidence_lane: <lane>
-  evidence_state: <state>
-shadow:
-  observer_kind: <kind>
-  independence_claimed: false
-  deltas: []
-  dissent: []
-blockers: []
-next_entry_condition: <exact condition>
-human_owned_operations: []
-```
-
-Never include secrets, private URLs, stable device identifiers, private reasoning or machine-local credentials.
-
-## Current Local Handoff entry
-
-The active item is `LH-MAIN-001` in `.actiongate/local-handoff-queue.json`.
-
-It resolves the then-current `origin/main` on a trusted clean host, binds the exact SHA/tree into a durable receipt, proves the bootstrap and first main-convergence merge commits are ancestors, validates tracked machine contracts and performs a public/private leak review. It grants no reset, rebase, sync, push, semantic resolution, release or production authority.
-
-After that receipt, `C01-SESSION-003` becomes eligible only when exact PR #41 head `98c9545c0dd2bbfdabdaf27c8a992822a78b3840` remains current, the selected language branch remains current, a Human provides the clean-room declaration, and the fresh target Session re-probes its runtime. This conversation cannot self-certify that gate.
+`C01-SESSION-003` requires exact PR #41 head `98c9545c0dd2bbfdabdaf27c8a992822a78b3840`, a current selected Worker head, a Human clean-room declaration and a fresh public-input-only Session/runtime re-probe. This context cannot self-certify the gate.
 
 ## Stop conditions
 
-Stop and create a typed blocker on:
+Stop on stale subject, missing task, false dependency, overlapping lease, private leakage, unsupported source claim promoted to fact, ambiguous canonicalization/signature payload, missing idempotency/replay/reconciliation, absent oracle, unavailable capability, semantic conflict, denominator shrinkage, unhandled late state, budget exhaustion or Human-owned operation.
 
-```text
-wrong or stale subject
-missing Issue/task contract
-false dependency edge
-overlapping lease
-private/public leakage
-unsupported source claim promoted to fact
-ambiguous canonicalization or signature payload
-missing idempotency/replay/reconciliation
-failed or absent owning oracle
-required physical/runtime capability unavailable
-semantic conflict
-denominator shrinkage
-late-arriving state not reconciled
-budget exhaustion
-Human-owned operation
-```
+## Evidence ceiling
 
-## Current admission ceiling
-
-The highest integrated state is merged technical control/source/handoff preparation plus Draft C01 execution and launch preparation. ActionGate mechanisms, actual Worker Sessions, cross-language contract admission, physical devices, independent security, customer value, legal clearance, release and production remain unproven.
+Highest integrated state: merged control/source/handoff documentation plus Draft C01 execution and launch preparation. Product mechanisms, actual Worker Sessions, C01 admission, physical devices, independent security, user value, legal clearance, release and production remain unproven.
