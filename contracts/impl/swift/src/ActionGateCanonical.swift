@@ -12,7 +12,22 @@ enum CanonicalizationError: Error, CustomStringConvertible {
 }
 
 private let maxSafeInteger: Int64 = 9_007_199_254_740_991
-private let keyPattern = try! NSRegularExpression(pattern: "^[A-Za-z0-9_.:-]+$")
+private let argumentsDomain = "ActionGate-Arguments-v1\0"
+private let actionEnvelopeDomain = "ActionGate-ActionEnvelope-v1\0"
+private let authorizationChallengeDomain = "ActionGate-AuthorizationChallenge-v1\0"
+private let digestDomains: Set<String> = [argumentsDomain, actionEnvelopeDomain]
+
+func isValidActionGateKey(_ key: String) -> Bool {
+    guard !key.isEmpty else { return false }
+    return key.unicodeScalars.allSatisfy { scalar in
+        switch scalar.value {
+        case 0x41...0x5A, 0x61...0x7A, 0x30...0x39, 0x5F, 0x2E, 0x3A, 0x2D:
+            return true
+        default:
+            return false
+        }
+    }
+}
 
 indirect enum CanonicalValue {
     case null
@@ -33,13 +48,13 @@ enum ActionGateCanonical {
     }
 
     static func digestBase64URL(domain: String, value: Any?) throws -> String {
-        var bytes = try domainBytes(domain)
+        var bytes = try domainBytes(domain, allowed: digestDomains)
         bytes.append(contentsOf: try canonicalData(value))
         return base64URL(SHA256.hash(bytes))
     }
 
     static func authorizationSigningInput(_ challenge: Any?) throws -> [UInt8] {
-        var bytes = try domainBytes("ActionGate-AuthorizationChallenge-v1\0")
+        var bytes = try domainBytes(authorizationChallengeDomain, allowed: [authorizationChallengeDomain])
         bytes.append(contentsOf: try canonicalData(challenge))
         return bytes
     }
@@ -48,18 +63,25 @@ enum ActionGateCanonical {
         base64URL(SHA256.hash(bytes))
     }
 
-    static func assertNoDuplicateKeys(_ raw: String) throws {
-        var parser = DuplicateKeyParser(raw)
+    static func assertCanonicalJsonInput(_ raw: String) throws {
+        var parser = RestrictedJSONParser(raw)
         try parser.parseDocument()
     }
 
-    private static func domainBytes(_ domain: String) throws -> [UInt8] {
+    static func assertNoDuplicateKeys(_ raw: String) throws {
+        try assertCanonicalJsonInput(raw)
+    }
+
+    private static func domainBytes(_ domain: String, allowed: Set<String>) throws -> [UInt8] {
         guard domain.unicodeScalars.allSatisfy({ $0.value <= 0x7f }) else {
             throw CanonicalizationError.invalid("domain must contain exact ASCII bytes")
         }
         let bytes = Array(domain.utf8)
         guard bytes.last == 0 else {
             throw CanonicalizationError.invalid("domain must end with NUL")
+        }
+        guard allowed.contains(domain) else {
+            throw CanonicalizationError.invalid("unregistered domain label")
         }
         return bytes
     }
@@ -126,8 +148,7 @@ enum ActionGateCanonical {
     }
 
     private static func validateKey(_ key: String) throws {
-        let range = NSRange(key.startIndex..<key.endIndex, in: key)
-        guard !key.isEmpty, keyPattern.firstMatch(in: key, range: range) != nil else {
+        guard isValidActionGateKey(key) else {
             throw CanonicalizationError.invalid("invalid object key: \(key)")
         }
     }
