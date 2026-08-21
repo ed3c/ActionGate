@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:actiongate:provenance:patch-lineage:v1",
+  "title": "ActionGate patch lineage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "repository", "state", "records"],
+  "properties": {
+    "schema": {"const": "actiongate-patch-lineage/v1"},
+    "repository": {"const": "ed3c/ActionGate"},
+    "state": {"enum": ["BASELINE_ONLY", "PATCHES_RECORDED"]},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["change_id", "target_path", "authorship", "upstream_id", "upstream_blob", "receipt"],
+        "properties": {
+          "change_id": {"type": "string", "minLength": 1},
+          "target_path": {"type": "string", "minLength": 1},
+          "authorship": {"enum": ["ORIGINAL_PATCH", "DERIVED_PATCH", "MECHANICAL_TRANSFORM"]},
+          "upstream_id": {"type": ["string", "null"]},
+          "upstream_blob": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+          "receipt": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}
