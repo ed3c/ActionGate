@@ -1,0 +1,55 @@
+name: C01 Profile Shadow Dispatch
+
+on:
+  push:
+    branches:
+      - ag/C01-profile-independent-shadow-dispatch
+    paths:
+      - '.actiongate/c01-shadow-dispatch/profile-v2/**'
+      - '.github/workflows/c01-profile-shadow-dispatch.yml'
+  pull_request:
+    paths:
+      - '.actiongate/c01-shadow-dispatch/profile-v2/**'
+      - '.github/workflows/c01-profile-shadow-dispatch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profile-shadow-dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact subject
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Validate exact dispatch packet
+        run: python3 .actiongate/c01-shadow-dispatch/profile-v2/check_dispatch.py
+
+      - name: Run planted mutation denominator
+        run: python3 .actiongate/c01-shadow-dispatch/profile-v2/selftest.py
+
+      - name: Validate successor ready binding when present
+        run: python3 .actiongate/c01-shadow-dispatch/profile-v2/check_ready_binding.py
+
+      - name: Assert changed-path lease
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [[ -z "$base" || "$base" == "0000000000000000000000000000000000000000" ]]; then
+            base="$(git rev-parse HEAD^)"
+          fi
+          git diff --name-only "$base" HEAD > /tmp/changed.txt
+          while IFS= read -r path; do
+            [[ -z "$path" ]] && continue
+            case "$path" in
+              .actiongate/c01-shadow-dispatch/profile-v2/*|.github/workflows/c01-profile-shadow-dispatch.yml) ;;
+              *)
+                echo "lease escape: $path" >&2
+                exit 2
+                ;;
+            esac
+          done < /tmp/changed.txt

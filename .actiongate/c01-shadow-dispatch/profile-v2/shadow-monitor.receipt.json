@@ -1,0 +1,52 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 60,
+  "atom": "C01-PROFILE-INDEPENDENT-SHADOW-DISPATCH",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "dispatch preparation and exact-state routing only",
+  "findings": [
+    {
+      "id": "SH-DISPATCH-P2-001",
+      "class": "STATE_DELTA",
+      "severity": "BLOCKER_BEFORE_EXTERNAL_REVIEW",
+      "finding": "Issue #58 / PR #59 binds Issue #49-era worker heads that moved under Issue #57.",
+      "resolution": "Create a true-child versioned profile-v2 dispatch with current exact commits, trees, receipt blobs, and Shadow blobs.",
+      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-DISPATCH-P2-002",
+      "class": "DENOMINATOR_DELTA",
+      "severity": "BLOCKER_BEFORE_EXTERNAL_REVIEW",
+      "finding": "The Issue #58 falsifier denominator does not include the later exact domain allowlist and raw key/number profile controls.",
+      "resolution": "Retain every old falsifier and add ten Issue #57 profile controls.",
+      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-DISPATCH-P2-003",
+      "class": "AUTHORITY_DELTA",
+      "severity": "BLOCKER_BEFORE_CLAIM",
+      "finding": "The Builder context could be mistaken for an independent reviewer after compiling the new packet.",
+      "resolution": "Registry, prompt, schema, template, checker, and handoff all mark this context ineligible for Issue #26.",
+      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-DISPATCH-P2-004",
+      "class": "PROVENANCE_DELTA",
+      "severity": "REVIEW",
+      "finding": "Rewriting PR #59 would blur the historical hosted-green Issue #49 epoch.",
+      "resolution": "Preserve PR #59 and create a true-child molecular dispatch epoch.",
+      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+    }
+  ],
+  "remaining_dissent": [
+    "Exact-head hosted workflow has not yet run on the new candidate.",
+    "No external independent reviewer has executed Issue #26.",
+    "Issue #24 remains blocked.",
+    "C01_ADMITTED and K01 remain absent.",
+    "Hardware, MCP, security/legal acceptance, merge, release, and production are not proven."
+  ],
+  "verdict": "VERSIONED_DISPATCH_CANDIDATE_ELIGIBLE_FOR_HOSTED_VALIDATION"
+}

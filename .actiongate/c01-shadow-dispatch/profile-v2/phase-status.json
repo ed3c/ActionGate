@@ -1,0 +1,39 @@
+{
+  "schema": "actiongate-c01-profile-shadow-phase/v2",
+  "repository": "ed3c/ActionGate",
+  "issue": 60,
+  "state": "VERSIONED_DISPATCH_COMPILED_AWAITING_HOSTED_PASS",
+  "base_dispatch": {
+    "issue": 58,
+    "pr": 59,
+    "head": "ce57d5db1e71223f18d1095024297391a36611f3",
+    "tree": "8412e5c05beb37c4e43846b24da7a9795262d124",
+    "state": "SUPERSEDED_STALE_PROFILE"
+  },
+  "contract_epoch": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "worker_heads": {
+    "kotlin": "cf589a0990aaaa6422be9c649b52b44230d570f6",
+    "swift": "039827061f54aa72e2b81365a4c904d25833f83e",
+    "typescript": "3ed9f0307df0937028bbf52fe8fbd2a6621acafe"
+  },
+  "dispatch_pr": 0,
+  "dispatch_candidate": {
+    "commit": "0000000000000000000000000000000000000000",
+    "tree": "0000000000000000000000000000000000000000"
+  },
+  "hosted_validation": "NOT_EXERCISED",
+  "independent_review": "NOT_EXERCISED",
+  "convergence": "BLOCKED_BY_INDEPENDENT_REVIEW_RECEIPT",
+  "c01_admitted": false,
+  "k01_started": false,
+  "evidence_ceiling": "versioned dispatch compilation only",
+  "next_entry_condition": "Exact-head hosted structural and mutation checks pass, then a successor receipt binds the candidate.",
+  "human_owned": [
+    "reviewer selection or waiver",
+    "semantic conflict resolution",
+    "security/legal acceptance",
+    "merge",
+    "release",
+    "production"
+  ]
+}
