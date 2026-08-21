@@ -1,0 +1,29 @@
+{
+  "schema": "actiongate-phase-status/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 39,
+  "phase": "C01_WORKER_SESSION_LAUNCH_PREPARATION",
+  "state": "READY_FOR_DRAFT_PUBLICATION",
+  "base_sha": "9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
+  "expected_outputs": [
+    "zero-placeholder language prompts",
+    "clean-room declaration template",
+    "machine launch registry",
+    "launch packet validator and planted mutations",
+    "independent Shadow prompt",
+    "C01 convergence prompt",
+    "same-context Shadow preflight"
+  ],
+  "evidence_ceiling": "launch-packet preparation only",
+  "not_exercised": [
+    "fresh clean-room Worker Session",
+    "runtime re-probe in actual Worker Session",
+    "language implementation",
+    "language vector receipt",
+    "independent Shadow",
+    "C01 convergence",
+    "K01",
+    "hardware/MCP/integration",
+    "merge/release"
+  ]
+}
