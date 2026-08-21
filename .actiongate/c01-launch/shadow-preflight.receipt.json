@@ -7,7 +7,7 @@
   "independence": "NOT_CLAIMED",
   "implementation_ownership": "NONE",
   "evidence_lane": "cloud/static launch-preparation preflight",
-  "checkpoint": "before launch-packet Draft publication",
+  "checkpoint": "before and after launch-packet Draft publication",
   "findings": [
     {
       "id": "SH-LAUNCH-001",
@@ -64,11 +64,20 @@
       "finding": "A stale C01, execution-control, or Worker preparation head could be launched.",
       "resolution": "Registry and prompts bind every immutable subject; mutation tests reject drift.",
       "disposition": "VERIFIED_REPAIRED"
+    },
+    {
+      "id": "SH-LAUNCH-008",
+      "class": "PRIVATE_ROUTE_DELTA",
+      "severity": "BLOCKER_BEFORE_PUBLICATION_CLAIM",
+      "finding": "The planted private-route mutation originally persisted a literal Google Docs-shaped URL in the public selftest source.",
+      "resolution": "Construct the mutation from non-locator fragments at runtime so the same rejection is tested without persisting a literal private Google URL in the public tree.",
+      "disposition": "VERIFIED_REPAIRED"
     }
   ],
   "remaining_dissent": [
     "No Human clean-room declaration exists for any implementation Session.",
     "No actual Worker Session has been launched or observed.",
+    "Exact-head hosted execution remains NOT_EXERCISED.",
     "Kotlin/Swift/TypeScript implementation and vector receipts remain NOT_EXERCISED.",
     "Independent Shadow Issue #26 remains NOT_EXERCISED.",
     "C01 convergence and K01 remain blocked.",
