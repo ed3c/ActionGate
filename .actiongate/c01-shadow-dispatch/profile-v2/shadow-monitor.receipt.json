@@ -39,14 +39,21 @@
       "finding": "Rewriting PR #59 would blur the historical hosted-green Issue #49 epoch.",
       "resolution": "Preserve PR #59 and create a true-child molecular dispatch epoch.",
       "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-DISPATCH-P2-005",
+      "class": "EVIDENCE_DELTA",
+      "severity": "REVIEW",
+      "finding": "The versioned candidate required exact-head hosted structural, mutation, ready-binding, and changed-path checks.",
+      "resolution": "Workflow run 32463771855, job 96715952863, completed success on 9e0d9f7f06b258f07f18ed2f98b015d61ef0dee1.",
+      "disposition": "VERIFIED"
     }
   ],
   "remaining_dissent": [
-    "Exact-head hosted workflow has not yet run on the new candidate.",
     "No external independent reviewer has executed Issue #26.",
     "Issue #24 remains blocked.",
     "C01_ADMITTED and K01 remain absent.",
     "Hardware, MCP, security/legal acceptance, merge, release, and production are not proven."
   ],
-  "verdict": "VERSIONED_DISPATCH_CANDIDATE_ELIGIBLE_FOR_HOSTED_VALIDATION"
+  "verdict": "C01_PROFILE_HARDENED_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW"
 }

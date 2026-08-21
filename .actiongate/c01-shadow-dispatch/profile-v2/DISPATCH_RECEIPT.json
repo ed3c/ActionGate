@@ -1,0 +1,47 @@
+{
+  "schema": "actiongate-c01-profile-dispatch-receipt/v2",
+  "repository": "ed3c/ActionGate",
+  "issue": 60,
+  "dispatch_pr": 61,
+  "state": "C01_PROFILE_HARDENED_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW",
+  "dispatch_candidate": {
+    "commit": "9e0d9f7f06b258f07f18ed2f98b015d61ef0dee1",
+    "tree": "c9e0e7ad1a7687a36924b66396fc9481921f46ac"
+  },
+  "hosted_workflow": {
+    "name": "C01 Profile Shadow Dispatch",
+    "run_id": 32463771855,
+    "job_id": 96715952863,
+    "head_sha": "9e0d9f7f06b258f07f18ed2f98b015d61ef0dee1",
+    "conclusion": "success"
+  },
+  "changed_paths": [
+    ".actiongate/c01-shadow-dispatch/profile-v2/AGENTS.md",
+    ".actiongate/c01-shadow-dispatch/profile-v2/README.md",
+    ".actiongate/c01-shadow-dispatch/profile-v2/DISPATCH_RECEIPT.json",
+    ".actiongate/c01-shadow-dispatch/profile-v2/check_dispatch.py",
+    ".actiongate/c01-shadow-dispatch/profile-v2/check_ready_binding.py",
+    ".actiongate/c01-shadow-dispatch/profile-v2/dispatch-receipt.schema.json",
+    ".actiongate/c01-shadow-dispatch/profile-v2/dispatch-registry.json",
+    ".actiongate/c01-shadow-dispatch/profile-v2/independent-review-receipt.schema.json",
+    ".actiongate/c01-shadow-dispatch/profile-v2/independent-review-receipt.template.json",
+    ".actiongate/c01-shadow-dispatch/profile-v2/phase-status.json",
+    ".actiongate/c01-shadow-dispatch/profile-v2/prompts/convergence.md",
+    ".actiongate/c01-shadow-dispatch/profile-v2/prompts/independent-shadow.md",
+    ".actiongate/c01-shadow-dispatch/profile-v2/selftest.py",
+    ".actiongate/c01-shadow-dispatch/profile-v2/shadow-monitor.receipt.json",
+    ".github/workflows/c01-profile-shadow-dispatch.yml"
+  ],
+  "independent_review": "NOT_EXERCISED",
+  "c01_admitted": false,
+  "k01_started": false,
+  "evidence_ceiling": "profile-hardened independent-review dispatch only",
+  "human_owned": [
+    "reviewer selection or waiver",
+    "semantic conflict resolution",
+    "security/legal acceptance",
+    "merge",
+    "release",
+    "production"
+  ]
+}

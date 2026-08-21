@@ -1,6 +1,6 @@
 # C01 Profile-Hardened Independent Shadow Dispatch
 
-State: `VERSIONED_DISPATCH_COMPILED_AWAITING_HOSTED_PASS`
+State: `C01_PROFILE_HARDENED_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW`
 
 This directory supersedes the Issue #58 / PR #59 independent-review packet after Issue #57 moved all three audited language subjects. The old packet remains historical provenance and is not rewritten or reused.
 
@@ -38,7 +38,7 @@ STALE_DISPATCH_DETECTED
 → #24 C01_ADMITTED | HOLD | REJECT
 ```
 
-Current state ends before independent review.
+The dispatch and hosted validation are complete. Current state ends before independent review.
 
 ## Data flow
 
@@ -79,11 +79,6 @@ negative-zero acceptance
 ```bash
 python3 .actiongate/c01-shadow-dispatch/profile-v2/check_dispatch.py
 python3 .actiongate/c01-shadow-dispatch/profile-v2/selftest.py
-```
-
-After `DISPATCH_RECEIPT.json` exists:
-
-```bash
 python3 .actiongate/c01-shadow-dispatch/profile-v2/check_ready_binding.py
 ```
 
