@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parent
 REG=ROOT/"dispatch-registry.json"; TPL=ROOT/"independent-review-receipt.template.json"
 PROMPTS=(ROOT/"prompts/independent-shadow.md",ROOT/"prompts/convergence.md")
 PHASE=ROOT/"phase-status.json"
-REG_SHA="8c0304b21d92f18716a44884ba5ecc02cdae1ab5ee24adb6cb767319ed19fcfa"
+REG_SHA="ade7fddfc1dbe78e7fb5ce477f318248f6bc8cc03dc93f840342b54834615c0d"
 OLD_HEADS={"511b26ad10389e0d0076f463f59f3a9c0e8a1b6e","48bc9cf00105f40d5444542ddcdad85106f3c1d5","6a99c61150d00be56c7eddf70eb9e3f423cfb7fa"}
 PROFILE={"registered_domain_allowlist","unknown_domain_rejected","embedded_nul_domain_rejected","raw_ascii_key_profile","raw_fraction_rejected","raw_exponent_rejected","raw_positive_unsafe_integer_rejected","raw_negative_unsafe_integer_rejected","raw_safe_integer_boundaries","raw_negative_zero_accepted"}
 ALL_STATES={"PASS","FAIL","NOT_EXERCISED"}

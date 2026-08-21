@@ -12,7 +12,7 @@ SAME_CONTEXT_READ_ONLY_SHADOW_IS_NOT_INDEPENDENT.
 MANDATORY READ ORDER
 1. ActionGate root AGENTS.md.
 2. Issue #26.
-3. Issue #60 and its child Draft PR.
+3. Issue #60 and Draft PR #61.
 4. Issue #57.
 5. Issue #24 without exercising convergence authority.
 6. Historical Issue #58 / PR #59 only as stale provenance.
@@ -56,7 +56,9 @@ TypeScript PR #36:
 
 DISPATCH SUBJECT
 Issue #60.
+Draft PR #61.
 Branch ag/C01-profile-independent-shadow-dispatch.
+Dispatch candidate 3c45fd792fccc704fb4dff84faf4fc51de032f82 with tree 95cf014fb4a9f0c30b2d14c0766c55d704659928.
 The exact dispatch candidate and hosted workflow identity are authoritative only from DISPATCH_RECEIPT.json and the current Issue #60 / PR conversation read-back.
 Do not reuse the stale Issue #58 dispatch head ce57d5db1e71223f18d1095024297391a36611f3 as the active review packet.
 
