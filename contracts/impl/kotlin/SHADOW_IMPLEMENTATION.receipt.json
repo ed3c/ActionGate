@@ -4,53 +4,44 @@
   "issue": 18,
   "implementation_wave_issue": 47,
   "hardening_issue": 49,
+  "profile_hardening_issue": 57,
   "atom": "C01-KOTLIN",
   "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
   "independence": "NOT_CLAIMED",
   "implementation_ownership": "NONE",
   "evidence_lane": "local-deterministic canonicalization only",
-  "exact_hardened_subject": {
-    "commit": "8d56b1533bc5b9b56fae8b515d7a64b280ababb3",
-    "tree": "f08ec00d212aecfc04e8ba6db4ecca97ae75971c"
+  "exact_profile_hardened_subject": {
+    "commit": "0247eb1fc7201b51aded66f2c2311aa42f9ca83c",
+    "tree": "15a27f2d9dbaacdfbea57dc1cd37e4af284b09dc"
   },
   "verified_blobs": {
-    "sources": [
-      "bb6c9a211361715b3333aec53a2fb69e633fcbf1"
-    ],
-    "tests": [
-      "64470a4b647d11c1fa1a1eadd339746d98338d80"
-    ]
+    "sources": ["6e73c3a43ddc6ebaed23710f3b3f5e98d34b2426"],
+    "tests": ["2d3ff79c0c488ef2842aadb831b299c3cf8ecf9e"]
   },
   "findings": [
     {
-      "id": "SH-K-H01",
-      "class": "DOMAIN_BYTE_DELTA",
+      "id": "SH-K-P01",
+      "class": "DOMAIN_ALLOWLIST_DELTA",
       "disposition": "VERIFIED_REPAIRED",
-      "evidence": "Exact ASCII domains with trailing NUL are enforced; non-ASCII and missing-NUL domains reject."
+      "evidence": "Digest helpers accept only the registered Arguments and ActionEnvelope labels; unknown and embedded-NUL suffix labels reject."
     },
     {
-      "id": "SH-K-H02",
-      "class": "CONTAINER_LIFECYCLE_DELTA",
+      "id": "SH-K-P02",
+      "class": "RAW_NUMBER_PROFILE_DELTA",
       "disposition": "VERIFIED_REPAIRED",
-      "evidence": "Identity-based active-container tracking rejects recursive List/Map graphs."
+      "evidence": "The raw gate rejects fraction/exponent spellings and integer magnitude above 9007199254740991 before generic parsing."
     },
     {
-      "id": "SH-K-H03",
-      "class": "RAW_JSON_UNICODE_DELTA",
+      "id": "SH-K-P03",
+      "class": "RAW_KEY_PROFILE_DELTA",
       "disposition": "VERIFIED_REPAIRED",
-      "evidence": "Raw duplicate-key parsing validates surrogate pairs and rejects lone surrogates."
+      "evidence": "Raw object members enforce the ActionGate ASCII dynamic-key profile and escaped-equivalent duplicate detection."
     },
     {
-      "id": "SH-K-H04",
-      "class": "RAW_JSON_GRAMMAR_DELTA",
-      "disposition": "VERIFIED_REPAIRED",
-      "evidence": "Raw number parsing rejects leading-zero numbers."
-    },
-    {
-      "id": "SH-K-H05",
+      "id": "SH-K-P04",
       "class": "EVIDENCE_DELTA",
       "disposition": "VERIFIED_REPAIRED",
-      "evidence": "Original frozen hashes and common 3+7 denominator remain green; extra hardening controls also pass."
+      "evidence": "The original frozen hashes and common 3+7 denominator remain green; extra profile-hardening controls pass."
     }
   ],
   "verification": {
@@ -58,14 +49,14 @@
     "result": "PASS",
     "frozen_positive_hashes": "3/3 PASS",
     "common_negative_denominator": "7/7 PASS",
-    "extra_hardening_controls": [
-      "escaped duplicate-key equivalence",
-      "raw surrogate-pair acceptance",
-      "raw lone-surrogate rejection",
-      "non-ASCII domain rejection",
-      "missing-NUL rejection",
-      "cyclic-container rejection",
-      "leading-zero grammar rejection"
+    "extra_profile_controls": [
+      "unknown-domain rejection",
+      "embedded-NUL domain rejection",
+      "raw non-ASCII-key rejection",
+      "raw fraction/exponent rejection",
+      "raw positive/negative unsafe-integer rejection",
+      "raw safe integer boundaries and -0 acceptance",
+      "cycle and raw Unicode controls retained"
     ]
   },
   "remaining_dissent": [
@@ -73,5 +64,5 @@
     "C01 convergence Issue #24 remains blocked on independent review.",
     "Hardware, MCP, security/legal acceptance, merge, release and production are not proven."
   ],
-  "verdict": "SHADOW_HARDENED_IMPLEMENTATION_ELIGIBLE_FOR_SUCCESSOR_RECEIPT"
+  "verdict": "PROFILE_HARDENED_IMPLEMENTATION_ELIGIBLE_FOR_SUCCESSOR_RECEIPT"
 }
