@@ -1,166 +1,142 @@
 # Local Handoff Execution Queue
 
-Current queue subject: the ActionGate bootstrap/stack. Repository-only automation has reached real local/physical/Human boundaries.
+The machine authority is `.actiongate/local-handoff-queue.json`. This document is its human-readable projection and cannot widen it.
 
-Exactly one item is `ACTIVE`. After its valid receipt closes, the controller may activate exactly one eligible item from that item's `next_candidates`. A blocked sibling never becomes active merely because another sibling completed, and no item auto-executes. The machine authority is `.actiongate/local-handoff-queue.json`; this document is the human-readable projection and must not widen it.
+Exactly one item is `ACTIVE`. A valid receipt may make several sibling items eligible, but the controller activates at most one item whose own entry conditions are satisfied. Queue order does not create Git ancestry and no item auto-executes.
 
 ## Execution boundary
 
-Run `LH-001` and `LH-002` only from a dedicated, empty, personal clean-room working directory that contains no employer repository, confidential document, credential export, or unrelated source tree. The queue does not authorize destructive cleanup of an existing checkout.
+Use a dedicated, empty, personal clean-room directory. Do not open employer repositories, confidential documents, private protocols, customer data or company credentials in an implementation Session.
 
-No queue item authorizes `git reset`, rebase, sync, push, merge, branch deletion, semantic-conflict resolution, permission changes, release, production deployment, or rollback unless a later Human-owned item explicitly admits that operation.
+No queue item grants `reset`, rebase, sync, push, merge, branch deletion, semantic-conflict resolution, dependency installation, SDK-license acceptance, release, production deployment or rollback unless its own Human authority explicitly admits that operation.
 
-A command template is not executable until every placeholder has an explicit non-shell binding. Environment-variable names may be recorded; secret or identity-bearing values must not be copied into public receipts.
+A prompt or launch packet remains `LAUNCH_REQUESTED`; it is not `SESSION_OBSERVED`.
 
-## LH-001 — local clean checkout and bootstrap read-back
+## `LH-MAIN-001` — merged-main exact readback
 
 **State:** `ACTIVE`
 
-**Entry:** Git, Python 3 and network access to GitHub are available on a trusted local host; the executor starts in a dedicated empty clean-room directory; no employer repository or confidential document is open in the same agent session.
+**Entry:** trusted clean host with Git, Python 3 and GitHub network; dedicated empty directory; no private/employer source in the same context.
 
-**Expected subject:**
+The queue resolves `origin/main` only at execution time, then stores the exact SHA and tree in the receipt. Mutable `main` by itself is never completion evidence.
+
+Required ancestor receipts:
 
 ```text
-origin/ag/C00-technical-control-plane
-3b8f08f6fc179ea4a8166a24574a506269151586
+fee8c290061542bfb93e27ddcc33cce7fbf8c653  # C00 / PR #14
+8810fe41f66ad1b4fe80db5f93bf9539e2a38899  # S01 / PR #15
+76efa9297d147712bb9dfbb9e797d69ca9432a99  # D00 / PR #16
 ```
 
-**Commands:**
+Commands:
 
 ```bash
 git clone https://github.com/ed3c/ActionGate.git ActionGate
 git -C ActionGate fetch origin --prune
-git -C ActionGate switch --detach origin/ag/C00-technical-control-plane
+git -C ActionGate switch --detach origin/main
 git -C ActionGate rev-parse HEAD
 git -C ActionGate rev-parse HEAD^{tree}
+git -C ActionGate merge-base --is-ancestor fee8c290061542bfb93e27ddcc33cce7fbf8c653 HEAD
+git -C ActionGate merge-base --is-ancestor 8810fe41f66ad1b4fe80db5f93bf9539e2a38899 HEAD
+git -C ActionGate merge-base --is-ancestor 76efa9297d147712bb9dfbb9e797d69ca9432a99 HEAD
 git -C ActionGate diff --check
 python3 -m json.tool ActionGate/.actiongate/system-contract.json >/dev/null
 python3 -m json.tool ActionGate/.actiongate/task-dag.json >/dev/null
+python3 -m json.tool ActionGate/.actiongate/local-handoff-queue.json >/dev/null
+python3 -m json.tool ActionGate/.actiongate/source-claims.json >/dev/null
+python3 -m json.tool ActionGate/.actiongate/technology-candidates.json >/dev/null
 ```
 
-The executor writes an atom-local receipt at:
+Receipt:
 
 ```text
-ActionGate/.actiongate/receipts/local/LH-001.json
+ActionGate/.actiongate/receipts/local/LH-MAIN-001.json
 ```
 
-The receipt must bind:
+It binds the resolved SHA/tree, ancestor checks, JSON/Markdown presence, public/private leak review, clean-room separation and exact command exits. It does not record private locator values.
 
-```text
-subject_sha == 3b8f08f6fc179ea4a8166a24574a506269151586
-tree_sha
-diff_check = PASS
-system_contract_json = PASS
-task_dag_json = PASS
-clean_room_source_separation = PASS
-```
+**Exit:** exact current main readback passes.
 
-Use Python or the host-native SHA-256 utility if a receipt digest is needed; do not assume GNU `sha256sum` exists on macOS.
+**Next candidates:** `LH-STACK-002` or `C01-SESSION-003`; at most one may become active.
 
-**Exit:** the durable receipt binds the exact expected C00 subject/tree and every named check is `PASS`.
-
-**Next candidates:** `LH-002` only.
-
-## LH-002 — local branch/stack and Git Town capability receipt
+## `LH-STACK-002` — Git Town and C01 branch graph
 
 **State:** `BLOCKED_BY_PREDECESSOR`
 
-**Entry:** `LH-001` receipt valid; Draft PRs #14, #15 and #16 exist.
+**Entry:** `LH-MAIN-001` valid and the open C01 heads still match the Molecular Stack index, or an explicit state-delta packet supersedes them.
 
-**Commands:**
+Checks:
 
 ```bash
 git -C ActionGate fetch origin --prune
 git -C ActionGate town --version
-git -C ActionGate merge-base --is-ancestor origin/main origin/ag/C00-technical-control-plane
-git -C ActionGate merge-base --is-ancestor origin/ag/C00-technical-control-plane origin/ag/S01-source-rights
-git -C ActionGate merge-base --is-ancestor origin/ag/C00-technical-control-plane origin/ag/D00-prompts-handoff
+git -C ActionGate merge-base --is-ancestor 6cd18694878e6db3ee65034d8e86fe990ade02c0 origin/ag/C01-action-contracts
+git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-kotlin-vectors
+git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-swift-vectors
+git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-typescript-vectors
+git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-execution-preflight
 ```
 
-The receipt is:
+`git town --version` may end as `BLOCKED_ABSENT_EXECUTABLE`. Tool absence does not invalidate the raw Git ancestry observations and does not authorize installation.
+
+No sync, rebase, push, reset or merge runs.
+
+## `C01-SESSION-003` — clean-room language Worker Session
+
+**State:** `BLOCKED_BY_LAUNCH_PACKETS_AND_HUMAN_CLEANROOM`
+
+**Entry:**
 
 ```text
-ActionGate/.actiongate/receipts/local/LH-002.json
+Issue #39 publishes an exact zero-placeholder launch packet
++ selected PR #34/#35/#36 head and lease are current
++ the new Session re-probes its own runtime
++ Human clean-room declaration is present
 ```
 
-It records the Git Town version as `PASS` or `ABSENT`, each ancestry result independently, the exact remote refs observed, and an explicit assertion that no sync/push/merge/rebase/reset/branch-deletion/semantic-resolution operation ran.
+The current private-context conversation cannot satisfy this gate. Start a separate implementation context containing public repository inputs only.
 
-`git town --version` failure records `BLOCKED_ABSENT_EXECUTABLE`; it does not convert the Git ancestry checks into a Git Town runtime `PASS`. No synchronization is required to prove the declared Draft topology.
+The Session may implement one language lease and return one worker-local receipt. It cannot close another language, independent Shadow, C01 convergence, hardware, MCP, legal, merge or release.
 
-**Exit:** stack ancestry is confirmed and Git Town capability is honestly `PASS` or `BLOCKED_ABSENT_EXECUTABLE`.
-
-**Next candidates:** `LH-003`, `LH-004`, or `LH-005`, but the controller may activate only one whose entry contract is actually satisfied. This preserves true dependencies instead of forcing Android before iOS or vice versa.
-
-## LH-003 — Android physical-device lane
+## `LH-ANDROID-004`
 
 **State:** `BLOCKED_BY_IMPLEMENTATION`
 
-**Entry:** Issue #7 exact candidate SHA exists; the Android connected-test task is frozen by A02; a trusted personal Android device is connected.
-
-**Command template:**
+Requires Issue #7 exact candidate, frozen connected-test task and a trusted physical Android device. Emulator evidence does not satisfy this lane.
 
 ```text
 adb devices -l
 ./gradlew <ANDROID_CONNECTED_TEST_TASK>
 ```
 
-`<ANDROID_CONNECTED_TEST_TASK>` is taken from the exact A02 / Issue #7 handoff receipt before activation. It is not guessed by the queue and is passed as an argv value, not shell-expanded text.
+The task value comes from the A02 exact handoff and is passed as argv, not guessed.
 
-Capture only the minimum redacted device/build class, hardware-key security level, test result, and Play Integrity evidence required by the test contract. Never capture private keys, tokens, account identifiers, or stable personal identifiers.
-
-**Exit:** own-lane physical receipt admitted by Issue #13.
-
-**Next candidates:** any still-eligible `LH-004`, `LH-005`, or `LH-006` entry. Completion of Android does not imply iOS/security/Human admission.
-
-## LH-004 — iOS physical-device lane
+## `LH-IOS-005`
 
 **State:** `BLOCKED_BY_IMPLEMENTATION`
 
-**Entry:** Issue #8 exact candidate SHA exists; the Xcode scheme is frozen by A03; the local physical destination binding exists.
-
-**Command template:**
+Requires Issue #8 exact candidate, frozen scheme and physical destination binding. Simulator evidence does not satisfy this lane.
 
 ```text
 xcodebuild -scheme <IOS_SCHEME> -destination <IOS_DESTINATION> test
 ```
 
-Bindings before activation:
+Both values are resolved before process launch. The queue does not depend on shell expansion and does not publish the destination value by default.
 
-```text
-<IOS_SCHEME>      <- exact A03 / Issue #8 handoff receipt
-<IOS_DESTINATION> <- local ACTIONGATE_IOS_DESTINATION value
-```
-
-The executor substitutes these values before process launch and passes them as argv. It must not rely on a shell expanding `$ACTIONGATE_IOS_DESTINATION`, and the destination value is not copied into a public receipt unless the evidence contract explicitly permits a redacted form.
-
-No simulator receipt satisfies this lane.
-
-**Exit:** own-lane physical receipt admitted by Issue #13.
-
-**Next candidates:** any still-eligible `LH-003`, `LH-005`, or `LH-006` entry.
-
-## LH-005 — independent security and clean-room review
+## `LH-SECURITY-006`
 
 **State:** `BLOCKED_BY_CANDIDATE`
 
-**Entry:** P7 emits one immutable candidate SHA/tree, SBOM, dependency-rights packet and threat model.
+Requires an immutable candidate SHA/tree, threat model, dependency-rights packet, SBOM and declared denominator. The reviewer is independent and read-only. Self-review cannot satisfy this item. Legal acceptance remains Human-owned.
 
-**Lane:** an independent read-only reviewer/security authority that did not implement the candidate.
-
-**Exit:** a signed or hashed review receipt states `PASS`, `FAIL`, or typed blockers and binds the exact candidate. Technical self-review cannot satisfy independence. Employer-IP/legal acceptance remains a separate Human-owned lane.
-
-**Next candidates:** remaining required physical lanes or `LH-006`, according to the release/admission policy. Security review does not silently waive missing physical evidence.
-
-## LH-006 — Human merge/release admission
+## `LH-HUMAN-007`
 
 **State:** `HUMAN_ADMIT_REQUIRED`
 
-**Entry:** all policy-required technical, local, physical, rights and security receipts are presented together with unresolved blockers and rollback identity.
+All policy-required technical, local, physical, rights and security receipts, unresolved blockers and rollback identity are presented together.
 
-**Authority:** repository owner and applicable organizational/legal/security authorities.
-
-**Exit:** explicit decision for merge/release/production/rollback/public-private-boundary changes. Absence of a decision is not approval.
+Only an explicit Human decision may authorize merge, release, production, rollback or public/private-boundary changes. Silence is not approval.
 
 ## Evidence ceiling
 
-A validated queue proves only that continuation instructions are typed and reviewable. It does not prove that any command executed, that Git Town is installed, that a physical device behaved as expected, that a security/legal review passed, or that a Human admitted merge/release.
+Queue correctness proves only that the handoff is typed and reviewable. It does not prove any command ran, a Session exists, Git Town is installed, a language implementation is correct, a physical device behaved correctly, independent security/legal review passed, or release/production was admitted.

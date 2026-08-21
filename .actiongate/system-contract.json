@@ -3,24 +3,134 @@
   "repository": "ed3c/ActionGate",
   "global_objective": "separate probabilistic planning from deterministic protected-action authority",
   "security_invariant": "R3 tools require a fresh audience-bound exact-action-bound proof accepted under the current policy version",
+  "checkpoint_start_subject": {
+    "commit": "76efa9297d147712bb9dfbb9e797d69ca9432a99",
+    "tree": "bdc14c3c9bd21e2d4aaf8f7a562e6e05f6c55597",
+    "purpose": "P0/P1/D00 merged-main convergence input; exact current main must be read back after this convergence lands"
+  },
   "public_private_boundary": {
     "public_authority": "GitHub technical exact-subject state",
     "private_authority": "CodexDoc private intent and private source context",
     "private_urls_in_public_tree": "FORBIDDEN",
     "missing_private_context": "PRIVATE_CONTEXT_UNAVAILABLE"
   },
-  "stages": [
-    {"id":"P0","name":"AUTHORITY_BOUND","issue":2,"state":"IN_PROGRESS","evidence_lane":"cloud/static"},
-    {"id":"P1","name":"SOURCE_ADMITTED","issue":3,"state":"BLOCKED","evidence_lane":"cloud/static+primary-source"},
-    {"id":"P2","name":"CONTRACTS_BOUND","issue":4,"state":"BLOCKED","evidence_lane":"local-deterministic"},
-    {"id":"P3","name":"CORE_IMPLEMENTED","issue":5,"state":"BLOCKED","evidence_lane":"local-deterministic"},
-    {"id":"P4","name":"ADAPTERS_IMPLEMENTED","issues":[6,7,8,9],"state":"BLOCKED","evidence_lane":"local/physical"},
-    {"id":"P5","name":"EVIDENCE_VERIFIED","issue":10,"state":"BLOCKED","evidence_lane":"adversarial"},
-    {"id":"P6","name":"E2E_VERIFIED","issue":11,"state":"BLOCKED","evidence_lane":"local-integration"},
-    {"id":"P7","name":"CONVERGED_AND_HANDED_OFF","issue":12,"state":"BLOCKED","evidence_lane":"exact-head/multi-lane"},
-    {"id":"P8","name":"LIVE_OR_HUMAN_ADMITTED","issue":13,"state":"NOT_EXERCISED","evidence_lane":"physical/security/legal/Human"}
+  "integrated_bootstrap": [
+    {
+      "atom": "C00",
+      "issue": 2,
+      "pr": 14,
+      "merge_commit": "fee8c290061542bfb93e27ddcc33cce7fbf8c653",
+      "evidence_ceiling": "cloud/static technical control plane"
+    },
+    {
+      "atom": "S01",
+      "issue": 3,
+      "pr": 15,
+      "merge_commit": "8810fe41f66ad1b4fe80db5f93bf9539e2a38899",
+      "evidence_ceiling": "cloud/static source and rights disposition"
+    },
+    {
+      "atom": "D00",
+      "issue": 2,
+      "pr": 16,
+      "merge_commit": "76efa9297d147712bb9dfbb9e797d69ca9432a99",
+      "evidence_ceiling": "cloud/static prompt and handoff contract; execution NOT_EXERCISED"
+    }
   ],
+  "stages": [
+    {
+      "id": "P0",
+      "name": "AUTHORITY_BOUND",
+      "issue": 2,
+      "state": "PASS",
+      "disposition": "MERGED_AT_CLOUD_STATIC_CEILING",
+      "evidence_lane": "cloud/static"
+    },
+    {
+      "id": "P1",
+      "name": "SOURCE_ADMITTED",
+      "issue": 3,
+      "state": "PASS",
+      "disposition": "MERGED_SOURCE_DISPOSITION_ONLY",
+      "evidence_lane": "cloud/static+primary-source"
+    },
+    {
+      "id": "P2",
+      "name": "CONTRACTS_BOUND",
+      "issue": 4,
+      "state": "NOT_EXERCISED",
+      "disposition": "DRAFT_PREPARATION_OPEN",
+      "evidence_lane": "local-deterministic"
+    },
+    {
+      "id": "P3",
+      "name": "CORE_IMPLEMENTED",
+      "issue": 5,
+      "state": "NOT_IMPLEMENTED",
+      "disposition": "BLOCKED_BY_C01_ADMISSION",
+      "evidence_lane": "local-deterministic"
+    },
+    {
+      "id": "P4",
+      "name": "ADAPTERS_IMPLEMENTED",
+      "issues": [6,7,8,9],
+      "state": "NOT_IMPLEMENTED",
+      "disposition": "BLOCKED_BY_C01_K01",
+      "evidence_lane": "local/physical"
+    },
+    {
+      "id": "P5",
+      "name": "EVIDENCE_VERIFIED",
+      "issue": 10,
+      "state": "NOT_IMPLEMENTED",
+      "disposition": "BLOCKED_BY_C01_K01",
+      "evidence_lane": "adversarial"
+    },
+    {
+      "id": "P6",
+      "name": "E2E_VERIFIED",
+      "issue": 11,
+      "state": "NOT_IMPLEMENTED",
+      "disposition": "BLOCKED_BY_C_K_A_E",
+      "evidence_lane": "local-integration"
+    },
+    {
+      "id": "P7",
+      "name": "CONVERGED_AND_HANDED_OFF",
+      "issue": 12,
+      "state": "NOT_EXERCISED",
+      "disposition": "PARTIAL_CHECKPOINT_ISSUE_40_ONLY",
+      "evidence_lane": "exact-head/multi-lane"
+    },
+    {
+      "id": "P8",
+      "name": "LIVE_OR_HUMAN_ADMITTED",
+      "issue": 13,
+      "state": "NOT_EXERCISED",
+      "disposition": "HUMAN_ADMIT_REQUIRED",
+      "evidence_lane": "physical/security/legal/Human"
+    }
+  ],
+  "c01_preparation": {
+    "contract_pr": 17,
+    "contract_head": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+    "language_prs": {
+      "kotlin": {"issue":18,"pr":34,"head":"0136936e7d63ba0c538d2cb40db60409107ababc","state":"PREPARATION_ONLY"},
+      "swift": {"issue":19,"pr":35,"head":"76b10b5a05898410ed361761626b381158edb306","state":"PREPARATION_ONLY"},
+      "typescript": {"issue":20,"pr":36,"head":"c62e24ffa0ceb2224fe6931929bfaeeceabe3c39","state":"PREPARATION_ONLY"}
+    },
+    "execution_preflight": {"issue":37,"pr":38,"head":"9f41038240837ea2dd9dcdb9befd13e6ba81a78e","state":"DRAFT_PREPARATION"},
+    "launch_packets": {"issue":39,"state":"READY_TO_PREPARE"},
+    "independent_shadow": {"issue":26,"state":"NOT_EXERCISED"},
+    "convergence": {"issue":24,"state":"BLOCKED_BY_WORKERS"},
+    "admission_authority": "Issue #24 only"
+  },
+  "source_problem_closure": {
+    "matrix": "docs/traceability/PROBLEM_CLOSURE_MATRIX.md",
+    "closed_ceiling": "source classification, rejected overclaim and evidence-substitution refusal only",
+    "technical_runtime_physical_user_paid_lanes": "OPEN"
+  },
   "evidence_states": ["PASS","FAIL","ABSENT","NOT_IMPLEMENTED","NOT_EXERCISED","SKIPPED_BY_POLICY","HUMAN_ADMIT_REQUIRED"],
   "human_owned": ["merge","release","production promotion","repository visibility","legal acceptance","security acceptance","private/public boundary changes"],
-  "current_evidence_ceiling": "documentation/schema preparation"
+  "current_evidence_ceiling": "merged technical control/source/handoff preparation plus Draft C01 preparation; no product implementation"
 }

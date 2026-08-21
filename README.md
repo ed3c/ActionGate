@@ -6,22 +6,28 @@ Hardware-attested authorization for protected autonomous-agent actions.
 
 ## Repository status
 
-| Field | Value |
+| Field | Highest earned state |
 |---|---|
-| Current stage | `P0 AUTHORITY_BOUND`, with P1/D00 Draft packets published |
-| Technical implementation | `NOT_IMPLEMENTED` |
-| Physical-device evidence | `NOT_EXERCISED` |
-| Independent Shadow evidence | `NOT_EXERCISED` |
-| Release / production admission | `HUMAN_ADMIT_REQUIRED` |
+| `P0 / C00` authority and technical routing | `MERGED` on main at the `cloud/static` evidence ceiling |
+| `P1 / S01` source, claim, rights and dependency-candidate admission | `MERGED` on main at the `cloud/static + primary-source read-back` ceiling |
+| `D00` prompts and Local Handoff contract | `MERGED` on main; queue execution remains `NOT_EXERCISED` |
+| `P2 / C01` canonical contracts | `DRAFT_PREPARATION`; cross-language implementation and admission remain open |
+| Product implementation | `NOT_IMPLEMENTED` |
+| Physical Android/iOS evidence | `NOT_EXERCISED` |
+| Independent security/Shadow evidence | `NOT_EXERCISED` |
+| User value / payment | `NOT_EXERCISED` |
+| Legal, release and production admission | `HUMAN_ADMIT_REQUIRED` |
 | License | Apache-2.0 |
 
-Current bootstrap stack:
+Integrated bootstrap merge receipts:
 
-- [PR #14 — C00 technical control plane](https://github.com/ed3c/ActionGate/pull/14)
-- [PR #15 — S01 source, claim, rights and dependency-candidate ledger](https://github.com/ed3c/ActionGate/pull/15), stacked on #14
-- [PR #16 — D00 staged prompts and Local Handoff Execution Queue](https://github.com/ed3c/ActionGate/pull/16), stacked on #14 and sibling to #15
+| Atom | PR | Merge commit | Earned ceiling |
+|---|---:|---|---|
+| `C00` | [#14](https://github.com/ed3c/ActionGate/pull/14) | [`fee8c290`](https://github.com/ed3c/ActionGate/commit/fee8c290061542bfb93e27ddcc33cce7fbf8c653) | technical control plane / cloud-static |
+| `S01` | [#15](https://github.com/ed3c/ActionGate/pull/15) | [`8810fe41`](https://github.com/ed3c/ActionGate/commit/8810fe41f66ad1b4fe80db5f93bf9539e2a38899) | source and rights disposition / cloud-static |
+| `D00` | [#16](https://github.com/ed3c/ActionGate/pull/16) | [`76efa929`](https://github.com/ed3c/ActionGate/commit/76efa9297d147712bb9dfbb9e797d69ca9432a99) | prompt and handoff contract / cloud-static |
 
-All three PRs are Draft. Draft publication is not implementation, verification, merge, release, physical proof, security acceptance, or legal clearance.
+A merged documentation or contract-preparation atom is not product implementation, runtime verification, hardware proof, independent security acceptance, customer validation, release or production readiness.
 
 ## Authority model
 
@@ -29,33 +35,31 @@ ActionGate is the technical system of record for this project only.
 
 | Plane | Authority |
 |---|---|
-| Public ActionGate repository | Code, technical contracts, schemas, Issues, branches, PRs, checks, receipts, technical architecture and implementation state |
-| `ed3c/skills-shared` | Canonical reusable Tech Lead, Shadow Architecture, evidence, Git Town and handoff procedures; referenced rather than vendored |
-| Private CodexDoc | Private intent, strategic rationale, private source URLs, business material, non-public roadmap and private context projections |
-| Human / organization | Merge, release, production promotion, legal/security acceptance, public/private-boundary changes and irreversible authority |
+| Public ActionGate repository | Technical contracts, code, Issues, branches, PRs, checks, receipts, architecture and exact implementation state |
+| `ed3c/skills-shared` | Canonical reusable Tech Lead, Shadow, evidence, Git Town, productization and handoff procedures; referenced rather than copied |
+| Private CodexDoc | Private intent, strategic rationale, private source locations, business material, non-public roadmap and private projections |
+| Human / organization | Legal and security acceptance, merge, release, production promotion, visibility and public/private-boundary changes |
 
-GitHub exact-subject read-back is authoritative for technical completion. Private CodexDoc is authoritative for private intent. Neither plane may silently overwrite the other.
-
-Public files never contain private Google Drive URLs, customer data, employer-confidential implementation knowledge, business strategy, career material or private roadmap. Authorized Agents resolve private context through the ignored binding contract in `AGENTS.md`.
+GitHub exact-subject read-back wins for technical completion. A private document or Sheet can generate a redacted technical requirement, but it cannot close a GitHub task. Public files must not contain private URLs, customer data, career material, business strategy, private roadmap or employer-confidential implementation knowledge.
 
 ## Security invariant
 
 An `R3` protected tool must not execute through the compliant path without a fresh, audience-bound, exact-action-bound authorization proof accepted under the current policy version.
 
-The threat model assumes the planner may be compromised. Authorization is enforced at the protected-tool boundary.
+The threat model assumes the planner may be compromised. The model is not an authorization authority. Enforcement belongs at the protected-tool boundary.
 
-## Nine-stage state machine
+## Nine-stage State Machine
 
 ```text
-P0 AUTHORITY_BOUND
-  -> P1 SOURCE_ADMITTED
-  -> P2 CONTRACTS_BOUND
-  -> P3 CORE_IMPLEMENTED
-  -> P4 ADAPTERS_IMPLEMENTED
-  -> P5 EVIDENCE_VERIFIED
-  -> P6 E2E_VERIFIED
-  -> P7 CONVERGED_AND_HANDED_OFF
-  -> P8 LIVE_OR_HUMAN_ADMITTED
+P0 AUTHORITY_BOUND               MERGED / cloud-static
+  -> P1 SOURCE_ADMITTED          MERGED / source-disposition ceiling
+  -> P2 CONTRACTS_BOUND          IN PROGRESS / Draft preparation
+  -> P3 CORE_IMPLEMENTED         NOT_IMPLEMENTED
+  -> P4 ADAPTERS_IMPLEMENTED     NOT_IMPLEMENTED
+  -> P5 EVIDENCE_VERIFIED        NOT_IMPLEMENTED
+  -> P6 E2E_VERIFIED             NOT_IMPLEMENTED
+  -> P7 CONVERGED_AND_HANDED_OFF PARTIAL CHECKPOINT ONLY
+  -> P8 LIVE_OR_HUMAN_ADMITTED   NOT_EXERCISED / HUMAN_ADMIT_REQUIRED
 ```
 
 Continuous read-only Shadow lane:
@@ -69,79 +73,159 @@ READ_ONLY_RECON
 -> VERIFIED | BLOCKED | FAILED | WAIVED_WITH_AUTHORIZED_REASON
 ```
 
-A stage is not complete because a file, Issue, branch, PR, dependency, queue contract or green check exists. Exact-subject evidence in the required lane must close the transition.
+`SAME_CONTEXT_READ_ONLY_SHADOW` is useful preflight evidence but does not satisfy an independent-review requirement.
 
-## Issue and completion DAG
+## Current Issue and Session DAG
 
 ```mermaid
 flowchart TD
-  I1["#1 Epic"] --> I2["#2 P0/C00 authority"]
-  I2 --> I3["#3 P1/S01 sources + rights"]
-  I2 --> I4["#4 P2/C01 contracts"]
+  I1["#1 Epic"] --> I2["#2 P0/C00 merged"]
+  I2 --> I3["#3 P1/S01 merged"]
+  I2 --> D00["D00 prompts/handoff merged"]
+  I2 --> I4["#4 P2/C01 Draft"]
   I3 --> I4
-  I4 --> I5["#5 P3/K01 core"]
-  I4 --> I7["#7 P4/A02 Android"]
-  I4 --> I8["#8 P4/A03 iOS"]
-  I5 --> I6["#6 P4/A01 gateway"]
-  I5 --> I9["#9 P4/A04 MCP"]
-  I4 --> I10["#10 P5/E01 evidence"]
+
+  I4 --> K["#18 Kotlin candidate"]
+  I4 --> S["#19 Swift candidate"]
+  I4 --> T["#20 TypeScript candidate"]
+  I4 --> EP["#37 / PR #38 execution preparation"]
+  EP --> LP["#39 zero-placeholder launch packets"]
+
+  K --> SH["#26 independent Shadow"]
+  S --> SH
+  T --> SH
+  K --> CV["#24 C01 convergence"]
+  S --> CV
+  T --> CV
+  SH --> CV
+  EP --> CV
+
+  CV -->|C01_ADMITTED only| I5["#5 P3/K01"]
+  I5 --> I6["#6 A01 gateway"]
+  I4 --> I7["#7 A02 Android"]
+  I4 --> I8["#8 A03 iOS"]
+  I5 --> I9["#9 A04 MCP"]
+  I4 --> I10["#10 E01 evidence"]
   I5 --> I10
-  I6 --> I11["#11 P6/X01 DevOps E2E"]
+  I6 --> I11["#11 X01 DevOps E2E"]
   I9 --> I11
   I10 --> I11
-  I7 -. physical lane .-> I13["#13 P8/H01 live + Human"]
-  I8 -. physical lane .-> I13
-  I11 --> I12["#12 P7/D01 convergence"]
+  I11 --> I12["#12 final P7 convergence"]
+  I7 -. physical .-> I13["#13 P8 live/Human"]
+  I8 -. physical .-> I13
   I12 --> I13
 ```
 
-Start-readiness and completion-readiness are separate edge classes. See `docs/traceability/ISSUE_DAG.md`.
+Start-readiness and completion-readiness are separate edge classes. A readable Draft contract may release preparation work; it cannot satisfy a completion dependency.
 
-## Directory → State Machine → DAG → data flow
+## Directory → owner → State Machine → DAG → data flow
 
-| Path | Stage / atom | Writer | Consumes | Produces |
-|---|---|---|---|---|
-| `contracts/` | `P2 / C01` | contract owner | admitted source constraints | canonical schemas and test vectors |
-| `packages/core-domain/` | `P3 / K01` | deterministic-core owner | canonical contracts | risk/challenge/grant/replay decisions |
-| `packages/policy/` | `P3 / K01` | policy owner | contracts | versioned risk decisions |
-| `packages/gateway/`, `packages/verifier/` | `P4 / A01` | gateway owner | core ports/proofs | verification and authorization service adapter |
-| `packages/sdk-android/` | `P4 / A02` | Android owner | challenge/digest | hardware signature and integrity evidence |
-| `packages/sdk-ios/` | `P4 / A03` | iOS owner | challenge/digest | hardware signature and integrity evidence |
-| `packages/mcp-middleware-python/` | `P4 / A04` | Python MCP owner | tool metadata/grant | protected-tool enforcement |
-| `packages/mcp-middleware-typescript/` | `P4 / A04` | TypeScript MCP owner | tool metadata/grant | protected-tool enforcement |
-| `packages/testkit/`, `tests/` | `P5 / E01` | evidence owner | candidate atoms | exact-subject receipts and falsifiers |
-| `examples/devops-agent/` | `P6 / X01` | E2E owner | admitted C/K/A/E atoms | narrow technical canary receipt |
-| `docs/`, `.actiongate/` | `P0/P1/P7 / D` | one convergence owner | GitHub read-back | technical navigation, DAG, Stack and handoff state |
+| Path | Owner / Issue | State-machine role | Consumes | Produces | Highest evidence ceiling |
+|---|---|---|---|---|---|
+| `docs/governance/**`, root `AGENTS.md`, `ARCHITECTURE.md` | `C00 / #2` | authority and read-route control | public/private authority contract | technical-only Agent route and Shadow laws | merged cloud/static |
+| `docs/sources/**`, source/candidate JSON | `S01 / #3` | source and rights admission | article, PDF, public specs/repos | claim classes, rejected overclaims, candidate rights states | merged source disposition |
+| `docs/prompts/**`, `docs/handoff/**` | `D00 / #2` | zero-context routing and local handoff | stage contracts and unresolved lanes | prompts, queue, handoff packet | merged cloud/static; execution not exercised |
+| `contracts/v1/**` | `C01 / #4` | canonical contract oracle | admitted C00/S01 constraints | profile, schemas, vectors and ports | Draft preparation |
+| `contracts/impl/kotlin/**` | `#18` | Kotlin canonicalization candidate | frozen C01 profile/vectors | Kotlin bytes, hashes, negative controls, receipt | preparation only; implementation not exercised |
+| `contracts/impl/swift/**` | `#19` | Swift canonicalization candidate | frozen C01 profile/vectors | Swift bytes, hashes, negative controls, receipt | preparation only; implementation not exercised |
+| `contracts/impl/typescript/**` | `#20` | TypeScript canonicalization candidate | frozen C01 profile/vectors | TypeScript bytes, hashes, negative controls, receipt | preparation only; implementation not exercised |
+| `.actiongate/c01-execution/**`, `contracts/evidence/common/**`, `contracts/evidence/schema/**` | `#37 / PR #38` | execution-control preparation | exact C01 blobs and worker routes | capability/schema/receipt/handoff packets | Draft preparation; non-transferable observations |
+| `.actiongate/c01-launch/**` | `#39` | clean-room Session dispatch preparation | PR #38 and exact worker heads | zero-placeholder launch packets | not yet published |
+| `packages/core-domain/**`, `packages/policy/**` | `K01 / #5` | deterministic authorization state | admitted C01 | risk, challenge, grant, replay and audit decisions | not implemented |
+| `packages/gateway/**`, `packages/verifier/**` | `A01 / #6` | distributed trust-plane adapter | C01/K01 ports | verification, persistence, idempotency and outbox | not implemented |
+| `packages/sdk-android/**` | `A02 / #7` | Android proof adapter | canonical challenge/digest | Keystore/biometric/integrity evidence | not implemented; physical separate |
+| `packages/sdk-ios/**` | `A03 / #8` | iOS proof adapter | canonical challenge/digest | Secure Enclave/auth/App Attest evidence | not implemented; physical separate |
+| `packages/mcp-middleware-*` | `A04 / #9` | protected-tool boundary | C01/K01 grant semantics | MCP enforcement and bypass controls | not implemented |
+| `packages/testkit/**`, `tests/**` | `E01 / #10` | mutation/fault evidence | candidate C/K/A atoms | falsifiers and exact-subject receipts | not implemented |
+| `examples/devops-agent/**` | `X01 / #11` | narrow E2E convergence | admitted C/K/A/E | protected DevOps action receipt | not implemented |
+| aggregate README/AGENTS/trace indexes | `D01 / #12`; partial checkpoint `#40` | one convergence writer | GitHub exact read-back | current DAG, Stack and handoff projection | exact-head documentation only |
+| physical devices / independent review / Human decisions | `H01 / #13` | external evidence | immutable candidate and policy | own-lane receipts | not exercised / Human-owned |
 
-Active writers hold disjoint path/resource leases. Terminal workers do not edit aggregate indexes.
+Terminal workers may write only their atom-local lease. They do not update aggregate indexes.
 
 ## Runtime data flow
 
 ```mermaid
 sequenceDiagram
-  participant Planner as Cloud Planner
+  participant Planner as Planner
   participant Policy as Risk Policy
   participant Gate as Challenge/Gateway
   participant Device as Android/iOS Device
   participant Verify as Proof Verifier
-  participant Tool as Protected MCP Tool
+  participant Tool as Protected Tool
   participant Audit as Audit/Outbox
 
   Planner->>Policy: proposed canonical action
   Policy-->>Gate: R0-R3 decision
   alt R0/R1
-    Gate->>Tool: scoped execution request
+    Gate->>Tool: scoped request
   else R2/R3
-    Gate->>Device: challenge(action hash, audience, nonce, expiry, policy version)
+    Gate->>Device: challenge(action hash, audience, nonce, expiry, policy)
     Device-->>Gate: user-presence signature + integrity evidence
-    Gate->>Verify: exact-action verification
+    Gate->>Verify: exact-action proof
     Verify-->>Gate: verified / denied / expired / replay
     Gate->>Tool: single-use ExecutionGrant
   end
-  Tool-->>Audit: idempotent result + receipt event
+  Tool-->>Audit: idempotent result + durable receipt event
 ```
 
-Gateway workers may be horizontally stateless. Device/key registration, policy versions, nonce/grant consumption, idempotency and durable audit state are not stateless.
+Gateway processes may scale horizontally, but device/key registration, policy versions, challenge/nonces, consumed grants, idempotency, reconciliation and durable audit state are authoritative persisted state.
+
+## Article / PDF problem closure
+
+The uploaded article/PDF is a source input, not implementation truth. See [`docs/traceability/PROBLEM_CLOSURE_MATRIX.md`](docs/traceability/PROBLEM_CLOSURE_MATRIX.md).
+
+Closed only at the **source-disposition** lane:
+
+- “`llama.cpp + GGUF + KMP` is the universal or YC-standard answer” is rejected as a universal claim; it remains an optional later adapter candidate.
+- unsupported coverage, latency, tokens/sec, productivity, scarcity and “blue ocean” numbers remain unverified and are excluded from technical claims;
+- “100% prompt-injection prevention,” emulator/simulator-as-physical proof, fully stateless trust state, and permissive-license-as-legal-clearance are rejected;
+- authentication, authorization, hardware signing, integrity and user presence remain separate controls.
+
+Still open:
+
+- cross-language canonical contract parity;
+- exact-action mutation resistance;
+- hardware-backed signing and app/device attestation;
+- replay, idempotency, persistence and unknown-commit reconciliation;
+- MCP protected-tool enforcement;
+- prompt-injected-planner E2E bypass resistance;
+- real Android/iPhone evidence;
+- independent security and clean-room/legal review;
+- runtime PII/on-device-model claims, user value and paid demand.
+
+## Molecular Stack PR index
+
+### Merged bootstrap atoms
+
+| Atom | Issue | PR | Stable merge receipt | Relation | State |
+|---|---:|---:|---|---|---|
+| `C00` | #2 | [#14](https://github.com/ed3c/ActionGate/pull/14) | `fee8c290061542bfb93e27ddcc33cce7fbf8c653` | top-level from original main | `MERGED / cloud-static` |
+| `S01` | #3 | [#15](https://github.com/ed3c/ActionGate/pull/15) | `8810fe41f66ad1b4fe80db5f93bf9539e2a38899` | consumed C00; landed after C00 | `MERGED / source-disposition` |
+| `D00` | #2 | [#16](https://github.com/ed3c/ActionGate/pull/16) | `76efa9297d147712bb9dfbb9e797d69ca9432a99` | consumed C00; sibling to S01 | `MERGED / queue contract` |
+
+### Active P2 preparation graph
+
+| Atom | Issue | Branch / PR | Exact observed head | Relation | State |
+|---|---:|---|---|---|---|
+| `C01` | #4 | `ag/C01-action-contracts` / [#17](https://github.com/ed3c/ActionGate/pull/17) | `b63589e5a16e82fda1a9554227f2ebbb55398c8a` | contract child of the S01 constraints | `DRAFT_PREPARATION` |
+| `C01-Kotlin` | #18 | `ag/C01-kotlin-vectors` / [#34](https://github.com/ed3c/ActionGate/pull/34) | `0136936e7d63ba0c538d2cb40db60409107ababc` | path-disjoint sibling after C01 freeze | `PREPARATION_ONLY` |
+| `C01-Swift` | #19 | `ag/C01-swift-vectors` / [#35](https://github.com/ed3c/ActionGate/pull/35) | `76b10b5a05898410ed361761626b381158edb306` | path-disjoint sibling after C01 freeze | `PREPARATION_ONLY` |
+| `C01-TypeScript` | #20 | `ag/C01-typescript-vectors` / [#36](https://github.com/ed3c/ActionGate/pull/36) | `c62e24ffa0ceb2224fe6931929bfaeeceabe3c39` | path-disjoint sibling after C01 freeze | `PREPARATION_ONLY` |
+| `C01 execution preflight` | #37 | `ag/C01-execution-preflight` / [#38](https://github.com/ed3c/ActionGate/pull/38) | `9f41038240837ea2dd9dcdb9befd13e6ba81a78e` | true child of C01; process/evidence sibling of language branches | `DRAFT_PREPARATION` |
+| `C01 launch packets` | #39 | `ag/C01-worker-launch-packets` / PR absent | absent | child of PR #38; routing sibling of implementations | `READY_TO_PREPARE` |
+| `C01 independent Shadow` | #26 | read-only / no PR | absent | independent evidence, never a Git parent | `NOT_EXERCISED` |
+| `C01 convergence` | #24 | one semantic owner | absent | consumes exact worker/schema/Shadow receipts | `BLOCKED_BY_WORKERS` |
+
+PR #17 and its descendants must not merge until #24 emits an exact `C01_ADMITTED` receipt. Merging a preparation PR is not a substitute for that receipt.
+
+## Local Handoff
+
+The machine queue is [`.actiongate/local-handoff-queue.json`](.actiongate/local-handoff-queue.json); the readable projection is [`docs/handoff/LOCAL_HANDOFF_EXECUTION_QUEUE.md`](docs/handoff/LOCAL_HANDOFF_EXECUTION_QUEUE.md).
+
+The active local item resolves the then-current `origin/main`, binds its exact SHA/tree into a durable receipt, proves that the three bootstrap merge commits are ancestors, validates the machine contracts, and checks public/private separation. It does not authorize reset, rebase, sync, push, semantic conflict resolution, release or production.
+
+Later items independently cover Git Town/Stack capability, clean-room C01 Session launch, Android, iOS, independent security/clean-room review and Human admission.
 
 ## Closure loop
 
@@ -154,43 +238,21 @@ Evidence
 -> ClosureRecord
 ```
 
-Source statements remain claims until verified. Worker output is candidate evidence. A lower evidence lane cannot satisfy a physical, legal, security or Human gate.
+A PR title, branch, generated prompt, queue definition, same-context Shadow agreement, process exit or model statement is not a ClosureRecord by itself.
 
-## Molecular Stack PR index
+## Non-claims
 
-| Atom | Issue | Branch | Draft PR | True base/parent | Lane | State |
-|---|---:|---|---:|---|---|---|
-| `C00` technical control plane | #2 | `ag/C00-technical-control-plane` | [#14](https://github.com/ed3c/ActionGate/pull/14) | `main` | cloud/static | `DRAFT_PUBLISHED` |
-| `S01` source + rights ledger | #3 | `ag/S01-source-rights` | [#15](https://github.com/ed3c/ActionGate/pull/15) | `C00` | cloud/static + primary-repository read-back | `DRAFT_PUBLISHED` |
-| `D00` stage prompts + handoff | #2 | `ag/D00-prompts-handoff` | [#16](https://github.com/ed3c/ActionGate/pull/16) | `C00`; sibling to `S01` | cloud/static | `DRAFT_PUBLISHED` |
-| `C01` protocol contracts | #4 | `ag/C01-action-contracts` | absent | admitted `C00+S01` | local-deterministic | `BLOCKED` |
-| `K01` deterministic core | #5 | `ag/K01-domain-core` | absent | `C01` | local-deterministic | `BLOCKED` |
-| `A01-A04` adapters | #6-#9 | sibling branches | absent | `C01/K01` as declared | local/physical | `BLOCKED` |
-| `E01` evidence harness | #10 | `ag/E01-evidence-harness` | absent | `C01/K01` | adversarial | `BLOCKED` |
-| `X01` DevOps E2E | #11 | `ag/X01-devops-e2e` | absent | admitted C/K/A/E | integration | `BLOCKED` |
-| `D01` convergence | #12 | `ag/D01-convergence` | absent | selected release candidate | exact-head read-back | `BLOCKED` |
-| `H01` physical/Human lanes | #13 | local/Human lanes | n/a | `D01` | physical/security/legal/Human | `NOT_EXERCISED` |
+This repository does not currently claim:
 
-The detailed index is `docs/traceability/MOLECULAR_STACK_INDEX.md`. Observed PR metadata and exact heads in GitHub remain authoritative; this table is navigation.
-
-## Stage prompt catalogue
-
-PR #16 defines copyable prompts for P0–P8 under `docs/prompts/`, including bounded parallel workers for P4 adapters and P8 independent evidence lanes. Each new session must bind the exact Issue, base/head, path/resource lease, parent receipts, evidence ceiling and Human-owned operations.
-
-## Shared procedures
-
-- Tech Lead: `skills/agentic-tech-lead-orchestration`
-- Shadow monitor: `skills/procedural-shadow-runtime` + `skills/spatial-loop-systems-engineering`
-- Stacked delivery: `skills/git-town-stacked-pr-worker`
-- External mutable claims: `truth-verify-loop` or another admitted primary-source verifier
-
-ActionGate does not copy these Skill bodies. Repository-local bindings constrain their use to this exact subject.
-
-## Local handoff
-
-Repository-only automation cannot close local Git Town/worktree, physical-device, independent security, clean-room/legal or Human-admission lanes. PR #16 compiles the continuation contract in `docs/handoff/LOCAL_HANDOFF_EXECUTION_QUEUE.md` and `.actiongate/local-handoff-queue.json`.
-
-Current queue contract begins with `LH-001` local clean-checkout/read-back. Queue preparation or validation does not prove execution.
+- implemented ActionGate product mechanisms;
+- cross-language C01 admission;
+- Android StrongBox/TEE or iOS Secure Enclave/App Attest behavior;
+- MCP authorization correctness;
+- enterprise security certification;
+- prompt-injection prevention in general;
+- customer value, paid demand or repeatable business;
+- employer-IP/legal clearance;
+- release or production readiness.
 
 ## License
 
