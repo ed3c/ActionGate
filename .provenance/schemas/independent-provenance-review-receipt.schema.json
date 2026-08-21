@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:actiongate:provenance:independent-review:v1",
+  "title": "ActionGate independent provenance review receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "review_id",
+    "repository",
+    "base_sha",
+    "subject_sha",
+    "subject_tree",
+    "reviewed_at",
+    "reviewer_kind",
+    "builder_participation",
+    "read_only",
+    "changed_path_denominator",
+    "upstream_lock_sha256",
+    "imported_paths_sha256",
+    "patch_lineage_sha256",
+    "sbom_sha256",
+    "workflow_run_id",
+    "workflow_job_id",
+    "workflow_conclusion",
+    "verdict",
+    "falsifiers",
+    "private_urls_echoed",
+    "dissent",
+    "evidence_ceiling"
+  ],
+  "properties": {
+    "schema": {"const": "independent-provenance-review-receipt/v1"},
+    "review_id": {"type": "string", "minLength": 1},
+    "repository": {"const": "ed3c/ActionGate"},
+    "base_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "subject_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "subject_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "reviewed_at": {"type": "string", "format": "date-time"},
+    "reviewer_kind": {"enum": ["INDEPENDENT_HUMAN", "INDEPENDENT_EXTERNAL_AGENT"]},
+    "builder_participation": {"const": false},
+    "read_only": {"const": true},
+    "changed_path_denominator": {"type": "integer", "minimum": 1},
+    "upstream_lock_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "imported_paths_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "patch_lineage_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sbom_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "workflow_run_id": {"type": "integer", "minimum": 1},
+    "workflow_job_id": {"type": "integer", "minimum": 1},
+    "workflow_conclusion": {"const": "SUCCESS"},
+    "verdict": {"enum": ["ADMIT_STATIC_PROVENANCE", "BLOCK", "REPLAN"]},
+    "falsifiers": {
+      "type": "array",
+      "minItems": 14,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "state", "detail"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "state": {"enum": ["PASS", "FAIL", "NOT_EXERCISED"]},
+          "detail": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "private_urls_echoed": {"const": false},
+    "dissent": {"type": "array", "items": {"type": "string"}},
+    "evidence_ceiling": {"const": "STATIC_PROVENANCE_CONTROL_ONLY"}
+  }
+}

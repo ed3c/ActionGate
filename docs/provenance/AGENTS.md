@@ -1,6 +1,6 @@
 # AGENTS.md — Provenance and Clean-Room Scope
 
-These instructions apply to `docs/provenance/**`, `.provenance/**`, `LICENSES/**`, `sbom/**`, provenance checks and any source-import change.
+These instructions govern `docs/provenance/**`, `.provenance/**`, `LICENSES/**`, `sbom/**`, the provenance checker/workflow and every source-bearing change.
 
 ## Mandatory read order
 
@@ -14,48 +14,120 @@ These instructions apply to `docs/provenance/**`, `.provenance/**`, `LICENSES/**
 8. `.provenance/upstreams.lock.json`
 9. `.provenance/imported-paths.json`
 10. `.provenance/patch-lineage.json`
-11. the exact Issue, PR base/head, checks and receipts
+11. `.provenance/local-handoff-queue.json`
+12. exact Issue, PR base/head/tree, changed-path denominator, workflows, review threads and receipts
+
+Do not reconstruct an exact source boundary from chat history.
 
 ## Source allowlist law
 
 An implementation Session may consume only:
 
-- public upstreams enumerated by exact revision in `.provenance/upstreams.lock.json`;
-- pinned public specifications already admitted by the project source ledger;
+- public upstreams enumerated at exact revision in `.provenance/upstreams.lock.json`;
+- pinned public specifications admitted by the project source ledger;
 - files already present in the exact ActionGate subject;
-- synthetic test data created in the clean-room Session.
+- synthetic fixtures created within the isolated Session.
 
-Forbidden:
+Forbidden inputs include employer source, private documents/protocols/test vectors, customer data, credentials, internal CI/artifacts/devices/registries, remembered non-public implementation details, and private CodexDoc content or locators.
 
-- employer source, private documents, protocols or test vectors;
-- employer/customer data, credentials, CI, artifacts, devices or internal registries;
-- remembered non-public implementation details;
-- private CodexDoc content or URLs;
-- guessed upstream versions, licenses, hashes or company dependency claims.
+## Upstream law
 
-## Independent-source law
+Before source is copied, modified or consumed:
 
-A public Fork or upstream attribution proves source lineage only. It does not prove license compliance, independent development, employer non-overlap, ownership, patent clearance, legal admission, security, release or production readiness.
+```text
+public HTTPS repository
++ exact commit
++ exact tree
++ exact LICENSE digest
++ SPDX expression
++ relationship
++ source boundary
++ excluded boundary
++ observation time
+```
 
-Never write “the employer does not use this upstream” unless an authorized, objective inventory proves it. The public claim is limited to which sources this implementation Session did or did not access.
+must be present.
 
-## Contribution law
+A public Fork proves repository lineage only. It does not prove license compliance, independent development, employer non-overlap, ownership, patent clearance, legal admission, release or production readiness.
 
-Every source-bearing contribution must:
+Never claim that an employer does not use an upstream unless an authorized objective inventory supports that statement. Public evidence is limited to the sources and resources this implementation actually used.
 
-1. bind an enumerated upstream or declare original authorship;
-2. map every imported source path and source blob;
-3. preserve copyright, LICENSE and NOTICE obligations;
-4. update patch lineage and the exact-subject SPDX SBOM;
-5. produce a clean-room Session receipt;
-6. carry a real contributor DCO sign-off when policy requires it;
-7. stop on license, patent, confidentiality, employer-IP, business-overlap or unexplained-similarity ambiguity.
+## Path and patch law
 
-An Agent must never invent a Human `Signed-off-by` trailer.
+Repository paths are exact POSIX-relative paths. Reject:
+
+```text
+absolute paths
+`.` or `..`
+backslashes
+control characters
+double slash
+drive/URI colon
+glob syntax
+duplicate or nested target leases
+```
+
+Every imported target has one mapping and one compatible patch-lineage record. Every non-original patch must carry exact upstream ID, source path and blob. An `ORIGINAL_PATCH` must not claim upstream source.
+
+## Clean-room law
+
+Each source-bearing Session records:
+
+```text
+starting subject
+output commit/tree
+time range
+runtime
+typed permitted sources
+complete forbidden-source classes
+personal device/account assertions
+employer source/resource/time assertions
+changed paths
+DCO state and evidence
+```
+
+An Agent validates the receipt structure; it cannot make Human employment/IP assertions, invent a sign-off or grant legal clearance.
+
+## DCO and history law
+
+DCO is checked per source-bearing commit against the source inventory visible in that commit. Adding source and deleting it later does not erase history.
+
+A machine must not fabricate a Human `Signed-off-by` trailer.
+
+## Independent review law
+
+Independent review requires a separate reviewer who did not implement the candidate. The receipt binds:
+
+```text
+base SHA
+candidate SHA/tree
+changed-path denominator
+workflow run/job
+source-lock/import/lineage/SBOM digests
+fixed falsifier IDs
+verdict and dissent
+```
+
+Same-context Shadow always records `INDEPENDENCE_NOT_CLAIMED`.
+
+## Release successor law
+
+The release candidate is frozen first. Independent, private-review, SBOM and release-admission artifacts are then added in a successor commit. Only the allowlisted admission paths may differ from candidate to successor.
+
+`RELEASE_ELIGIBLE` requires all of:
+
+```text
+clean-room receipts covering every source-bearing target
+independent ADMIT_STATIC_PROVENANCE
+complete redacted outside-project Human admission
+exact-candidate SPDX SBOM
+verified notices
+digest-bound Human release receipt
+```
 
 ## Shadow monitor
 
-Read-only Shadow classifies:
+Classify:
 
 ```text
 SOURCE_DELTA
@@ -65,27 +137,36 @@ AUTHORSHIP_DELTA
 PRIVATE_SOURCE_DELTA
 EMPLOYMENT_IP_DELTA
 SBOM_DELTA
+LIFECYCLE_DELTA
 RELEASE_AUTHORITY_DELTA
 EVIDENCE_DELTA
 ```
 
-Use `L3 BLOCK` on any forbidden source, placeholder baseline, unknown license, missing notice, unregistered imported path, false legal admission, private URL leak, unexplained source similarity or release without exact receipts.
-
-Same-context Shadow must state `INDEPENDENCE_NOT_CLAIMED`.
+Use `L3 BLOCK` for placeholder baselines, private/internal source, unknown license, unexplained similarity, path escape, denominator shrinkage, history laundering, stale subject, fabricated DCO/Human review, fake SBOM or release without exact receipts.
 
 ## Stop conditions
 
 Stop and issue a typed blocker when:
 
-- the intended upstream is not selected;
-- repository, commit, tree, license or digest is unknown;
-- a copied path lacks an exact upstream blob;
-- a private/employer source may have influenced the implementation;
-- DCO would need to be fabricated;
-- exact notice/SBOM obligations are unresolved;
-- independent or Human review is required;
-- release/production is requested without admission.
+- the intended upstream or relationship is unknown;
+- repository, commit, tree, source blob, license or digest is unknown;
+- a target lacks an exact mapping or compatible lineage;
+- a forbidden source may have influenced implementation;
+- DCO or Human assertions would need to be fabricated;
+- LICENSE/NOTICE/SBOM obligations are incomplete;
+- the independent denominator is incomplete;
+- a receipt tries to bind itself;
+- candidate-to-successor changes exceed the admission allowlist;
+- merge, release, production or visibility authority is absent.
 
 ## Current ceiling
 
-`PROVENANCE_CONTROL_PLANE_IMPLEMENTED`; no upstream/import/clean-room/legal/release evidence has yet been earned.
+```text
+PROVENANCE_CONTROL_PLANE_IMPLEMENTED
+UPSTREAM_SELECTION_REQUIRED
+NO_IMPORTS_ADMITTED
+CLEAN_ROOM_SESSION_NOT_EXERCISED
+INDEPENDENT_REVIEW_NOT_EXERCISED
+HUMAN_LEGAL_ADMIT_REQUIRED
+RELEASE_BLOCKED
+```

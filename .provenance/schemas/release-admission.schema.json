@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:actiongate:provenance:release-admission:v1",
+  "title": "ActionGate release admission receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "repository",
+    "subject_sha",
+    "subject_tree",
+    "decision",
+    "decided_at",
+    "decider_kind",
+    "independent_review_sha256",
+    "outside_project_review_sha256",
+    "sbom_sha256",
+    "notices_verified",
+    "private_urls_echoed"
+  ],
+  "properties": {
+    "schema": {"const": "actiongate-release-admission/v1"},
+    "repository": {"const": "ed3c/ActionGate"},
+    "subject_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "subject_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "decision": {"enum": ["RELEASE_ELIGIBLE", "BLOCKED"]},
+    "decided_at": {"type": "string", "format": "date-time"},
+    "decider_kind": {"enum": ["HUMAN_REPOSITORY_OWNER", "HUMAN_LEGAL_AUTHORITY"]},
+    "independent_review_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "outside_project_review_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sbom_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "notices_verified": {"type": "boolean"},
+    "private_urls_echoed": {"const": false}
+  }
+}

@@ -2,30 +2,62 @@
 
 ## Permitted sources
 
-- exact public upstream revisions admitted in `.provenance/upstreams.lock.json`;
+- exact public Git subjects admitted in `.provenance/upstreams.lock.json`;
 - pinned public specifications admitted by the source ledger;
-- exact ActionGate repository files;
-- synthetic data produced inside the isolated Session.
+- exact ActionGate repository subjects;
+- synthetic fixtures created inside the isolated Session.
+
+Each clean-room receipt classifies every permitted source as:
+
+```text
+PUBLIC_GIT
+PUBLIC_SPEC
+ACTIONGATE_SUBJECT
+SYNTHETIC_FIXTURE
+```
+
+Git subjects require exact commit/tree. Synthetic fixtures must not claim a Git subject.
 
 ## Forbidden sources
 
 ```text
-employer source or generated artifacts
-private employer documentation or protocol details
-private test vectors or hardware allowlists
-customer data
-credentials and API keys
-internal CI, registries or device farms
-non-public implementation details recalled from employment
-private CodexDoc material in a public implementation Session
+EMPLOYER_SOURCE
+EMPLOYER_PRIVATE_DOCUMENT
+EMPLOYER_PROTOCOL
+EMPLOYER_TEST_VECTOR
+CUSTOMER_DATA
+EMPLOYER_CREDENTIAL
+EMPLOYER_BUILD_ARTIFACT
+NON_PUBLIC_REMEMBERED_IMPLEMENTATION
 ```
+
+The actual policy may add stricter classes but cannot remove this denominator.
+
+## Path safety
+
+All source, target, receipt and changed paths are POSIX-relative and exact. Reject absolute paths, parent traversal, backslashes, control characters, double slashes, URI/drive colons and glob syntax.
+
+An import target must exist in the candidate tree. Duplicate or nested target paths are rejected because they create ambiguous ownership.
 
 ## Environment separation
 
-A clean-room Session uses a personal account, personal device, isolated directory/worktree, personal credentials, public inputs and a frozen source allowlist. It records the runtime, exact subject and changed paths without exposing machine-local secrets or private URLs.
+A clean-room Session uses a personal device/account, isolated directory/worktree, personal credentials, public inputs and a frozen source allowlist. It records start/end time, runtime, exact output commit/tree, changed paths and DCO evidence.
 
-Environment separation is evidence about the development process; it is not a legal conclusion.
+The Session must record:
+
+```text
+employer_source_accessed = false
+employer_resources_used = false
+employer_time_used = false
+private_urls_echoed = false
+```
+
+These are development-process assertions, not a legal conclusion.
+
+## History boundary
+
+The verifier scans the final tree and every changed commit in the declared base-to-head range. Adding a private locator or source-bearing file and deleting it later does not remove the violation from public history.
 
 ## Private review boundary
 
-Employment agreement, invention assignment, confidentiality, moonlighting, conflict, business-overlap and counsel analysis stay private. Public Git receives only the redacted receipt contract in `.provenance/schemas/outside-project-review-receipt.schema.json`.
+Employment agreement, invention assignment, confidentiality, moonlighting, conflicts, business overlap, written notice and counsel analysis stay private. Public Git receives only a redacted receipt conforming to the outside-project review schema.

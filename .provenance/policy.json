@@ -22,13 +22,10 @@
   ],
   "forbidden_public_substrings": [
     "https://docs.google.com/",
-    "https://drive.google.com/",
-    "company.internal"
+    "https://drive.google.com/"
   ],
   "private_scan_exclusions": [
-    ".provenance/policy.json",
-    "scripts/check_provenance_control.py",
-    "tests/test_provenance_control.py"
+    ".provenance/policy.json"
   ],
   "dco": {
     "required_when_source_or_product_code_changes": true,

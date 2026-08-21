@@ -8,12 +8,19 @@
     "schema",
     "review_id",
     "repository",
+    "subject_sha",
+    "subject_tree",
     "reviewed_at",
     "employment_agreement_reviewed",
+    "invention_assignment_reviewed",
+    "confidentiality_reviewed",
+    "moonlighting_conflict_reviewed",
     "public_upstream_only",
     "employer_resources_used",
     "employer_confidential_material_used",
     "business_overlap_state",
+    "written_notice_state",
+    "counsel_state",
     "legal_admission",
     "private_urls_echoed"
   ],
@@ -21,13 +28,37 @@
     "schema": {"const": "outside-project-review-receipt/v1"},
     "review_id": {"type": "string", "minLength": 1},
     "repository": {"const": "ed3c/ActionGate"},
-    "reviewed_at": {"type": "string", "format": "date"},
+    "subject_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "subject_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "reviewed_at": {"type": "string", "format": "date-time"},
     "employment_agreement_reviewed": {"type": "boolean"},
+    "invention_assignment_reviewed": {"type": "boolean"},
+    "confidentiality_reviewed": {"type": "boolean"},
+    "moonlighting_conflict_reviewed": {"type": "boolean"},
     "public_upstream_only": {"type": "boolean"},
     "employer_resources_used": {"const": false},
     "employer_confidential_material_used": {"const": false},
     "business_overlap_state": {"enum": ["PRIVATE_REVIEW_REQUIRED", "PRIVATE_REVIEW_COMPLETE", "UNRESOLVED"]},
+    "written_notice_state": {"enum": ["NOT_REVIEWED", "NOT_REQUIRED", "REQUIRED", "OBTAINED"]},
+    "counsel_state": {"enum": ["NOT_REVIEWED", "NOT_REQUIRED", "REVIEWED", "REQUIRED"]},
     "legal_admission": {"enum": ["HUMAN_COUNSEL_REQUIRED", "HUMAN_ADMITTED", "BLOCKED"]},
     "private_urls_echoed": {"const": false}
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"legal_admission": {"const": "HUMAN_ADMITTED"}}, "required": ["legal_admission"]},
+      "then": {
+        "properties": {
+          "employment_agreement_reviewed": {"const": true},
+          "invention_assignment_reviewed": {"const": true},
+          "confidentiality_reviewed": {"const": true},
+          "moonlighting_conflict_reviewed": {"const": true},
+          "public_upstream_only": {"const": true},
+          "business_overlap_state": {"const": "PRIVATE_REVIEW_COMPLETE"},
+          "written_notice_state": {"enum": ["NOT_REQUIRED", "OBTAINED"]},
+          "counsel_state": {"enum": ["NOT_REQUIRED", "REVIEWED"]}
+        }
+      }
+    }
+  ]
 }

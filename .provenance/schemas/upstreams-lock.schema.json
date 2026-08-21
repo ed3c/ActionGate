@@ -51,8 +51,8 @@
           "license_spdx": {"type": "string", "minLength": 1, "not": {"enum": ["UNKNOWN", "NOASSERTION"]}},
           "license_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
           "relationship": {"enum": ["DERIVED_SOURCE", "DEPENDENCY", "REFERENCE_IMPLEMENTATION", "SPECIFICATION_ONLY", "BUILD_TOOLING"]},
-          "imported_paths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-          "excluded_paths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "imported_paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "excluded_paths": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
           "observed_at": {"type": "string", "format": "date-time"}
         }
       }
@@ -60,7 +60,7 @@
   },
   "allOf": [
     {
-      "if": {"properties": {"state": {"const": "UPSTREAM_SELECTION_REQUIRED"}}},
+      "if": {"properties": {"state": {"const": "UPSTREAM_SELECTION_REQUIRED"}}, "required": ["state"]},
       "then": {
         "properties": {
           "upstreams": {"maxItems": 0},
@@ -71,8 +71,12 @@
       }
     },
     {
-      "if": {"properties": {"state": {"const": "UPSTREAMS_ADMITTED"}}},
+      "if": {"properties": {"state": {"const": "UPSTREAMS_ADMITTED"}}, "required": ["state"]},
       "then": {"properties": {"upstreams": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"release_state": {"const": "RELEASE_ELIGIBLE"}}, "required": ["release_state"]},
+      "then": {"properties": {"legal_admission": {"const": "HUMAN_ADMITTED"}, "upstreams": {"minItems": 1}}}
     }
   ]
 }

@@ -4,6 +4,7 @@
 
 ```text
 PROVENANCE_CONTROL_PLANE_IMPLEMENTED
+HOSTED_EXACT_SUBJECT_CHECK_REQUIRED
 UPSTREAM_SELECTION_REQUIRED
 NO_IMPORTS_ADMITTED
 CLEAN_ROOM_SESSION_NOT_EXERCISED
@@ -12,13 +13,15 @@ HUMAN_LEGAL_ADMIT_REQUIRED
 RELEASE_BLOCKED
 ```
 
-This control plane records where public source comes from and how independently authored patches are separated. It does not assert that any employer lacks a dependency, that the product is unrelated to an employer, or that legal ownership has been resolved.
+This control plane records which public source was allowed, the exact revision and license observed, how source paths entered ActionGate, which patches were original or derived, and which evidence gates remain open.
+
+It does not assert that an employer lacks a dependency, that ActionGate is unrelated to an employer, that source similarity is absent, or that legal ownership has been resolved.
 
 ## State Machine
 
 ```text
 SOURCE_INVENTORY_BOUND
-→ UPSTREAM_SELECTION_REQUIRED | UPSTREAM_IDENTIFIED
+→ UPSTREAM_SELECTION_REQUIRED | UPSTREAMS_ADMITTED
 → UPSTREAM_LICENSE_VERIFIED
 → BASELINE_SHA_TREE_PINNED
 → IMPORT_PATHS_CLASSIFIED
@@ -30,78 +33,109 @@ SOURCE_INVENTORY_BOUND
 → RELEASE_ELIGIBLE
 ```
 
-Every transition is fail-closed. A Fork badge, repository URL, permissive license, DCO trailer, generated SBOM, or model statement satisfies only its own narrow evidence lane.
+Every transition fails closed. A Fork badge, public repository URL, permissive license label, DCO trailer, generated file, model statement, green workflow, or private review satisfies only its own evidence lane.
 
 ## DAG
 
 ```mermaid
 flowchart TD
-  INV[Source inventory] --> SEL[Exact upstream selection]
+  INV[Source inventory] --> SEL[Exact public upstream selection]
   SEL --> BASE[Commit/tree/license baseline]
   BASE --> PATH[Imported path mapping]
-  PATH --> CR[Clean-room implementation Session]
+  PATH --> CR[Public-input-only clean-room Session]
   CR --> PATCH[Patch lineage]
-  PATCH --> NOTICE[LICENSE/NOTICE + exact SBOM]
+  PATCH --> NOTICE[LICENSE/NOTICE + exact SPDX SBOM]
   NOTICE --> SH[Independent read-only provenance review]
   SH --> LEGAL[Private employment/IP/business review]
   LEGAL --> RELEASE[Human release admission]
 
-  SEL -. no source selected .-> BLOCK[Release blocked]
-  CR -. employer/private source observed .-> BLOCK
-  NOTICE -. missing obligation .-> BLOCK
-  SH -. unexplained similarity or evidence gap .-> BLOCK
+  SEL -. no exact source .-> BLOCK[Release blocked]
+  CR -. forbidden source observed .-> BLOCK
+  PATCH -. unexplained source path .-> BLOCK
+  NOTICE -. missing obligation or fake SBOM .-> BLOCK
+  SH -. denominator gap or stale subject .-> BLOCK
 ```
 
-The independent reviewer and Human legal reviewer are process/evidence dependencies, not Git parents.
+The clean-room Builder, independent reviewer and Human legal/release authorities are separate process owners. Their receipts do not create Git ancestry by themselves.
 
 ## Data flow
 
 ```text
-Public upstream repository
-  → exact commit/tree/tag
-  → LICENSE/NOTICE digest
+public repository/specification
+  → exact repository + commit + tree
+  → exact LICENSE/NOTICE observation and digest
   → upstream lock
-  → source-path/target-path map
-  → isolated public-input Session
-  → original/derived patch records
-  → notices + SPDX SBOM
-  → independent review
-  → redacted public receipt
+  → source-path / target-path map
+  → isolated public-input implementation Session
+  → clean-room receipt bound to output commit/tree
+  → per-target patch-lineage record
+  → exact-subject LICENSE/NOTICE set and SPDX SBOM
+  → independent review receipt bound to candidate/base/denominator
+  → redacted outside-project review receipt
+  → successor release-admission receipt
   → Human release decision
 ```
 
-Private employment agreements, business-overlap matrices and counsel material remain in the private intent plane. Only a redacted receipt may cross into public Git.
+A receipt inside the repository cannot truthfully bind the commit that contains itself. Admission receipts therefore use the **successor-evidence pattern**:
+
+```text
+candidate commit/tree
+  → read-only evidence generated
+  → successor commit adds only admission metadata/receipts/SBOM/lock state
+  → checker proves candidate is an ancestor and rejects unrelated successor changes
+```
 
 ## Directory ownership
 
 | Path | Owner | Input | Output | Evidence ceiling |
 |---|---|---|---|---|
-| `.provenance/upstreams.lock.json` | upstream baseline owner | public repository observation | exact source lock | source lineage only |
-| `.provenance/imported-paths.json` | import mapper | admitted upstream lock | source-to-target mapping | path lineage only |
-| `.provenance/patch-lineage.json` | patch owner | imported mapping and commits | authorship/derivation records | patch lineage only |
-| `.provenance/schemas/**` | contract owner | policy | receipt/lock contracts | schema/static |
-| `.provenance/receipts/**` | each evidence owner | exact subject | redacted receipt | receipt-specific |
-| `docs/provenance/**` | convergence writer | machine contracts | Agent-readable rules | documentation |
-| `scripts/check_provenance_control.py` | verifier owner | repository tree | deterministic verdict | local/static |
-| `tests/test_provenance_control.py` | mutation owner | verifier | falsifier coverage | local/static |
-| `LICENSES/**` | compliance owner | admitted upstreams | preserved licenses/notices | obligation evidence |
-| `sbom/**` | SBOM owner | exact dependency/source graph | exact-subject SPDX | dependency inventory |
-| private CodexDoc | Human/private owner | employment and business facts | private decision + redacted receipt | private/Human |
+| `.provenance/upstreams.lock.json` | upstream baseline owner | public source observation | exact public source lock | source lineage only |
+| `.provenance/imported-paths.json` | import mapper | admitted upstream | exact source/target/blob/mode mapping | path lineage only |
+| `.provenance/patch-lineage.json` | patch owner | mapping + clean-room output | original/derived/spec lineage | patch lineage only |
+| `.provenance/schemas/**` | contract owner | provenance laws | fail-closed receipt/lock schemas | schema/static |
+| `.provenance/receipts/**` | evidence-lane owner | exact predecessor subject | redacted successor receipt | receipt-specific |
+| `docs/provenance/**` | one documentation owner | machine contracts | Agent-readable route | documentation |
+| `scripts/check_provenance_control.py` | verifier owner | tree + Git history | deterministic verdict | hosted/local static |
+| `tests/test_provenance_control.py` | mutation owner | verifier | positive and falsifier denominator | hosted/local static |
+| `LICENSES/**` | compliance owner | admitted exact upstreams | preserved license/notice texts | obligation evidence |
+| `sbom/**` | SBOM owner | exact source/dependency graph | exact-candidate SPDX document | inventory only |
+| private review plane | Human/private owner | employment and business facts | private decision + redacted receipt | private/Human |
 
 ## Relationship modes
 
-- `DERIVED_SOURCE`: copied or modified upstream code;
+- `DERIVED_SOURCE`: copied or modified upstream source;
 - `DEPENDENCY`: upstream consumed as a package/library;
-- `REFERENCE_IMPLEMENTATION`: read for compatibility, with no copied code unless separately mapped;
-- `SPECIFICATION_ONLY`: implementation derived only from a pinned public specification;
+- `REFERENCE_IMPLEMENTATION`: read for compatibility; copying requires a separate derived mapping;
+- `SPECIFICATION_ONLY`: implementation derived only from an exact public specification;
 - `BUILD_TOOLING`: build/test infrastructure dependency.
 
-Do not label a clean-room reimplementation as a Fork. Do not label copied source as specification-only.
+Do not label a clean-room reimplementation as a Fork. Do not label copied source as `SPECIFICATION_ONLY`. Do not infer a relationship from repository reputation.
+
+## Patch modes
+
+```text
+ORIGINAL_PATCH
+DERIVED_PATCH
+MECHANICAL_TRANSFORM
+UNCHANGED_IMPORT
+GENERATED_FROM_PUBLIC_SPEC
+```
+
+Every non-original record must match an imported-path mapping, exact upstream ID, source path, source blob and compatible relationship. Every target path must have exactly one explainable lineage.
+
+## Commit-history controls
+
+The verifier checks both the final tree and each changed commit in the declared base-to-head denominator:
+
+- forbidden public locator strings cannot be hidden by adding and later deleting a file;
+- every source-bearing commit is classified from that commit's own source inventory;
+- required DCO trailers are checked per commit;
+- base must be an ancestor of head and the denominator must be non-empty.
 
 ## Current upstream decision
 
-No product upstream has been selected. The empty registry is intentional and fail-closed. No source import is permitted until `PV-LH-001` produces an exact baseline receipt.
+No product upstream has been selected. The empty registry is intentional and fail-closed. No code import, Fork relationship or dependency admission is earned until `PV-LH-001` produces an exact baseline receipt.
 
 ## Non-claims
 
-This control plane does not establish non-infringement, employer non-use, non-overlap, patent clearance, employment ownership, legal advice, independent review, customer value, release, or production readiness.
+This control plane does not establish non-infringement, employer non-use, business non-overlap, patent/trademark/export clearance, legal advice, clean-room product execution, independent review, exact release SBOM, customer value, merge, release or production readiness.

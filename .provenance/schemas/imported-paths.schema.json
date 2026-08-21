@@ -16,7 +16,7 @@
         "additionalProperties": false,
         "required": ["upstream_id", "source_path", "target_path", "source_blob", "import_mode"],
         "properties": {
-          "upstream_id": {"type": "string"},
+          "upstream_id": {"type": "string", "minLength": 1},
           "source_path": {"type": "string", "minLength": 1},
           "target_path": {"type": "string", "minLength": 1},
           "source_blob": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
@@ -24,5 +24,15 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"state": {"const": "NO_IMPORTS_ADMITTED"}}, "required": ["state"]},
+      "then": {"properties": {"mappings": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"state": {"const": "IMPORTS_CLASSIFIED"}}, "required": ["state"]},
+      "then": {"properties": {"mappings": {"minItems": 1}}}
+    }
+  ]
 }
