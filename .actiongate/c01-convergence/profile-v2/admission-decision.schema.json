@@ -1,0 +1,39 @@
+{
+  "$id": "https://actiongate.dev/c01/convergence-decision-v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {"if":{"properties":{"decision":{"const":"C01_ADMITTED"}}},"then":{"properties":{"c01_admitted":{"const":true},"k01_completion_eligible":{"const":true}}}},
+    {"if":{"properties":{"decision":{"enum":["HOLD","REJECT"]}}},"then":{"properties":{"c01_admitted":{"const":false},"k01_completion_eligible":{"const":false}}}}
+  ],
+  "properties": {
+    "c01_admitted":{"type":"boolean"},
+    "contract_epoch":{"const":"b63589e5a16e82fda1a9554227f2ebbb55398c8a"},
+    "control_issue":{"const":62},
+    "control_subject":{"pattern":"^[0-9a-f]{40}$","type":"string"},
+    "decision":{"enum":["C01_ADMITTED","HOLD","REJECT"]},
+    "dissent":{"items":{"type":"string"},"type":"array"},
+    "evidence_ceiling":{"const":"C01 contract/canonicalization admission only; no hardware, MCP, integration, security/legal, merge, release or production proof"},
+    "human_owned":{"contains":{"const":"merge"},"type":"array"},
+    "independent_review_digest":{"pattern":"^[0-9a-f]{64}$","type":"string"},
+    "issue":{"const":24},
+    "k01_completion_eligible":{"type":"boolean"},
+    "k01_start_authorized":{"const":false},
+    "merge_authorized":{"const":false},
+    "production_authorized":{"const":false},
+    "release_authorized":{"const":false},
+    "repository":{"const":"ed3c/ActionGate"},
+    "schema":{"const":"actiongate-c01-convergence-decision/v1"},
+    "worker_subjects":{
+      "additionalProperties":false,
+      "properties":{
+        "kotlin":{"additionalProperties":false,"properties":{"head":{"const":"cf589a0990aaaa6422be9c649b52b44230d570f6"},"tree":{"const":"10a35f943aaee0b0035132100357a1adbacff7e1"}},"required":["head","tree"],"type":"object"},
+        "swift":{"additionalProperties":false,"properties":{"head":{"const":"039827061f54aa72e2b81365a4c904d25833f83e"},"tree":{"const":"015cc3123b3b09ea0c087028aaea2ee052c51508"}},"required":["head","tree"],"type":"object"},
+        "typescript":{"additionalProperties":false,"properties":{"head":{"const":"3ed9f0307df0937028bbf52fe8fbd2a6621acafe"},"tree":{"const":"17532a35f42b07e350e7785a7be11038c9cf1ba0"}},"required":["head","tree"],"type":"object"}
+      },
+      "required":["kotlin","swift","typescript"],"type":"object"
+    }
+  },
+  "required":["schema","repository","issue","control_issue","control_subject","independent_review_digest","contract_epoch","worker_subjects","decision","c01_admitted","k01_completion_eligible","k01_start_authorized","merge_authorized","release_authorized","production_authorized","dissent","evidence_ceiling","human_owned"],
+  "type":"object"
+}

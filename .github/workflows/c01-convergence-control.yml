@@ -1,0 +1,53 @@
+name: C01 Convergence Control
+
+on:
+  pull_request:
+    paths:
+      - '.actiongate/c01-convergence/profile-v2/**'
+      - '.github/workflows/c01-convergence-control.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  convergence-control:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch exact pull request head and base
+        shell: bash
+        env:
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.clone_url }}
+          BASE_REPO: ${{ github.event.pull_request.base.repo.clone_url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          git init .
+          git remote add head-repo "$HEAD_REPO"
+          git fetch --no-tags --depth=2 head-repo "$HEAD_SHA"
+          git checkout --detach FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$HEAD_SHA"
+          git remote add base-repo "$BASE_REPO"
+          git fetch --no-tags --depth=1 base-repo "$BASE_SHA"
+          git update-ref refs/remotes/base-pr/exact FETCH_HEAD
+          test "$(git rev-parse refs/remotes/base-pr/exact)" = "$BASE_SHA"
+
+      - name: Validate structural convergence control
+        run: python3 .actiongate/c01-convergence/profile-v2/check_convergence.py
+
+      - name: Run planted mutation denominator
+        run: python3 .actiongate/c01-convergence/profile-v2/selftest.py
+
+      - name: Enforce changed-path lease
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only refs/remotes/base-pr/exact HEAD > /tmp/changed.txt
+          if grep -Ev '^(\.actiongate/c01-convergence/profile-v2/|\.github/workflows/c01-convergence-control\.yml$)' /tmp/changed.txt | grep -q .; then
+            echo "Changed path escaped Issue #62 lease:"
+            grep -Ev '^(\.actiongate/c01-convergence/profile-v2/|\.github/workflows/c01-convergence-control\.yml$)' /tmp/changed.txt
+            exit 1
+          fi
+
+      - name: Diff whitespace check
+        run: git diff --check refs/remotes/base-pr/exact HEAD
