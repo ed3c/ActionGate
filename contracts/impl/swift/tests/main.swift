@@ -102,6 +102,18 @@ try expectRejected("escaped_surrogate_duplicate_detected") {
     try ActionGateCanonical.assertNoDuplicateKeys("{\"😀\":1,\"\\uD83D\\uDE00\":2}")
 }
 
+let cycleArray = NSMutableArray()
+cycleArray.add(cycleArray)
+try expectRejected("cyclic_array_rejected") {
+    _ = try ActionGateCanonical.canonicalData(cycleArray)
+}
+
+let cycleDictionary = NSMutableDictionary()
+cycleDictionary["self"] = cycleDictionary
+try expectRejected("cyclic_dictionary_rejected") {
+    _ = try ActionGateCanonical.canonicalData(cycleDictionary)
+}
+
 let numberBool = NSNumber(value: true)
 let numberInt = NSNumber(value: 1)
 let canonicalNumberBool = try ActionGateCanonical.canonicalString(["v": numberBool])
