@@ -77,15 +77,21 @@ fun main() {
         ActionGateCanonical.assertNoDuplicateKeys("{\"tool\":\"deploy.production\",\"tool\":\"delete.production\"}")
     }
     expectRejected("escaped_duplicate_key_control") {
-        ActionGateCanonical.assertNoDuplicateKeys("{\"a\":1,\"\\u0061\":2}")
+        ActionGateCanonical.assertCanonicalJsonInput("{\"a\":1,\"\\u0061\":2}")
     }
     expectRejected("lone_surrogate") { ActionGateCanonical.canonicalBytes(mapOf("v" to "\uD800")) }
-    expectRejected("raw_lone_surrogate") { ActionGateCanonical.assertNoDuplicateKeys("{\"\\uD800\":1}") }
+    expectRejected("raw_lone_surrogate") { ActionGateCanonical.assertCanonicalJsonInput("{\"v\":\"\\uD800\"}") }
     expectRejected("non_ascii_domain_rejected") {
         ActionGateCanonical.digestBase64Url("ActionGate-Arguménts-v1\u0000", argumentsA)
     }
     expectRejected("missing_domain_nul_rejected") {
         ActionGateCanonical.digestBase64Url("ActionGate-Arguments-v1", argumentsA)
+    }
+    expectRejected("unknown_domain_rejected") {
+        ActionGateCanonical.digestBase64Url("ActionGate-Unregistered-v1\u0000", argumentsA)
+    }
+    expectRejected("embedded_nul_domain_rejected") {
+        ActionGateCanonical.digestBase64Url("ActionGate-Arguments-v1\u0000suffix\u0000", argumentsA)
     }
 
     val cycle = mutableListOf<Any?>()
@@ -93,7 +99,25 @@ fun main() {
     expectRejected("cyclic_container_rejected") { ActionGateCanonical.canonicalBytes(cycle) }
 
     expectAccepted("raw_surrogate_pair_accepted") {
-        ActionGateCanonical.assertNoDuplicateKeys("{\"\\uD83D\\uDE00\":1}")
+        ActionGateCanonical.assertCanonicalJsonInput("{\"v\":\"\\uD83D\\uDE00\"}")
+    }
+    expectRejected("raw_non_ascii_key_rejected") {
+        ActionGateCanonical.assertCanonicalJsonInput("{\"é\":1}")
+    }
+    expectRejected("raw_fraction_rejected") {
+        ActionGateCanonical.assertCanonicalJsonInput("{\"n\":1.0}")
+    }
+    expectRejected("raw_exponent_rejected") {
+        ActionGateCanonical.assertCanonicalJsonInput("{\"n\":1e3}")
+    }
+    expectRejected("raw_positive_unsafe_integer_rejected") {
+        ActionGateCanonical.assertCanonicalJsonInput("{\"n\":9007199254740992}")
+    }
+    expectRejected("raw_negative_unsafe_integer_rejected") {
+        ActionGateCanonical.assertCanonicalJsonInput("{\"n\":-9007199254740992}")
+    }
+    expectAccepted("raw_integer_boundaries_accepted") {
+        ActionGateCanonical.assertCanonicalJsonInput("{\"max\":9007199254740991,\"min\":-9007199254740991,\"zero\":-0}")
     }
 
     val composed = ActionGateCanonical.canonicalBytes(mapOf("v" to "\u00E9"))
@@ -103,5 +127,5 @@ fun main() {
     check(String(decomposed, Charsets.UTF_8).contains("e\u0301"))
     println("NEGATIVE unicode_no_normalization PASS")
 
-    println("C01 Kotlin canonical vectors + Shadow hardening: PASS")
+    println("C01 Kotlin canonical vectors + profile hardening: PASS")
 }
