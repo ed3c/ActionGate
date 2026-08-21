@@ -2,19 +2,19 @@
   "schema": "actiongate-task-dag/v1",
   "repository": "ed3c/ActionGate",
   "checkpoint_start_subject": {
-    "commit": "76efa9297d147712bb9dfbb9e797d69ca9432a99",
-    "tree": "bdc14c3c9bd21e2d4aaf8f7a562e6e05f6c55597"
+    "commit": "71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99",
+    "tree": "2e0c110dfb64bfdc3b6623e0506ef0d035551ec6"
   },
   "nodes": [
-    {"id":"N01","issue":2,"atom":"C00","owner":"control-plane","state":"MERGED_CLOUD_STATIC"},
-    {"id":"N02","issue":3,"atom":"S01","owner":"source-rights","state":"MERGED_SOURCE_DISPOSITION"},
+    {"id":"N01","issue":2,"atom":"C00","owner":"control-plane","state":"MERGED_CLOSED_CLOUD_STATIC"},
+    {"id":"N02","issue":3,"atom":"S01","owner":"source-rights","state":"MERGED_CLOSED_SOURCE_DISPOSITION"},
     {"id":"N02D","issue":2,"atom":"D00","owner":"prompt-handoff","state":"MERGED_QUEUE_NOT_EXERCISED"},
     {"id":"N03","issue":4,"atom":"C01","owner":"contracts","state":"DRAFT_PREPARATION"},
     {"id":"C01-K","issue":18,"atom":"C01-KOTLIN","owner":"kotlin-worker","state":"PREPARATION_ONLY"},
     {"id":"C01-S","issue":19,"atom":"C01-SWIFT","owner":"swift-worker","state":"PREPARATION_ONLY"},
     {"id":"C01-T","issue":20,"atom":"C01-TYPESCRIPT","owner":"typescript-worker","state":"PREPARATION_ONLY"},
     {"id":"C01-EP","issue":37,"atom":"C01-EXECUTION-PREFLIGHT","owner":"execution-preflight","state":"DRAFT_PREPARATION"},
-    {"id":"C01-LP","issue":39,"atom":"C01-LAUNCH-PACKETS","owner":"launch-packet-owner","state":"READY_TO_PREPARE"},
+    {"id":"C01-LP","issue":39,"atom":"C01-LAUNCH-PACKETS","owner":"launch-packet-owner","state":"DRAFT_PUBLISHED_NOT_LAUNCHED","pr":41},
     {"id":"C01-SH","issue":26,"atom":"C01-INDEPENDENT-SHADOW","owner":"independent-reviewer","state":"NOT_EXERCISED"},
     {"id":"C01-CV","issue":24,"atom":"C01-CONVERGENCE","owner":"single-semantic-owner","state":"BLOCKED_BY_WORKERS"},
     {"id":"N04","issue":5,"atom":"K01","owner":"domain-core","state":"BLOCKED_BY_C01_ADMISSION"},
@@ -26,13 +26,14 @@
     {"id":"N10","issue":11,"atom":"X01","owner":"devops-e2e","state":"NOT_IMPLEMENTED"},
     {"id":"N11","issue":12,"atom":"D01","owner":"final-convergence","state":"OPEN_BLOCKED"},
     {"id":"N12","issue":13,"atom":"H01","owner":"physical-security-human","state":"NOT_EXERCISED"},
-    {"id":"N40","issue":40,"atom":"D00-MAIN","owner":"partial-convergence","state":"IN_PROGRESS"}
+    {"id":"N40","issue":40,"atom":"D00-MAIN","owner":"partial-convergence","state":"MERGED_CLOSED"},
+    {"id":"N43","issue":43,"atom":"D00-STATE-DELTA","owner":"state-delta-convergence","state":"IN_PROGRESS"}
   ],
   "start_edges": [
     ["N01","N02"],["N01","N02D"],["N01","N03"],["N02","N03"],
     ["N03","C01-K"],["N03","C01-S"],["N03","C01-T"],["N03","C01-EP"],
-    ["C01-EP","C01-LP"],["C01-CV","N04"],
-    ["N03","N06"],["N03","N07"],["N04","N05"],["N04","N08"],
+    ["C01-EP","C01-LP"],["C01-LP","C01-K"],["C01-LP","C01-S"],["C01-LP","C01-T"],
+    ["C01-CV","N04"],["N03","N06"],["N03","N07"],["N04","N05"],["N04","N08"],
     ["N03","N09"],["N04","N09"],["N05","N10"],["N08","N10"],
     ["N09","N10"],["N10","N11"],["N06","N12"],["N07","N12"],["N11","N12"]
   ],
@@ -52,12 +53,13 @@
   "process_dependencies": [
     {"from":"N02D","to":"local-handoff","law":"queue contract is not queue execution"},
     {"from":"C01-EP","to":"C01-K/C01-S/C01-T","law":"runtime observations are non-transferable and must be re-probed"},
+    {"from":"C01-LP","to":"fresh Worker Sessions","law":"packet/request is not Session observed; Human clean-room declaration required"},
     {"from":"C01-SH","to":"C01-CV","law":"independent receipt required; no Git ancestry"},
-    {"from":"N40","to":"N01/N02/N02D","law":"partial convergence records merged state only"}
+    {"from":"N43","to":"C01-LP","law":"aggregate state-delta projection only; no implementation authority"}
   ],
   "convergence_owners": {
     "c01_semantics": "C01-CV / Issue #24",
-    "partial_main_checkpoint": "N40 / Issue #40",
+    "late_state_delta": "N43 / Issue #43",
     "final_repository": "N11 / Issue #12"
   },
   "dependency_law": "an edge creates Git ancestry only when a child consumes unmerged parent bytes/contracts; process and evidence dependencies do not"

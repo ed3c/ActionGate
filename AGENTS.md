@@ -28,15 +28,16 @@ Never reconstruct an exact handoff from prior chat.
 
 ## Current integrated checkpoint
 
-The bootstrap technical control plane is on `main`:
+Merged technical preparation:
 
 ```text
-PR #14 / C00 -> merged at fee8c290061542bfb93e27ddcc33cce7fbf8c653
-PR #15 / S01 -> merged at 8810fe41f66ad1b4fe80db5f93bf9539e2a38899
-PR #16 / D00 -> merged at 76efa9297d147712bb9dfbb9e797d69ca9432a99
+PR #14 / C00       fee8c290061542bfb93e27ddcc33cce7fbf8c653
+PR #15 / S01       8810fe41f66ad1b4fe80db5f93bf9539e2a38899
+PR #16 / D00       76efa9297d147712bb9dfbb9e797d69ca9432a99
+PR #42 / D00-MAIN  71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99
 ```
 
-Their highest earned evidence is cloud/static control, source disposition and handoff-contract preparation. They do not prove product implementation.
+Their highest earned evidence is cloud/static control, source disposition, handoff-contract preparation and exact-main documentation reconciliation. They do not prove product implementation.
 
 Current P2 facts:
 
@@ -46,7 +47,8 @@ PR #34 Kotlin Worker                PREPARATION_ONLY
 PR #35 Swift Worker                 PREPARATION_ONLY
 PR #36 TypeScript Worker            PREPARATION_ONLY
 PR #38 execution-control plane      DRAFT_PREPARATION
-Issue #39 launch-packet preparation OPEN
+Issue #39 launch-packet prep        CLOSED_PREPARATION_ONLY
+PR #41 launch packets               DRAFT_PUBLISHED / NOT_LAUNCHED
 Issue #26 independent Shadow        NOT_EXERCISED
 Issue #24 C01 convergence           BLOCKED_BY_WORKERS
 ```
@@ -132,7 +134,7 @@ For each atom:
 7. Verify the complete declared denominator on the exact subject.
 8. Admit one convergence owner for aggregate indexes.
 9. Compile unavailable local, provider, physical and Human work into the typed Local Handoff queue.
-10. Re-read main, PR heads, review threads and workflow state before closure or merge.
+10. Re-read main, all relevant PRs—including late-arriving sibling/child PRs—review threads and workflow state before closure or merge.
 
 ## Shadow Architecture monitor
 
@@ -164,6 +166,8 @@ L3 BLOCK
 
 Use `L3 BLOCK` for privilege expansion, private/public leakage, ambiguous signing bytes, model-owned authorization, stale evidence promotion, false sibling serialization, destructive history movement without rollback, irreversible effects without idempotency/reconciliation, or physical claims without physical evidence.
 
+A post-merge search that finds a newer Issue/PR subject is a `STATE_DELTA`; update the aggregate projection before handing it to a fresh Agent.
+
 `SAME_CONTEXT_READ_ONLY_SHADOW` must state `INDEPENDENCE_NOT_CLAIMED`. It cannot close Issue #26 or another independent-review lane.
 
 ## Closure and Issue-state law
@@ -179,9 +183,9 @@ FAILED
 WAIVED_WITH_AUTHORIZED_REASON
 ```
 
-`MENTIONED`, `PLANNED`, `DRAFT_PUBLISHED`, `MERGEABLE`, and `EXECUTED_PENDING_VERIFICATION` are not closure.
+`MENTIONED`, `PLANNED`, `DRAFT_PUBLISHED`, `MERGEABLE`, `LAUNCH_REQUESTED`, and `EXECUTED_PENDING_VERIFICATION` are not closure.
 
-An Issue may close only when its own declared output and evidence ceiling are satisfied. Closing P0/P1 source/control work does not close P2–P8. A merged preparation atom does not satisfy implementation, independent Shadow, hardware, user, paid, legal, release or production lanes.
+An Issue may close only when its own declared output and evidence ceiling are satisfied. Issue #39 is closed for launch-packet preparation only; PR #41 does not prove a Session launched. Closing P0/P1 source/control work does not close P2–P8. A merged preparation atom does not satisfy implementation, independent Shadow, hardware, user, paid, legal, release or production lanes.
 
 ## Evidence vocabulary
 
@@ -217,6 +221,7 @@ A receipt satisfies only its exact subject and lane.
 - One writer per mutable subject.
 - Every writer has a dedicated branch/worktree and disjoint path/resource lease.
 - Sibling branches remain siblings unless an actual unmerged byte dependency exists.
+- PR #41 is a true child of PR #38 and a routing sibling of PR #34/#35/#36; it is not their Git parent.
 - Parent movement makes affected receipts stale; never silently rebase or fast-forward a non-empty Worker branch.
 - Semantic conflicts stop and return to the owning contract/convergence Issue.
 - Background synchronization must not push.
@@ -281,7 +286,9 @@ Never include secrets, private URLs, stable device identifiers, private reasonin
 
 The active item is `LH-MAIN-001` in `.actiongate/local-handoff-queue.json`.
 
-It resolves the then-current `origin/main` on a trusted clean host, binds the exact SHA/tree into a durable receipt, proves the C00/S01/D00 merge commits are ancestors, validates tracked machine contracts and performs a public/private leak review. It grants no reset, rebase, sync, push, semantic resolution, release or production authority.
+It resolves the then-current `origin/main` on a trusted clean host, binds the exact SHA/tree into a durable receipt, proves the bootstrap and first main-convergence merge commits are ancestors, validates tracked machine contracts and performs a public/private leak review. It grants no reset, rebase, sync, push, semantic resolution, release or production authority.
+
+After that receipt, `C01-SESSION-003` becomes eligible only when exact PR #41 head `98c9545c0dd2bbfdabdaf27c8a992822a78b3840` remains current, the selected language branch remains current, a Human provides the clean-room declaration, and the fresh target Session re-probes its runtime. This conversation cannot self-certify that gate.
 
 ## Stop conditions
 
@@ -300,10 +307,11 @@ failed or absent owning oracle
 required physical/runtime capability unavailable
 semantic conflict
 denominator shrinkage
+late-arriving state not reconciled
 budget exhaustion
 Human-owned operation
 ```
 
 ## Current admission ceiling
 
-The highest integrated state is merged technical control/source/handoff preparation plus Draft C01 preparation. ActionGate mechanisms, cross-language contract admission, physical devices, independent security, customer value, legal clearance, release and production remain unproven.
+The highest integrated state is merged technical control/source/handoff preparation plus Draft C01 execution and launch preparation. ActionGate mechanisms, actual Worker Sessions, cross-language contract admission, physical devices, independent security, customer value, legal clearance, release and production remain unproven.

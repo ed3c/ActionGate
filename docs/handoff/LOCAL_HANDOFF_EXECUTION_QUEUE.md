@@ -26,6 +26,7 @@ Required ancestor receipts:
 fee8c290061542bfb93e27ddcc33cce7fbf8c653  # C00 / PR #14
 8810fe41f66ad1b4fe80db5f93bf9539e2a38899  # S01 / PR #15
 76efa9297d147712bb9dfbb9e797d69ca9432a99  # D00 / PR #16
+71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99  # first main convergence / PR #42
 ```
 
 Commands:
@@ -39,6 +40,7 @@ git -C ActionGate rev-parse HEAD^{tree}
 git -C ActionGate merge-base --is-ancestor fee8c290061542bfb93e27ddcc33cce7fbf8c653 HEAD
 git -C ActionGate merge-base --is-ancestor 8810fe41f66ad1b4fe80db5f93bf9539e2a38899 HEAD
 git -C ActionGate merge-base --is-ancestor 76efa9297d147712bb9dfbb9e797d69ca9432a99 HEAD
+git -C ActionGate merge-base --is-ancestor 71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99 HEAD
 git -C ActionGate diff --check
 python3 -m json.tool ActionGate/.actiongate/system-contract.json >/dev/null
 python3 -m json.tool ActionGate/.actiongate/task-dag.json >/dev/null
@@ -53,7 +55,7 @@ Receipt:
 ActionGate/.actiongate/receipts/local/LH-MAIN-001.json
 ```
 
-It binds the resolved SHA/tree, ancestor checks, JSON/Markdown presence, public/private leak review, clean-room separation and exact command exits. It does not record private locator values.
+It binds the resolved SHA/tree, ancestor checks, JSON/Markdown presence, PR #41 exact state, public/private leak review, clean-room separation and exact command exits. It does not record private locator values.
 
 **Exit:** exact current main readback passes.
 
@@ -63,7 +65,7 @@ It binds the resolved SHA/tree, ancestor checks, JSON/Markdown presence, public/
 
 **State:** `BLOCKED_BY_PREDECESSOR`
 
-**Entry:** `LH-MAIN-001` valid and the open C01 heads still match the Molecular Stack index, or an explicit state-delta packet supersedes them.
+**Entry:** `LH-MAIN-001` valid and open PR #17/#34/#35/#36/#38/#41 heads still match the Molecular Stack index, or an explicit state-delta packet supersedes them.
 
 Checks:
 
@@ -75,28 +77,34 @@ git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin
 git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-swift-vectors
 git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-typescript-vectors
 git -C ActionGate merge-base --is-ancestor origin/ag/C01-action-contracts origin/ag/C01-execution-preflight
+git -C ActionGate merge-base --is-ancestor origin/ag/C01-execution-preflight origin/ag/C01-worker-launch-packets
 ```
 
-`git town --version` may end as `BLOCKED_ABSENT_EXECUTABLE`. Tool absence does not invalidate the raw Git ancestry observations and does not authorize installation.
-
-No sync, rebase, push, reset or merge runs.
+`git town --version` may end as `BLOCKED_ABSENT_EXECUTABLE`. Tool absence does not invalidate raw Git ancestry observations and does not authorize installation. No sync, rebase, push, reset or merge runs.
 
 ## `C01-SESSION-003` — clean-room language Worker Session
 
-**State:** `BLOCKED_BY_LAUNCH_PACKETS_AND_HUMAN_CLEANROOM`
+**State:** `BLOCKED_BY_HUMAN_CLEANROOM_AND_FRESH_SESSION`
+
+**Exact launch source:**
+
+```text
+Issue #39  CLOSED_PREPARATION_ONLY
+PR #41     ag/C01-worker-launch-packets@98c9545c0dd2bbfdabdaf27c8a992822a78b3840
+```
 
 **Entry:**
 
 ```text
-Issue #39 publishes an exact zero-placeholder launch packet
+PR #41 exact head remains current
 + selected PR #34/#35/#36 head and lease are current
-+ the new Session re-probes its own runtime
-+ Human clean-room declaration is present
++ Human supplies the clean-room declaration
++ a new public-input-only Session re-probes its own runtime
 ```
 
-The current private-context conversation cannot satisfy this gate. Start a separate implementation context containing public repository inputs only.
+This private-context conversation cannot satisfy the clean-room implementation-session gate. The declaration must not be fabricated by the Agent.
 
-The Session may implement one language lease and return one worker-local receipt. It cannot close another language, independent Shadow, C01 convergence, hardware, MCP, legal, merge or release.
+The selected Session records a distinct Session observation receipt, the launch packet digest, target branch/head/lease and runtime probe. It may implement one language lease and return one Worker-local receipt. It cannot close another language, independent Shadow, C01 convergence, hardware, MCP, legal, merge or release.
 
 ## `LH-ANDROID-004`
 
@@ -108,8 +116,6 @@ Requires Issue #7 exact candidate, frozen connected-test task and a trusted phys
 adb devices -l
 ./gradlew <ANDROID_CONNECTED_TEST_TASK>
 ```
-
-The task value comes from the A02 exact handoff and is passed as argv, not guessed.
 
 ## `LH-IOS-005`
 
