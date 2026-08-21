@@ -58,15 +58,16 @@ DISPATCH SUBJECT
 Issue #60.
 Draft PR #61.
 Branch ag/C01-profile-independent-shadow-dispatch.
-Dispatch candidate 3c45fd792fccc704fb4dff84faf4fc51de032f82 with tree 95cf014fb4a9f0c30b2d14c0766c55d704659928.
-The exact dispatch candidate and hosted workflow identity are authoritative only from DISPATCH_RECEIPT.json and the current Issue #60 / PR conversation read-back.
-Do not reuse the stale Issue #58 dispatch head ce57d5db1e71223f18d1095024297391a36611f3 as the active review packet.
+Dispatch candidate 23ee1763bea2703f732482952b6312d751faf8cb with tree bd34215ad036be41b5a2333b9b36b076bcddabc6.
+Hosted candidate workflow: C01 Profile Shadow Dispatch run 32464552175 / job 96718286898 / success.
+The exact receipt commit is the immediate successor of this candidate and is authoritative only from DISPATCH_RECEIPT.json plus current PR read-back.
+Do not reuse stale Issue #58 dispatch head ce57d5db1e71223f18d1095024297391a36611f3.
 
 READ-ONLY COMMANDS
 python3 .actiongate/c01-shadow-dispatch/profile-v2/check_dispatch.py
 python3 .actiongate/c01-shadow-dispatch/profile-v2/check_ready_binding.py
 
-Copy independent-review-receipt.template.json outside the repository, set template=false, bind the exact current dispatch candidate from DISPATCH_RECEIPT.json, complete every falsifier with public-safe evidence, then run:
+Copy independent-review-receipt.template.json outside the repository, set template=false, preserve dispatch_pr=61 and dispatch_epoch=23ee1763bea2703f732482952b6312d751faf8cb, complete every falsifier with public-safe evidence, then run:
 python3 .actiongate/c01-shadow-dispatch/profile-v2/check_dispatch.py --review-receipt /absolute/path/to/review-receipt.json
 python3 .actiongate/c01-shadow-dispatch/profile-v2/check_ready_binding.py --review-receipt /absolute/path/to/review-receipt.json
 

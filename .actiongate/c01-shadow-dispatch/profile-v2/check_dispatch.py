@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parent
 REG=ROOT/"dispatch-registry.json"; TPL=ROOT/"independent-review-receipt.template.json"
 PROMPTS=(ROOT/"prompts/independent-shadow.md",ROOT/"prompts/convergence.md")
 PHASE=ROOT/"phase-status.json"
-REG_SHA="ade7fddfc1dbe78e7fb5ce477f318248f6bc8cc03dc93f840342b54834615c0d"
+REG_BLOB="947e432e8d2fd9b79ee6fc160152ff8113bca4fb"
 OLD_HEADS={"511b26ad10389e0d0076f463f59f3a9c0e8a1b6e","48bc9cf00105f40d5444542ddcdad85106f3c1d5","6a99c61150d00be56c7eddf70eb9e3f423cfb7fa"}
 PROFILE={"registered_domain_allowlist","unknown_domain_rejected","embedded_nul_domain_rejected","raw_ascii_key_profile","raw_fraction_rejected","raw_exponent_rejected","raw_positive_unsafe_integer_rejected","raw_negative_unsafe_integer_rejected","raw_safe_integer_boundaries","raw_negative_zero_accepted"}
 ALL_STATES={"PASS","FAIL","NOT_EXERCISED"}
@@ -31,9 +31,11 @@ def subject(w:dict)->dict:
     return {k:w[k] for k in ("current_head","current_tree","source_candidate","source_tree","receipt_subject","receipt_tree","receipt_blob","shadow_blob")}
 def expected_subjects(r:dict)->dict:
     return {"contract_epoch":r["contract_epoch"]["commit"],"common_evidence":r["common_evidence"]["commit"],**{w["language"]:subject(w) for w in r["workers"]}}
+def git_blob_sha(data:bytes)->str:
+    return hashlib.sha1(b"blob "+str(len(data)).encode("ascii")+b"\0"+data).hexdigest()
 
 def check_registry(r:dict, exact:bool=True):
-    if exact and hashlib.sha256(REG.read_bytes()).hexdigest()!=REG_SHA: raise Refusal("registry byte digest drift")
+    if exact and git_blob_sha(REG.read_bytes())!=REG_BLOB: raise Refusal("registry Git blob drift")
     if r.get("schema")!="actiongate-c01-profile-shadow-dispatch/v2" or r.get("issue")!=60: raise Refusal("registry identity")
     if r.get("stack",{}).get("relation")!="TRUE_CHILD_SUPERSEDING_DISPATCH_EPOCH": raise Refusal("false stack relation")
     if r.get("superseded_dispatch",{}).get("may_be_used_for_review") is not False: raise Refusal("stale dispatch not quarantined")

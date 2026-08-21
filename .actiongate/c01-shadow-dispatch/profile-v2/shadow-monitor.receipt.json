@@ -14,7 +14,7 @@
       "severity": "BLOCKER_BEFORE_EXTERNAL_REVIEW",
       "finding": "Issue #58 / PR #59 binds Issue #49-era worker heads that moved under Issue #57.",
       "resolution": "Create a true-child versioned profile-v2 dispatch with current exact commits, trees, receipt blobs, and Shadow blobs.",
-      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+      "disposition": "VERIFIED_REPAIRED"
     },
     {
       "id": "SH-DISPATCH-P2-002",
@@ -22,7 +22,7 @@
       "severity": "BLOCKER_BEFORE_EXTERNAL_REVIEW",
       "finding": "The Issue #58 falsifier denominator does not include the later exact domain allowlist and raw key/number profile controls.",
       "resolution": "Retain every old falsifier and add ten Issue #57 profile controls.",
-      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+      "disposition": "VERIFIED_REPAIRED"
     },
     {
       "id": "SH-DISPATCH-P2-003",
@@ -30,7 +30,7 @@
       "severity": "BLOCKER_BEFORE_CLAIM",
       "finding": "The Builder context could be mistaken for an independent reviewer after compiling the new packet.",
       "resolution": "Registry, prompt, schema, template, checker, and handoff all mark this context ineligible for Issue #26.",
-      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+      "disposition": "VERIFIED_REPAIRED"
     },
     {
       "id": "SH-DISPATCH-P2-004",
@@ -38,14 +38,14 @@
       "severity": "REVIEW",
       "finding": "Rewriting PR #59 would blur the historical hosted-green Issue #49 epoch.",
       "resolution": "Preserve PR #59 and create a true-child molecular dispatch epoch.",
-      "disposition": "VERIFIED_REPAIRED_IN_CANDIDATE"
+      "disposition": "VERIFIED_REPAIRED"
     },
     {
       "id": "SH-DISPATCH-P2-005",
       "class": "EVIDENCE_DELTA",
       "severity": "REVIEW",
       "finding": "The versioned candidate required exact-head hosted structural, mutation, ready-binding, and changed-path checks.",
-      "resolution": "Workflow run 32463771855, job 96715952863, completed success on the pre-receipt metadata head 9e0d9f7f06b258f07f18ed2f98b015d61ef0dee1.",
+      "resolution": "Workflow run 32464552175, job 96718286898, completed success on the repair candidate 23ee1763bea2703f732482952b6312d751faf8cb.",
       "disposition": "VERIFIED"
     },
     {
@@ -53,8 +53,8 @@
       "class": "LIFECYCLE_DELTA",
       "severity": "BLOCKER_BEFORE_READY_CLAIM",
       "finding": "The first successor receipt run checked HEAD^ directly, but pull_request workflows check out a synthetic merge commit whose second parent is the exact PR head.",
-      "resolution": "Resolve merge parent 2 as the branch-head subject, fetch three generations, retain the first-red run, remove its receipt, and require a new immediate-successor receipt after a hosted-green repair head.",
-      "disposition": "REPAIR_IMPLEMENTED_AWAITING_HOSTED_VALIDATION"
+      "resolution": "Resolve merge parent 2 as the branch-head subject, fetch three generations, preserve first-red run 32464263106/job 96717425610, remove the stale receipt, host-verify repair head 23ee1763bea2703f732482952b6312d751faf8cb, then issue a new immediate-successor receipt.",
+      "disposition": "VERIFIED_REPAIRED"
     }
   ],
   "first_red": {
@@ -63,12 +63,18 @@
     "workflow_job_id": 96717425610,
     "failed_step": "Validate successor ready binding when present"
   },
+  "repair_evidence": {
+    "candidate": "23ee1763bea2703f732482952b6312d751faf8cb",
+    "tree": "bd34215ad036be41b5a2333b9b36b076bcddabc6",
+    "workflow_run_id": 32464552175,
+    "workflow_job_id": 96718286898,
+    "conclusion": "success"
+  },
   "remaining_dissent": [
-    "The ready-binding repair head has not yet earned hosted PASS.",
     "No external independent reviewer has executed Issue #26.",
     "Issue #24 remains blocked.",
     "C01_ADMITTED and K01 remain absent.",
     "Hardware, MCP, security/legal acceptance, merge, release, and production are not proven."
   ],
-  "verdict": "READY_BINDING_REPAIR_CANDIDATE_REQUIRES_HOSTED_VALIDATION"
+  "verdict": "C01_PROFILE_HARDENED_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW"
 }

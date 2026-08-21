@@ -2,7 +2,7 @@
   "schema": "actiongate-c01-profile-shadow-phase/v2",
   "repository": "ed3c/ActionGate",
   "issue": 60,
-  "state": "READY_BINDING_PR_MERGE_REPAIR_AWAITING_REISSUED_RECEIPT",
+  "state": "C01_PROFILE_HARDENED_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW",
   "base_dispatch": {
     "issue": 58,
     "pr": 59,
@@ -23,14 +23,23 @@
     "workflow_job_id": 96717425610,
     "failure": "READY_BINDING_ASSUMED_HEAD_WAS_BRANCH_HEAD_IN_PULL_REQUEST_MERGE_CHECKOUT"
   },
-  "repair": "Resolve the exact PR head as merge parent 2, fetch three generations, remove the stale receipt, re-run hosted checks, then issue a new immediate-successor receipt.",
-  "hosted_validation": "PENDING_REPAIR_HEAD",
+  "dispatch_candidate": {
+    "commit": "23ee1763bea2703f732482952b6312d751faf8cb",
+    "tree": "bd34215ad036be41b5a2333b9b36b076bcddabc6"
+  },
+  "hosted_validation": {
+    "name": "C01 Profile Shadow Dispatch",
+    "run_id": 32464552175,
+    "job_id": 96718286898,
+    "head_sha": "23ee1763bea2703f732482952b6312d751faf8cb",
+    "conclusion": "success"
+  },
   "independent_review": "NOT_EXERCISED",
   "convergence": "BLOCKED_BY_INDEPENDENT_REVIEW_RECEIPT",
   "c01_admitted": false,
   "k01_started": false,
-  "evidence_ceiling": "ready-binding lifecycle repair only",
-  "next_entry_condition": "The repair head passes hosted checks without a receipt; a new successor receipt then binds that exact repair candidate.",
+  "evidence_ceiling": "profile-hardened independent-review dispatch only",
+  "next_entry_condition": "A separate read-only non-Builder context executes Issue #26 and emits a validated profile-v2 receipt.",
   "human_owned": [
     "reviewer selection or waiver",
     "semantic conflict resolution",
