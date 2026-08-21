@@ -20,7 +20,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: structural_dispatch_check
-        run: python3 .actiongate/c01-shadow-dispatch/check_dispatch.py
+        run: |
+          python3 .actiongate/c01-shadow-dispatch/check_dispatch.py
+          python3 .actiongate/c01-shadow-dispatch/check_ready_binding.py
 
       - name: mutation_selftest
-        run: python3 .actiongate/c01-shadow-dispatch/selftest.py
+        run: |
+          python3 .actiongate/c01-shadow-dispatch/selftest.py
+          python3 .actiongate/c01-shadow-dispatch/check_ready_binding.py --selftest

@@ -1,6 +1,6 @@
 # C01 Independent Shadow Dispatch
 
-State: `C01_INDEPENDENT_SHADOW_DISPATCH_CANDIDATE`
+State: `C01_INDEPENDENT_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW`
 
 This stacked atom refreshes the historical PR #41 launch preparation with the exact Shadow-hardened Kotlin, Swift and TypeScript subjects. It prepares a separate read-only reviewer to execute Issue #26. It does **not** perform that independent review.
 
@@ -11,7 +11,7 @@ PR #38 execution control
         ↓
 PR #41 historical launch preparation
         ↓ true child
-Issue #58 / this dispatch atom
+Issue #58 / Draft PR #59
         ├── read-only side input: PR #34 Kotlin
         ├── read-only side input: PR #35 Swift
         └── read-only side input: PR #36 TypeScript
@@ -35,7 +35,7 @@ EXACT_SUBJECTS_BOUND
 → #24 C01_ADMITTED | HOLD | REJECT
 ```
 
-This atom stops at `EXTERNAL_INDEPENDENT_SESSION_READY`.
+This atom has reached `EXTERNAL_INDEPENDENT_SESSION_READY` only.
 
 ## Exact immutable inputs
 
@@ -50,6 +50,20 @@ TypeScript current 6a99c61150d00be56c7eddf70eb9e3f423cfb7fa / tree 5c392c2e72bef
 ```
 
 Full source, metadata-receipt, tree and blob identities are in `dispatch-registry.json`.
+
+## Dispatch implementation receipt
+
+```text
+Draft PR                #59
+implementation commit   f2acfc2e67276aaa0509bc93ae7a4cd0f24e1e59
+implementation tree     d08d865e63058cda3a2ff4a9842da69821261082
+hosted workflow run     32457982037
+hosted workflow job     96698905081
+result                  SUCCESS
+steps                   checkout / structural_dispatch_check / mutation_selftest
+```
+
+`DISPATCH_RECEIPT.json` is a successor evidence file that binds the immediately preceding implementation candidate. It is not self-referential and is not an Issue #26 independent review receipt.
 
 ## Data flow
 
@@ -73,15 +87,26 @@ Issue #24 convergence
 
 ```bash
 python3 .actiongate/c01-shadow-dispatch/check_dispatch.py
+python3 .actiongate/c01-shadow-dispatch/check_ready_binding.py
 python3 .actiongate/c01-shadow-dispatch/selftest.py
+python3 .actiongate/c01-shadow-dispatch/check_ready_binding.py --selftest
 ```
 
 An external reviewer validates its completed receipt with:
 
 ```bash
 python3 .actiongate/c01-shadow-dispatch/check_dispatch.py --review-receipt /absolute/path/to/review-receipt.json
+python3 .actiongate/c01-shadow-dispatch/check_ready_binding.py --review-receipt /absolute/path/to/review-receipt.json
+```
+
+## Current Local Handoff
+
+```text
+C01-DISPATCH-CHECK-001  CLOSED
+C01-SHADOW-002          ACTIVE / external separate read-only reviewer
+C01-CONVERGENCE-003     BLOCKED_BY_INDEPENDENT_RECEIPT
 ```
 
 ## Evidence ceiling
 
-A green dispatch checker proves only that the public packet is internally consistent and fail-closed on the exact declared subjects. It cannot prove reviewer independence, implementation correctness beyond the bound receipts, C01 admission, hardware/MCP behavior, legal clearance, merge, release or production.
+A green dispatch checker and hosted workflow prove only that the public dispatch packet is internally consistent and fail-closed on the exact declared subjects. They do not prove reviewer independence, C01 admission, hardware/MCP behavior, legal clearance, merge, release or production.

@@ -5,7 +5,7 @@
   "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
   "independence": "NOT_CLAIMED",
   "implementation_ownership": "NONE_DURING_MONITOR_CHECKPOINTS",
-  "checkpoint": "before first dispatch implementation publication",
+  "checkpoint": "after exact-head hosted implementation-candidate workflow and before successor receipt publication",
   "audit_subject": {
     "base_commit": "98c9545c0dd2bbfdabdaf27c8a992822a78b3840",
     "base_tree": "fd65f2fa9278fe0c0251987939663f42a22ec24b",
@@ -13,6 +13,14 @@
       "kotlin": "511b26ad10389e0d0076f463f59f3a9c0e8a1b6e",
       "swift": "48bc9cf00105f40d5444542ddcdad85106f3c1d5",
       "typescript": "6a99c61150d00be56c7eddf70eb9e3f423cfb7fa"
+    },
+    "dispatch_implementation_commit": "f2acfc2e67276aaa0509bc93ae7a4cd0f24e1e59",
+    "dispatch_implementation_tree": "d08d865e63058cda3a2ff4a9842da69821261082",
+    "draft_pr": 59,
+    "hosted_workflow": {
+      "run_id": 32457982037,
+      "job_id": 96698905081,
+      "conclusion": "success"
     }
   },
   "findings": [
@@ -22,7 +30,7 @@
       "severity": "L3_BLOCK",
       "finding": "PR #41 machine registry and prompts still bind preimplementation Worker heads while Shadow-hardened candidates now exist.",
       "resolution": "Create a true-child dispatch atom that binds the exact current heads, trees, successor receipt subjects and receipt blobs without rewriting PR #41 history.",
-      "disposition": "REPAIRED_IN_CANDIDATE"
+      "disposition": "VERIFIED_REPAIRED"
     },
     {
       "id": "SH-DISPATCH-002",
@@ -30,7 +38,7 @@
       "severity": "L3_BLOCK",
       "finding": "An Issue comment has current subjects but chat/comment prose is not a zero-context machine handoff.",
       "resolution": "Compile dispatch-registry.json, strict checker, mutation suite, exact prompts and receipt contracts.",
-      "disposition": "REPAIRED_IN_CANDIDATE"
+      "disposition": "VERIFIED_REPAIRED"
     },
     {
       "id": "SH-DISPATCH-003",
@@ -38,7 +46,7 @@
       "severity": "L3_BLOCK",
       "finding": "Explicit Human start authority could be misread as a waiver of independent reviewer separation.",
       "resolution": "Registry and receipt schema forbid Builder/same-context satisfaction; this atom stops before the Issue #26 verdict.",
-      "disposition": "REPAIRED_IN_CANDIDATE"
+      "disposition": "VERIFIED_REPAIRED"
     },
     {
       "id": "SH-DISPATCH-004",
@@ -50,11 +58,10 @@
     }
   ],
   "remaining_dissent": [
-    "Exact-head hosted workflow has not yet run on the published candidate.",
     "Independent Shadow Issue #26 remains NOT_EXERCISED.",
-    "C01 convergence Issue #24 remains blocked.",
+    "C01 convergence Issue #24 remains BLOCKED_BY_INDEPENDENT_SHADOW_RECEIPT.",
     "C01_ADMITTED and K01 start are not emitted.",
-    "Hardware, MCP, security/legal, merge, release and production remain unproven or Human-owned."
+    "Android/iOS hardware, MCP, security/legal, merge, release and production remain unproven or Human-owned."
   ],
-  "verdict": "DISPATCH_IMPLEMENTATION_CANDIDATE_LOCAL_CHECK_PASS"
+  "verdict": "C01_INDEPENDENT_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW"
 }

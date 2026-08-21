@@ -4,7 +4,7 @@
   "issue": 58,
   "parent_shadow_issue": 26,
   "convergence_issue": 24,
-  "state": "C01_INDEPENDENT_SHADOW_DISPATCH_CANDIDATE",
+  "state": "C01_INDEPENDENT_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW",
   "base": {
     "branch": "ag/C01-worker-launch-packets",
     "commit": "98c9545c0dd2bbfdabdaf27c8a992822a78b3840",
@@ -13,6 +13,12 @@
     "relationship": "TRUE_CHILD_CONSUMES_LAUNCH_PACKET_CONTRACT"
   },
   "dispatch_branch": "ag/C01-independent-shadow-dispatch",
+  "dispatch_implementation": {
+    "pr": 59,
+    "commit": "f2acfc2e67276aaa0509bc93ae7a4cd0f24e1e59",
+    "tree": "d08d865e63058cda3a2ff4a9842da69821261082",
+    "receipt_relation": "SUCCESSOR_DISPATCH_RECEIPT_BINDS_IMPLEMENTATION_CANDIDATE"
+  },
   "contract": {
     "branch": "ag/C01-action-contracts",
     "sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a"
@@ -210,7 +216,7 @@
       "HOLD",
       "REJECT"
     ],
-    "state": "BLOCKED_BY_EXACT_HEAD_HOSTED_DISPATCH_CHECK"
+    "state": "READY_FOR_EXTERNAL_INDEPENDENT_SESSION"
   },
   "convergence": {
     "issue": 24,
@@ -225,11 +231,11 @@
     "automatic_k01_start": false
   },
   "local_handoff_queue": {
-    "active_item": "C01-DISPATCH-CHECK-001",
+    "active_item": "C01-SHADOW-002",
     "items": [
       {
         "id": "C01-DISPATCH-CHECK-001",
-        "state": "ACTIVE",
+        "state": "CLOSED",
         "entry": "exact base and all three Shadow-hardened Worker subjects remain current",
         "operation": "run structural checker, planted mutations and hosted exact-head workflow",
         "exit": "successor dispatch receipt binds the implementation candidate and hosted run",
@@ -239,7 +245,7 @@
       },
       {
         "id": "C01-SHADOW-002",
-        "state": "BLOCKED_BY_DISPATCH_CHECK",
+        "state": "ACTIVE",
         "entry": "dispatch receipt PASS on exact hosted head; reviewer is separate and read-only",
         "operation": "execute Issue #26 against all immutable subjects and required falsifiers",
         "exit": "ELIGIBLE_FOR_C01_CONVERGENCE | HOLD | REJECT",

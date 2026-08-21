@@ -1,0 +1,32 @@
+{
+  "schema": "actiongate-c01-shadow-dispatch-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 58,
+  "pr": 59,
+  "implementation_candidate": {
+    "commit": "f2acfc2e67276aaa0509bc93ae7a4cd0f24e1e59",
+    "tree": "d08d865e63058cda3a2ff4a9842da69821261082"
+  },
+  "hosted_workflow": {
+    "run_id": 32457982037,
+    "job_id": 96698905081,
+    "conclusion": "success",
+    "passed_steps": [
+      "checkout",
+      "structural_dispatch_check",
+      "mutation_selftest"
+    ]
+  },
+  "state": "C01_INDEPENDENT_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW",
+  "shadow_monitor": {
+    "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+    "independence_claimed": false
+  },
+  "remaining_dissent": [
+    "Independent Shadow Issue #26 remains NOT_EXERCISED.",
+    "C01 convergence Issue #24 remains BLOCKED_BY_INDEPENDENT_SHADOW_RECEIPT.",
+    "C01_ADMITTED and K01 start are not emitted.",
+    "Android/iOS hardware, MCP, security/legal, merge, release and production remain unproven or Human-owned."
+  ],
+  "evidence_ceiling": "exact-head hosted dispatch preparation only"
+}

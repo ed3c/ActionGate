@@ -7,6 +7,7 @@ You are the sole C01 semantic convergence owner for Issues #4 and #24.
 FOUNDATION
 C01 contract: b63589e5a16e82fda1a9554227f2ebbb55398c8a
 Common receipt/schema evidence: 9f41038240837ea2dd9dcdb9befd13e6ba81a78e
+Dispatch preparation: PR #59 implementation f2acfc2e67276aaa0509bc93ae7a4cd0f24e1e59 tree d08d865e63058cda3a2ff4a9842da69821261082
 
 EXACT LANGUAGE INPUTS
 - Kotlin: PR #34 current `511b26ad10389e0d0076f463f59f3a9c0e8a1b6e` tree `92d6e5affe027df8c6ea4a03cf0e49b756248ee3`; receipt subject `7cd754840b471844b6215685671b3e8e2829a43a` tree `9b2f07b220ee40d9b1b7641fa0a5aca9372252f8`; receipt blob `6bfa88ca2f3e2a928c8785f2fb87fdcaee5e6c67`; Shadow blob `17ede5d60b45f8bdc38b6ffb1917bb5ea1c70c8a`.
@@ -19,6 +20,7 @@ ELIGIBLE_FOR_C01_CONVERGENCE | HOLD | REJECT.
 
 Run the dispatch checker against that receipt before semantic convergence:
 python3 .actiongate/c01-shadow-dispatch/check_dispatch.py --review-receipt /absolute/path/to/review-receipt.json
+python3 .actiongate/c01-shadow-dispatch/check_ready_binding.py --review-receipt /absolute/path/to/review-receipt.json
 
 MISSION
 Compare exact canonical bytes/hashes, the full 3-positive + 7-negative common denominator, all hardening falsifiers, runtime bindings, changed-path leases, dependency/rights states, clean-room boundaries and independent Shadow dissent. No Worker may rewrite the oracle.
