@@ -3,23 +3,75 @@
   "repository": "ed3c/ActionGate",
   "issue": 18,
   "implementation_wave_issue": 47,
+  "hardening_issue": 49,
   "atom": "C01-KOTLIN",
   "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
   "independence": "NOT_CLAIMED",
   "implementation_ownership": "NONE",
   "evidence_lane": "local-deterministic canonicalization only",
+  "exact_hardened_subject": {
+    "commit": "8d56b1533bc5b9b56fae8b515d7a64b280ababb3",
+    "tree": "f08ec00d212aecfc04e8ba6db4ecca97ae75971c"
+  },
+  "verified_blobs": {
+    "sources": [
+      "bb6c9a211361715b3333aec53a2fb69e633fcbf1"
+    ],
+    "tests": [
+      "64470a4b647d11c1fa1a1eadd339746d98338d80"
+    ]
+  },
   "findings": [
-    {"id": "SH-K-001", "class": "ORDERING_DELTA", "disposition": "VERIFIED", "evidence": "object keys are explicitly sorted before encoding"},
-    {"id": "SH-K-002", "class": "NUMBER_DELTA", "disposition": "VERIFIED", "evidence": "floating point and integers outside ±(2^53-1) are rejected"},
-    {"id": "SH-K-003", "class": "UNICODE_DELTA", "disposition": "VERIFIED", "evidence": "lone surrogates are rejected and Unicode values are emitted without normalization"},
-    {"id": "SH-K-004", "class": "DUPLICATE_KEY_DELTA", "disposition": "VERIFIED", "evidence": "raw JSON duplicate-key parser rejects repeated object members"},
-    {"id": "SH-K-005", "class": "DEPENDENCY_DELTA", "disposition": "VERIFIED", "evidence": "Kotlin/JDK built-ins only; no download or package addition"},
-    {"id": "SH-K-006", "class": "AUTHORITY_DELTA", "disposition": "VERIFIED", "evidence": "no Android/NDK/hardware/MCP/integration or independent-review claim"}
+    {
+      "id": "SH-K-H01",
+      "class": "DOMAIN_BYTE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Exact ASCII domains with trailing NUL are enforced; non-ASCII and missing-NUL domains reject."
+    },
+    {
+      "id": "SH-K-H02",
+      "class": "CONTAINER_LIFECYCLE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Identity-based active-container tracking rejects recursive List/Map graphs."
+    },
+    {
+      "id": "SH-K-H03",
+      "class": "RAW_JSON_UNICODE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Raw duplicate-key parsing validates surrogate pairs and rejects lone surrogates."
+    },
+    {
+      "id": "SH-K-H04",
+      "class": "RAW_JSON_GRAMMAR_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Raw number parsing rejects leading-zero numbers."
+    },
+    {
+      "id": "SH-K-H05",
+      "class": "EVIDENCE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Original frozen hashes and common 3+7 denominator remain green; extra hardening controls also pass."
+    }
   ],
+  "verification": {
+    "command": "bash contracts/impl/kotlin/run.sh",
+    "result": "PASS",
+    "frozen_positive_hashes": "3/3 PASS",
+    "common_negative_denominator": "7/7 PASS",
+    "extra_hardening_controls": [
+      "escaped duplicate-key equivalence",
+      "raw surrogate-pair acceptance",
+      "raw lone-surrogate rejection",
+      "non-ASCII domain rejection",
+      "missing-NUL rejection",
+      "cyclic-container rejection",
+      "leading-zero grammar rejection"
+    ]
+  },
   "remaining_dissent": [
-    "Independent Shadow Issue #26 is NOT_EXERCISED.",
-    "C01 convergence Issue #24 is BLOCKED until all Worker receipts exist.",
-    "Merge, release and legal/security acceptance remain Human-owned."
+    "This is a same-context implementation Shadow; independent review Issue #26 is NOT_EXERCISED.",
+    "C01 convergence Issue #24 remains blocked on independent review.",
+    "Hardware, MCP, security/legal acceptance, merge, release and production are not proven."
   ],
-  "verdict": "IMPLEMENTATION_CANDIDATE_ELIGIBLE_FOR_RECEIPT"
+  "verdict": "SHADOW_HARDENED_IMPLEMENTATION_ELIGIBLE_FOR_SUCCESSOR_RECEIPT"
 }
