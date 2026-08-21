@@ -216,6 +216,7 @@ Still open:
 | `C01 launch packets` | #39 | `ag/C01-worker-launch-packets` / PR absent | absent | child of PR #38; routing sibling of implementations | `READY_TO_PREPARE` |
 | `C01 independent Shadow` | #26 | read-only / no PR | absent | independent evidence, never a Git parent | `NOT_EXERCISED` |
 | `C01 convergence` | #24 | one semantic owner | absent | consumes exact worker/schema/Shadow receipts | `BLOCKED_BY_WORKERS` |
+| `D00-MAIN convergence` | #40 | `docs/40-main-convergence` / [#42](https://github.com/ed3c/ActionGate/pull/42) | authoritative in PR #42 | consumes merged #14/#15/#16 state; not a C01 parent | `DRAFT_REVIEW` |
 
 PR #17 and its descendants must not merge until #24 emits an exact `C01_ADMITTED` receipt. Merging a preparation PR is not a substitute for that receipt.
 

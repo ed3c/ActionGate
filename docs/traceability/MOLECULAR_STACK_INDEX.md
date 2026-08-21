@@ -54,7 +54,7 @@ Only Issue #24 can emit `C01_ADMITTED | HOLD | REJECT`. Until `C01_ADMITTED`, K0
 
 | Atom | Class | Issue | Branch | Relation | Lease | State |
 |---|---|---:|---|---|---|---|
-| `D00-MAIN` | D | #40 | `docs/40-main-convergence` | consumes merged #14/#15/#16 main state; not a parent of C01 workers | aggregate README/AGENTS/DAG/Stack/handoff paths | `IN_PROGRESS` |
+| `D00-MAIN` | D | #40 | `docs/40-main-convergence` / [#42](https://github.com/ed3c/ActionGate/pull/42) | consumes merged #14/#15/#16 main state; not a parent of C01 workers | aggregate README/AGENTS/DAG/Stack/handoff paths | `DRAFT_REVIEW` |
 
 This atom records current reality only. It does not repair C01 or close final P7/#12.
 
@@ -82,7 +82,7 @@ This atom records current reality only. It does not repair C01 or close final P7
 | #17 | keep Draft/open until C01 convergence |
 | #34/#35/#36 | keep Draft/open; implementation not present |
 | #38 | keep Draft/open; preparation only and merging would move the frozen C01 epoch |
-| future #40 PR | may merge after exact path/readback review; documentation-only ceiling |
+| #42 | may merge after exact path/readback review; documentation-only ceiling |
 
 ## Publication states
 
