@@ -1,59 +1,62 @@
 # C01 Swift Canonicalization Worker
 
-Status: `IMPLEMENTATION_CANDIDATE_LOCAL_DETERMINISTIC`; independent Shadow and C01 convergence remain separate.
+Status: `SHADOW_HARDENED_LOCAL_DETERMINISTIC`; independent Shadow #26 and C01 convergence #24 remain separate.
 
 ## State Machine
 
 ```text
-DISPATCH_BOUND
-→ TOOLCHAIN_PROBED
-→ IMPLEMENTATION_PLAN_FROZEN
-→ CANONICALIZER_IMPLEMENTED
-→ POSITIVE_VECTORS_VERIFIED
-→ NEGATIVE_CONTROLS_VERIFIED
-→ SHADOW_READBACK
-→ DRAFT_CANDIDATE
+C01_CONTRACT_BOUND
+→ LANGUAGE_IMPLEMENTED
+→ FROZEN_VECTORS_PASS
+→ COMMON_NEGATIVE_DENOMINATOR_PASS
+→ SHADOW_HARDENING_REPAIRED
+→ SUCCESSOR_RECEIPT
+→ INDEPENDENT_SHADOW_PENDING
 ```
-
-The implementation wave reached `SHADOW_READBACK` on the local deterministic lane. The durable receipt is added in a successor evidence commit and binds the implementation candidate subject immediately before that receipt commit.
 
 ## Data flow
 
 ```text
-read-only C01 profile/schema/vectors
+frozen C01 profile/schema/vectors
         ↓
-restricted Swift/Foundation value model
+restricted Swift value adapter
         ↓
-explicit ASCII-key sorting + UTF-8 JSON encoding
+canonical UTF-8 JSON + exact ASCII domain bytes
         ↓
-pure Swift SHA-256 + Foundation base64url
+SHA-256 / base64url vectors
         ↓
-positive vectors + negative controls
+common 3-positive + 7-negative receipt
         ↓
-RECEIPT.json
+extra Shadow hardening controls
         ↓
-Issue #26 independent Shadow
+Issue #26 independent review
         ↓
 Issue #24 C01 convergence
 ```
 
-## Implementation surface
+## Hardened surface
 
 ```text
-src/ActionGateCanonical.swift
-  restricted conversion, canonical JSON, pure Swift SHA-256, duplicate-key parser
-
-tests/main.swift
-  three positive hashes, ordering, NSNumber bool/number, float/range/key/type/duplicate/Unicode controls
-
-run.sh
-  no-download Swift compile and test lane
+src/ActionGateCanonical.swift, src/SHA256.swift, src/DuplicateKeyParser.swift, tests/main.swift
 ```
 
-## Deterministic command
+Hardening under Issue #49 adds:
+
+- escaped duplicate-key equivalence
+- raw surrogate-pair acceptance
+- lone high/low surrogate rejection
+- non-ASCII domain rejection
+- missing-NUL rejection
+- mutable cyclic-container rejection
+- leading-zero grammar rejection
+- SHA-256 known-answer vectors
+
+Run:
 
 ```bash
 ./run.sh
 ```
 
-No Secure Enclave, LocalAuthentication, App Attest, hardware key, MCP, persistence or product implementation is present. A local green run is not independent review, C01 admission, hardware, integration, security, merge or release evidence.
+The exact hardened source/test blobs are recorded in `SHADOW_IMPLEMENTATION.receipt.json`. The final `RECEIPT.json` is a successor evidence commit that binds the immediately preceding implementation metadata subject.
+
+No Android/iOS hardware, MCP, persistence, independent-security, merge or release claim is made.

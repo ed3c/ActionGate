@@ -3,23 +3,84 @@
   "repository": "ed3c/ActionGate",
   "issue": 19,
   "implementation_wave_issue": 47,
+  "hardening_issue": 49,
   "atom": "C01-SWIFT",
   "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
   "independence": "NOT_CLAIMED",
   "implementation_ownership": "NONE",
   "evidence_lane": "local-deterministic canonicalization only",
+  "exact_hardened_subject": {
+    "commit": "d4abae30f9822667b14912a3964a0f21bff04772",
+    "tree": "6159f45a8be6a774f69ec955af1900b4d54950b1"
+  },
+  "verified_blobs": {
+    "sources": [
+      "826eca297cff16d23bdf028a2adcea3b4ad792f5",
+      "e274fed72a89363ba0668fd815f832a01ebc8520",
+      "a17f56ea0af876e26a167d2348d4bd16ffe7318b"
+    ],
+    "tests": [
+      "b19f2d93f00762e63d06c1aba19688dff3bb31ac"
+    ]
+  },
   "findings": [
-    {"id": "SH-S-001", "class": "ORDERING_DELTA", "disposition": "VERIFIED", "evidence": "ASCII object keys are explicitly sorted"},
-    {"id": "SH-S-002", "class": "NUMBER_DELTA", "disposition": "VERIFIED", "evidence": "NSNumber booleans are distinguished from integer NSNumber values; floating point and unsafe integers are rejected"},
-    {"id": "SH-S-003", "class": "CRYPTO_RUNTIME_DELTA", "disposition": "VERIFIED", "evidence": "CryptoKit was unavailable; dependency-free pure Swift SHA-256 is covered by all three frozen vectors"},
-    {"id": "SH-S-004", "class": "UNICODE_DELTA", "disposition": "VERIFIED", "evidence": "Unicode scalar values are emitted without normalization"},
-    {"id": "SH-S-005", "class": "DUPLICATE_KEY_DELTA", "disposition": "VERIFIED", "evidence": "raw JSON duplicate-key parser rejects repeated members"},
-    {"id": "SH-S-006", "class": "AUTHORITY_DELTA", "disposition": "VERIFIED", "evidence": "no Secure Enclave/App Attest/hardware/MCP/integration or independent-review claim"}
+    {
+      "id": "SH-S-H01",
+      "class": "DOMAIN_BYTE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Exact ASCII domains with trailing NUL are enforced; non-ASCII and missing-NUL domains reject."
+    },
+    {
+      "id": "SH-S-H02",
+      "class": "RAW_JSON_UNICODE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Valid escaped surrogate pairs are combined; lone high/low surrogates reject and escaped/native equivalent keys collide."
+    },
+    {
+      "id": "SH-S-H03",
+      "class": "CONTAINER_LIFECYCLE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Mutable Foundation containers are rejected before bridging, preventing recursive NSArray/NSDictionary bridge crashes."
+    },
+    {
+      "id": "SH-S-H04",
+      "class": "RAW_JSON_GRAMMAR_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Raw number parsing rejects leading-zero numbers."
+    },
+    {
+      "id": "SH-S-H05",
+      "class": "REFERENCE_HASH_EVIDENCE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Dependency-free SHA-256 passes empty, abc, and 64-byte known-answer vectors in addition to ActionGate vectors."
+    },
+    {
+      "id": "SH-S-H06",
+      "class": "EVIDENCE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Original frozen hashes and common 3+7 denominator remain green; extra hardening controls also pass."
+    }
   ],
+  "verification": {
+    "command": "bash contracts/impl/swift/run.sh",
+    "result": "PASS",
+    "frozen_positive_hashes": "3/3 PASS",
+    "common_negative_denominator": "7/7 PASS",
+    "extra_hardening_controls": [
+      "escaped duplicate-key equivalence",
+      "raw surrogate-pair acceptance",
+      "lone high/low surrogate rejection",
+      "non-ASCII domain rejection",
+      "missing-NUL rejection",
+      "mutable cyclic-container rejection",
+      "leading-zero grammar rejection",
+      "SHA-256 known-answer vectors"
+    ]
+  },
   "remaining_dissent": [
-    "Independent Shadow Issue #26 is NOT_EXERCISED.",
-    "C01 convergence Issue #24 is BLOCKED until all Worker receipts exist.",
-    "Merge, release and legal/security acceptance remain Human-owned."
+    "This is a same-context implementation Shadow; independent review Issue #26 is NOT_EXERCISED.",
+    "C01 convergence Issue #24 remains blocked on independent review.",
+    "Hardware, MCP, security/legal acceptance, merge, release and production are not proven."
   ],
-  "verdict": "IMPLEMENTATION_CANDIDATE_ELIGIBLE_FOR_RECEIPT"
+  "verdict": "SHADOW_HARDENED_IMPLEMENTATION_ELIGIBLE_FOR_SUCCESSOR_RECEIPT"
 }
