@@ -1,0 +1,103 @@
+{
+  "schema": "actiongate-provenance-control-plane-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 48,
+  "pull_request": 50,
+  "branch": "ag/PV01-provenance-control-plane",
+  "base": {
+    "sha": "70573aed229404772827829a1ce069a6e72184fa",
+    "tree": "e31f35bf0b60977df995df6f97dde941dfe529f9"
+  },
+  "implementation_candidate": {
+    "sha": "56a3cb507bda753cdcaa43476738b3f7cddf2e90",
+    "tree": "6f6e4b6db463c120c9b66942d53d8e85f5c00bfe",
+    "author": "ed3c",
+    "author_email": "30064024+ed3c@users.noreply.github.com",
+    "dco": "PASS"
+  },
+  "changed_path_denominator": {
+    "count": 18,
+    "paths": [
+      ".github/pull_request_template.md",
+      ".github/workflows/provenance-guard.yml",
+      ".gitignore",
+      ".provenance/imported-paths.json",
+      ".provenance/local-handoff-queue.json",
+      ".provenance/receipts/shadow/PV01-preimplementation.json",
+      ".provenance/release-gate.json",
+      ".provenance/templates/clean-room-session.example.json",
+      ".provenance/templates/outside-project-review.example.json",
+      ".provenance/upstreams.lock.json",
+      "AGENTS.md",
+      "CONTRIBUTING.md",
+      "LICENSES/README.md",
+      "PROVENANCE.md",
+      "docs/provenance/AGENTS.md",
+      "sbom/actiongate.spdx.json",
+      "scripts/check_provenance.py",
+      "tests/provenance/test_provenance_guard.py"
+    ]
+  },
+  "verification": {
+    "local_prepublication": {
+      "structural_guard": "PASS",
+      "mutation_unit_tests": "PASS_11_OF_11",
+      "release_gate": "BLOCKED_AS_REQUIRED"
+    },
+    "hosted_exact_candidate": {
+      "workflow_name": "Provenance Guard",
+      "workflow_run_id": 32451172221,
+      "run_number": 2,
+      "status": "completed",
+      "conclusion": "success",
+      "job_id": 96679838585,
+      "job_name": "provenance",
+      "non_empty_steps": {
+        "checkout": "PASS",
+        "structural_guard": "PASS",
+        "mutation_tests": "PASS",
+        "dco_commit_range": "PASS"
+      }
+    },
+    "clean_remote_clone_attempt": "BLOCKED_DNS_IN_CONTAINER_NOT_PROMOTED_TO_PASS"
+  },
+  "provenance_state": {
+    "control_plane": "IMPLEMENTED_CANDIDATE",
+    "derived_upstream": "NOT_SELECTED",
+    "imported_paths": "NONE_ADMITTED",
+    "spdx_baseline": "PRESENT",
+    "independent_review": "NOT_EXERCISED",
+    "private_employment_ip_review": "HUMAN_INPUT_REQUIRED",
+    "legal_admission": "HUMAN_ADMIT_REQUIRED",
+    "release": "BLOCKED"
+  },
+  "first_red_evidence": {
+    "unattached_commit": "1ac1b13bb187e2297945e1d845c465e4cd15c8e5",
+    "finding": "DCO_IDENTITY_MISMATCH",
+    "disposition": "NOT_ATTACHED_TO_BRANCH_NO_GATE_WEAKENING"
+  },
+  "shadow": {
+    "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+    "independence": "NOT_CLAIMED",
+    "verdict": "PV01_PROVENANCE_CONTROL_PLANE_READY_FOR_REVIEW",
+    "remaining_dissent": [
+      "No public upstream is selected or imported.",
+      "The repository is not a Fork of an admitted upstream.",
+      "Private employment and business-overlap review is not exercised.",
+      "Independent provenance, legal and security review is not exercised.",
+      "Merge, release and production remain Human-owned."
+    ]
+  },
+  "evidence_ceiling": "STRUCTURAL_PROVENANCE_CONTROL_PLANE_ONLY",
+  "human_owned_operations": [
+    "upstream selection",
+    "truthfulness of clean-room declaration",
+    "private employment/IP review",
+    "independent reviewer selection",
+    "legal and security admission",
+    "merge",
+    "release",
+    "production"
+  ],
+  "terminal": "PV01_PROVENANCE_CONTROL_PLANE_READY_FOR_REVIEW"
+}
