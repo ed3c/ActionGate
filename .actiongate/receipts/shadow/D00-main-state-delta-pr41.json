@@ -1,0 +1,53 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "atom": "D00-MAIN-STATE-DELTA-PR41",
+  "issue": 43,
+  "audit_input": {
+    "main_commit": "71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99",
+    "main_tree": "2e0c110dfb64bfdc3b6623e0506ef0d035551ec6",
+    "late_subject_issue": 39,
+    "late_subject_pr": 41,
+    "late_subject_head": "98c9545c0dd2bbfdabdaf27c8a992822a78b3840"
+  },
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "cloud/static exact-state reconciliation",
+  "findings": [
+    {
+      "id": "SH-43-001",
+      "class": "STATE_DELTA",
+      "severity": "BLOCKER_BEFORE_FRESH_AGENT_HANDOFF",
+      "finding": "The first main convergence described Issue #39 as ready to prepare, while a fresh post-merge search showed Issue #39 closed preparation-only and PR #41 Draft-published.",
+      "falsifier": "Aggregate README, AGENTS, Issue DAG, Stack and machine state bind Issue #39, PR #41 and head 98c9545c0dd2bbfdabdaf27c8a992822a78b3840.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-43-002",
+      "class": "OWNERSHIP_DELTA",
+      "severity": "BLOCKER_BEFORE_SESSION_DISPATCH",
+      "finding": "Launch packets must remain a true child of PR #38 and a routing sibling, not a Git parent, of the three language branches.",
+      "falsifier": "DAG and Stack encode PR #38 -> PR #41 and preserve Kotlin/Swift/TypeScript as siblings.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-43-003",
+      "class": "AUTHORITY_DELTA",
+      "severity": "BLOCKER_BEFORE_SESSION_CLAIM",
+      "finding": "A completed launch-preparation Issue or mergeable Draft PR could be promoted to a running Session or clean-room approval.",
+      "falsifier": "Local Handoff requires exact PR #41, a Human clean-room declaration, a new Session identity and a target-Session runtime re-probe before any implementation receipt.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    }
+  ],
+  "remaining_dissent": [
+    "PR #41 exact-head hosted execution is NOT_EXERCISED.",
+    "No Kotlin, Swift or TypeScript Worker Session has launched.",
+    "Human clean-room declaration is not supplied by this Agent context.",
+    "Issue #26 independent Shadow is NOT_EXERCISED.",
+    "Issue #24 has not admitted C01.",
+    "Product implementation, hardware, MCP, security/legal, user/paid, release and production remain open."
+  ],
+  "verdict": "PR41_STATE_DELTA_READY_FOR_DOCUMENTATION_REVIEW_ONLY",
+  "next_entry_condition": "merge the documentation-only state delta, read back current main, execute LH-MAIN-001, then select a fresh clean-room Worker Session only from the exact PR #41 registry"
+}

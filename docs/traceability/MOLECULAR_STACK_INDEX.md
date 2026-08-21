@@ -6,13 +6,14 @@ This index is derived from observed Issues, PR bases/heads, commits, changed pat
 
 A Draft PR is candidate evidence. `MERGEABLE` is not `VERIFIED`. A review-only Shadow is never a Git parent. When a parent contract moves after Worker results exist, preserve the old candidate and create a typed replay/supersession decision rather than silently rebasing.
 
-## Merged bootstrap stack
+## Merged bootstrap and convergence stack
 
 | Atom | Class | Issue | PR | Stable merge commit | Historical relation | Lease | Evidence ceiling | State |
 |---|---|---:|---:|---|---|---|---|---|
-| `C00` | C/D | #2 | [#14](https://github.com/ed3c/ActionGate/pull/14) | `fee8c290061542bfb93e27ddcc33cce7fbf8c653` | top-level from original main | root control/governance/trace paths | cloud/static | `MERGED` |
-| `S01` | C/E | #3 | [#15](https://github.com/ed3c/ActionGate/pull/15) | `8810fe41f66ad1b4fe80db5f93bf9539e2a38899` | consumed C00 authority; sibling to D00 | source/rights/candidate ledger | source disposition | `MERGED` |
+| `C00` | C/D | #2 | [#14](https://github.com/ed3c/ActionGate/pull/14) | `fee8c290061542bfb93e27ddcc33cce7fbf8c653` | top-level from original main | root control/governance/trace paths | cloud/static | `MERGED / CLOSED` |
+| `S01` | C/E | #3 | [#15](https://github.com/ed3c/ActionGate/pull/15) | `8810fe41f66ad1b4fe80db5f93bf9539e2a38899` | consumed C00 authority; sibling to D00 | source/rights/candidate ledger | source disposition | `MERGED / CLOSED` |
 | `D00` | D | #2 | [#16](https://github.com/ed3c/ActionGate/pull/16) | `76efa9297d147712bb9dfbb9e797d69ca9432a99` | consumed C00 authority; sibling to S01 | prompts/handoff/queue | cloud/static | `MERGED`; queue not executed |
+| `D00-MAIN` | D | #40 | [#42](https://github.com/ed3c/ActionGate/pull/42) | `71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99` | consumes merged #14/#15/#16 state | aggregate status/queue paths | cloud/static exact-main reconciliation | `MERGED / CLOSED` |
 
 The merge graph records historical parents. Current technical truth is the exact `main` tree.
 
@@ -25,7 +26,7 @@ The merge graph records historical parents. Current technical truth is the exact
 | `C01-S` | C/E | #19 | `ag/C01-swift-vectors` / [#35](https://github.com/ed3c/ActionGate/pull/35) | `76b10b5a05898410ed361761626b381158edb306` | sibling after C01 freeze | `contracts/impl/swift/**` | Swift exact bytes/hashes | `PREPARATION_ONLY` |
 | `C01-T` | C/E | #20 | `ag/C01-typescript-vectors` / [#36](https://github.com/ed3c/ActionGate/pull/36) | `c62e24ffa0ceb2224fe6931929bfaeeceabe3c39` | sibling after C01 freeze | `contracts/impl/typescript/**` | TypeScript exact bytes/hashes | `PREPARATION_ONLY` |
 | `C01-EP` | D/E | #37 | `ag/C01-execution-preflight` / [#38](https://github.com/ed3c/ActionGate/pull/38) | `9f41038240837ea2dd9dcdb9befd13e6ba81a78e` | true child of C01; process/evidence sibling of C01-K/S/T | `.actiongate/c01-execution/**`, common/schema evidence | preparation checks | `DRAFT_PREPARATION`; do not merge into frozen C01 |
-| `C01-LP` | D | #39 | `ag/C01-worker-launch-packets` / PR absent | absent | true child of C01-EP; routing sibling of implementations | `.actiongate/c01-launch/**` | launch-packet mutations | `READY_TO_PREPARE` |
+| `C01-LP` | D | #39 | `ag/C01-worker-launch-packets` / [#41](https://github.com/ed3c/ActionGate/pull/41) | `98c9545c0dd2bbfdabdaf27c8a992822a78b3840` | true child of PR #38; routing sibling of C01-K/S/T | `.actiongate/c01-launch/**` | packet checker + mutation selftest | `DRAFT_PUBLISHED / NOT_LAUNCHED`; keep open |
 | `C01-SH` | E/H | #26 | no branch/PR | absent | independent read-only evidence | no implementation writer | same-subject audit | `NOT_EXERCISED` |
 | `C01-CV` | X/D | #24 | one semantic convergence subject | absent | consumes exact language/schema/Shadow receipts | convergence receipt/index only | C01 admission | `BLOCKED_BY_WORKERS` |
 
@@ -37,6 +38,9 @@ language preparation PRs
 
 toolchain presence
 != vector parity
+
+launch packet or request
+!= Session observed
 
 schema validity
 != grant authenticity or authorization
@@ -50,13 +54,13 @@ mergeable Draft
 
 Only Issue #24 can emit `C01_ADMITTED | HOLD | REJECT`. Until `C01_ADMITTED`, K01 remains blocked.
 
-## Partial main convergence atom
+## Current documentation state-delta atom
 
 | Atom | Class | Issue | Branch | Relation | Lease | State |
 |---|---|---:|---|---|---|---|
-| `D00-MAIN` | D | #40 | `docs/40-main-convergence` / [#42](https://github.com/ed3c/ActionGate/pull/42) | consumes merged #14/#15/#16 main state; not a parent of C01 workers | aggregate README/AGENTS/DAG/Stack/handoff paths | `DRAFT_REVIEW` |
+| `D00-DELTA` | D | #43 | `docs/43-pr41-state-delta` | consumes current main and exact PR #41 state; not a parent of C01 Workers | aggregate status and handoff paths | `IN_PROGRESS` |
 
-This atom records current reality only. It does not repair C01 or close final P7/#12.
+This atom records a late-arriving state only. It does not repair PR #41, launch Sessions or close final P7/#12.
 
 ## Downstream planned atoms
 
@@ -76,13 +80,12 @@ This atom records current reality only. It does not repair C01 or close final P7
 
 | PR | Disposition |
 |---:|---|
-| #14 | merged; close history retained |
-| #15 | merged; close history retained |
-| #16 | merged; close history retained |
+| #14/#15/#16/#42 | merged; exact history retained |
 | #17 | keep Draft/open until C01 convergence |
 | #34/#35/#36 | keep Draft/open; implementation not present |
-| #38 | keep Draft/open; preparation only and merging would move the frozen C01 epoch |
-| #42 | may merge after exact path/readback review; documentation-only ceiling |
+| #38 | keep Draft/open; preparation only and parent of PR #41 |
+| #41 | keep Draft/open; launch packets ready, Sessions not launched |
+| future #43 PR | documentation-only state-delta candidate |
 
 ## Publication states
 
@@ -91,6 +94,8 @@ PLANNED
 BRANCH_CREATED
 DRAFT_PUBLISHED
 PREPARATION_ONLY
+LAUNCH_PACKETS_READY
+SESSION_NOT_LAUNCHED
 EXACT_HEAD_VERIFIED
 READY_FOR_REVIEW
 MERGED

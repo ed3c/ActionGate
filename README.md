@@ -11,7 +11,7 @@ Hardware-attested authorization for protected autonomous-agent actions.
 | `P0 / C00` authority and technical routing | `MERGED` on main at the `cloud/static` evidence ceiling |
 | `P1 / S01` source, claim, rights and dependency-candidate admission | `MERGED` on main at the `cloud/static + primary-source read-back` ceiling |
 | `D00` prompts and Local Handoff contract | `MERGED` on main; queue execution remains `NOT_EXERCISED` |
-| `P2 / C01` canonical contracts | `DRAFT_PREPARATION`; cross-language implementation and admission remain open |
+| `P2 / C01` canonical contracts | `DRAFT_PREPARATION`; launch packets are Draft-published, but no Worker Session has launched and C01 is not admitted |
 | Product implementation | `NOT_IMPLEMENTED` |
 | Physical Android/iOS evidence | `NOT_EXERCISED` |
 | Independent security/Shadow evidence | `NOT_EXERCISED` |
@@ -26,6 +26,7 @@ Integrated bootstrap merge receipts:
 | `C00` | [#14](https://github.com/ed3c/ActionGate/pull/14) | [`fee8c290`](https://github.com/ed3c/ActionGate/commit/fee8c290061542bfb93e27ddcc33cce7fbf8c653) | technical control plane / cloud-static |
 | `S01` | [#15](https://github.com/ed3c/ActionGate/pull/15) | [`8810fe41`](https://github.com/ed3c/ActionGate/commit/8810fe41f66ad1b4fe80db5f93bf9539e2a38899) | source and rights disposition / cloud-static |
 | `D00` | [#16](https://github.com/ed3c/ActionGate/pull/16) | [`76efa929`](https://github.com/ed3c/ActionGate/commit/76efa9297d147712bb9dfbb9e797d69ca9432a99) | prompt and handoff contract / cloud-static |
+| `D00-MAIN` | [#42](https://github.com/ed3c/ActionGate/pull/42) | [`71796b8c`](https://github.com/ed3c/ActionGate/commit/71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99) | exact-main documentation reconciliation / cloud-static |
 
 A merged documentation or contract-preparation atom is not product implementation, runtime verification, hardware proof, independent security acceptance, customer validation, release or production readiness.
 
@@ -58,7 +59,7 @@ P0 AUTHORITY_BOUND               MERGED / cloud-static
   -> P4 ADAPTERS_IMPLEMENTED     NOT_IMPLEMENTED
   -> P5 EVIDENCE_VERIFIED        NOT_IMPLEMENTED
   -> P6 E2E_VERIFIED             NOT_IMPLEMENTED
-  -> P7 CONVERGED_AND_HANDED_OFF PARTIAL CHECKPOINT ONLY
+  -> P7 CONVERGED_AND_HANDED_OFF PARTIAL CHECKPOINTS ONLY
   -> P8 LIVE_OR_HUMAN_ADMITTED   NOT_EXERCISED / HUMAN_ADMIT_REQUIRED
 ```
 
@@ -79,8 +80,8 @@ READ_ONLY_RECON
 
 ```mermaid
 flowchart TD
-  I1["#1 Epic"] --> I2["#2 P0/C00 merged"]
-  I2 --> I3["#3 P1/S01 merged"]
+  I1["#1 Epic"] --> I2["#2 P0/C00 merged + closed"]
+  I2 --> I3["#3 P1/S01 merged + closed"]
   I2 --> D00["D00 prompts/handoff merged"]
   I2 --> I4["#4 P2/C01 Draft"]
   I3 --> I4
@@ -89,14 +90,17 @@ flowchart TD
   I4 --> S["#19 Swift candidate"]
   I4 --> T["#20 TypeScript candidate"]
   I4 --> EP["#37 / PR #38 execution preparation"]
-  EP --> LP["#39 zero-placeholder launch packets"]
+  EP --> LP["#39 completed prep / PR #41 launch packets"]
 
-  K --> SH["#26 independent Shadow"]
-  S --> SH
-  T --> SH
-  K --> CV["#24 C01 convergence"]
-  S --> CV
-  T --> CV
+  LP --> KS["fresh Kotlin Session"]
+  LP --> SS["fresh Swift Session"]
+  LP --> TS["fresh TypeScript Session"]
+  KS --> SH["#26 independent Shadow"]
+  SS --> SH
+  TS --> SH
+  KS --> CV["#24 C01 convergence"]
+  SS --> CV
+  TS --> CV
   SH --> CV
   EP --> CV
 
@@ -116,7 +120,7 @@ flowchart TD
   I12 --> I13
 ```
 
-Start-readiness and completion-readiness are separate edge classes. A readable Draft contract may release preparation work; it cannot satisfy a completion dependency.
+Start-readiness and completion-readiness are separate edge classes. A readable Draft contract or launch packet may release preparation work; neither satisfies a completion dependency or proves a Session exists.
 
 ## Directory → owner → State Machine → DAG → data flow
 
@@ -129,8 +133,8 @@ Start-readiness and completion-readiness are separate edge classes. A readable D
 | `contracts/impl/kotlin/**` | `#18` | Kotlin canonicalization candidate | frozen C01 profile/vectors | Kotlin bytes, hashes, negative controls, receipt | preparation only; implementation not exercised |
 | `contracts/impl/swift/**` | `#19` | Swift canonicalization candidate | frozen C01 profile/vectors | Swift bytes, hashes, negative controls, receipt | preparation only; implementation not exercised |
 | `contracts/impl/typescript/**` | `#20` | TypeScript canonicalization candidate | frozen C01 profile/vectors | TypeScript bytes, hashes, negative controls, receipt | preparation only; implementation not exercised |
-| `.actiongate/c01-execution/**`, `contracts/evidence/common/**`, `contracts/evidence/schema/**` | `#37 / PR #38` | execution-control preparation | exact C01 blobs and worker routes | capability/schema/receipt/handoff packets | Draft preparation; non-transferable observations |
-| `.actiongate/c01-launch/**` | `#39` | clean-room Session dispatch preparation | PR #38 and exact worker heads | zero-placeholder launch packets | not yet published |
+| `.actiongate/c01-execution/**`, `contracts/evidence/common/**`, `contracts/evidence/schema/**` | `#37 / PR #38` | execution-control preparation | exact C01 blobs and Worker routes | capability/schema/receipt/convergence packets | Draft preparation; runtime observations non-transferable |
+| `.actiongate/c01-launch/**` | `#39 / PR #41` | clean-room Session dispatch preparation | PR #38 and exact Worker heads | zero-placeholder Worker/Shadow/convergence packets and launch queue | Draft-published; actual Sessions not launched |
 | `packages/core-domain/**`, `packages/policy/**` | `K01 / #5` | deterministic authorization state | admitted C01 | risk, challenge, grant, replay and audit decisions | not implemented |
 | `packages/gateway/**`, `packages/verifier/**` | `A01 / #6` | distributed trust-plane adapter | C01/K01 ports | verification, persistence, idempotency and outbox | not implemented |
 | `packages/sdk-android/**` | `A02 / #7` | Android proof adapter | canonical challenge/digest | Keystore/biometric/integrity evidence | not implemented; physical separate |
@@ -138,10 +142,10 @@ Start-readiness and completion-readiness are separate edge classes. A readable D
 | `packages/mcp-middleware-*` | `A04 / #9` | protected-tool boundary | C01/K01 grant semantics | MCP enforcement and bypass controls | not implemented |
 | `packages/testkit/**`, `tests/**` | `E01 / #10` | mutation/fault evidence | candidate C/K/A atoms | falsifiers and exact-subject receipts | not implemented |
 | `examples/devops-agent/**` | `X01 / #11` | narrow E2E convergence | admitted C/K/A/E | protected DevOps action receipt | not implemented |
-| aggregate README/AGENTS/trace indexes | `D01 / #12`; partial checkpoint `#40` | one convergence writer | GitHub exact read-back | current DAG, Stack and handoff projection | exact-head documentation only |
+| aggregate README/AGENTS/trace indexes | `D01 / #12`; partial checkpoints `#40/#43` | one active convergence writer per checkpoint | GitHub exact read-back | current DAG, Stack and handoff projection | exact-head documentation only |
 | physical devices / independent review / Human decisions | `H01 / #13` | external evidence | immutable candidate and policy | own-lane receipts | not exercised / Human-owned |
 
-Terminal workers may write only their atom-local lease. They do not update aggregate indexes.
+Terminal Workers may write only their atom-local lease. They do not update aggregate indexes.
 
 ## Runtime data flow
 
@@ -196,37 +200,40 @@ Still open:
 
 ## Molecular Stack PR index
 
-### Merged bootstrap atoms
+### Merged bootstrap and reconciliation atoms
 
 | Atom | Issue | PR | Stable merge receipt | Relation | State |
 |---|---:|---:|---|---|---|
 | `C00` | #2 | [#14](https://github.com/ed3c/ActionGate/pull/14) | `fee8c290061542bfb93e27ddcc33cce7fbf8c653` | top-level from original main | `MERGED / cloud-static` |
-| `S01` | #3 | [#15](https://github.com/ed3c/ActionGate/pull/15) | `8810fe41f66ad1b4fe80db5f93bf9539e2a38899` | consumed C00; landed after C00 | `MERGED / source-disposition` |
+| `S01` | #3 | [#15](https://github.com/ed3c/ActionGate/pull/15) | `8810fe41f66ad1b4fe80db5f93bf9539e2a38899` | consumed C00; sibling to D00 | `MERGED / source-disposition` |
 | `D00` | #2 | [#16](https://github.com/ed3c/ActionGate/pull/16) | `76efa9297d147712bb9dfbb9e797d69ca9432a99` | consumed C00; sibling to S01 | `MERGED / queue contract` |
+| `D00-MAIN` | #40 | [#42](https://github.com/ed3c/ActionGate/pull/42) | `71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99` | partial exact-main convergence | `MERGED / cloud-static` |
 
 ### Active P2 preparation graph
 
 | Atom | Issue | Branch / PR | Exact observed head | Relation | State |
 |---|---:|---|---|---|---|
-| `C01` | #4 | `ag/C01-action-contracts` / [#17](https://github.com/ed3c/ActionGate/pull/17) | `b63589e5a16e82fda1a9554227f2ebbb55398c8a` | contract child of the S01 constraints | `DRAFT_PREPARATION` |
+| `C01` | #4 | `ag/C01-action-contracts` / [#17](https://github.com/ed3c/ActionGate/pull/17) | `b63589e5a16e82fda1a9554227f2ebbb55398c8a` | contract child of S01 constraints | `DRAFT_PREPARATION` |
 | `C01-Kotlin` | #18 | `ag/C01-kotlin-vectors` / [#34](https://github.com/ed3c/ActionGate/pull/34) | `0136936e7d63ba0c538d2cb40db60409107ababc` | path-disjoint sibling after C01 freeze | `PREPARATION_ONLY` |
 | `C01-Swift` | #19 | `ag/C01-swift-vectors` / [#35](https://github.com/ed3c/ActionGate/pull/35) | `76b10b5a05898410ed361761626b381158edb306` | path-disjoint sibling after C01 freeze | `PREPARATION_ONLY` |
 | `C01-TypeScript` | #20 | `ag/C01-typescript-vectors` / [#36](https://github.com/ed3c/ActionGate/pull/36) | `c62e24ffa0ceb2224fe6931929bfaeeceabe3c39` | path-disjoint sibling after C01 freeze | `PREPARATION_ONLY` |
 | `C01 execution preflight` | #37 | `ag/C01-execution-preflight` / [#38](https://github.com/ed3c/ActionGate/pull/38) | `9f41038240837ea2dd9dcdb9befd13e6ba81a78e` | true child of C01; process/evidence sibling of language branches | `DRAFT_PREPARATION` |
-| `C01 launch packets` | #39 | `ag/C01-worker-launch-packets` / PR absent | absent | child of PR #38; routing sibling of implementations | `READY_TO_PREPARE` |
+| `C01 launch packets` | #39 | `ag/C01-worker-launch-packets` / [#41](https://github.com/ed3c/ActionGate/pull/41) | `98c9545c0dd2bbfdabdaf27c8a992822a78b3840` | true child of PR #38; routing sibling of language implementations | `DRAFT_PUBLISHED / NOT_LAUNCHED` |
 | `C01 independent Shadow` | #26 | read-only / no PR | absent | independent evidence, never a Git parent | `NOT_EXERCISED` |
-| `C01 convergence` | #24 | one semantic owner | absent | consumes exact worker/schema/Shadow receipts | `BLOCKED_BY_WORKERS` |
-| `D00-MAIN convergence` | #40 | `docs/40-main-convergence` / [#42](https://github.com/ed3c/ActionGate/pull/42) | authoritative in PR #42 | consumes merged #14/#15/#16 state; not a C01 parent | `DRAFT_REVIEW` |
+| `C01 convergence` | #24 | one semantic owner | absent | consumes exact Worker/schema/Shadow receipts | `BLOCKED_BY_WORKERS` |
+| `D00 state delta` | #43 | `docs/43-pr41-state-delta` / PR pending | authoritative in the eventual PR | consumes current main + PR #41 state; not a C01 parent | `IN_PROGRESS` |
 
-PR #17 and its descendants must not merge until #24 emits an exact `C01_ADMITTED` receipt. Merging a preparation PR is not a substitute for that receipt.
+PR #17, #34, #35, #36, #38 and #41 stay Draft/open. Only Issue #24 may emit `C01_ADMITTED`; Draft publication or mergeability is not a substitute.
 
 ## Local Handoff
 
 The machine queue is [`.actiongate/local-handoff-queue.json`](.actiongate/local-handoff-queue.json); the readable projection is [`docs/handoff/LOCAL_HANDOFF_EXECUTION_QUEUE.md`](docs/handoff/LOCAL_HANDOFF_EXECUTION_QUEUE.md).
 
-The active local item resolves the then-current `origin/main`, binds its exact SHA/tree into a durable receipt, proves that the three bootstrap merge commits are ancestors, validates the machine contracts, and checks public/private separation. It does not authorize reset, rebase, sync, push, semantic conflict resolution, release or production.
+The active local item resolves the then-current `origin/main`, binds its exact SHA/tree into a durable receipt, proves that the bootstrap and first main-convergence commits are ancestors, validates the machine contracts, and checks public/private separation. It grants no reset, rebase, sync, push, semantic conflict resolution, release or production authority.
 
-Later items independently cover Git Town/Stack capability, clean-room C01 Session launch, Android, iOS, independent security/clean-room review and Human admission.
+After main readback, a clean-room implementation Session can be selected only from the exact PR #41 launch registry. A Human must provide the clean-room declaration, and the target Session must re-probe its own runtime and branch/head. A launch packet or request is not a Session observation.
+
+Later items independently cover Git Town/Stack capability, Android, iOS, independent security/clean-room review and Human admission.
 
 ## Closure loop
 
@@ -246,6 +253,7 @@ A PR title, branch, generated prompt, queue definition, same-context Shadow agre
 This repository does not currently claim:
 
 - implemented ActionGate product mechanisms;
+- launched Kotlin/Swift/TypeScript Worker Sessions;
 - cross-language C01 admission;
 - Android StrongBox/TEE or iOS Secure Enclave/App Attest behavior;
 - MCP authorization correctness;
