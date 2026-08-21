@@ -2,7 +2,7 @@
 
 ## Mandatory read route
 
-Before mutation read:
+Before mutation:
 
 1. `README.md`
 2. `ARCHITECTURE.md`
@@ -14,83 +14,98 @@ Before mutation read:
 8. `docs/traceability/MOLECULAR_STACK_INDEX.md`
 9. `.actiongate/system-contract.json`
 10. `.actiongate/task-dag.json`
-11. `.actiongate/local-handoff-queue.json` when local/physical/provider/Human evidence is involved
-12. exact owning Issue, PR base/head, checks, receipts and nearest scoped `AGENTS.md`
+11. `.actiongate/local-handoff-queue.json` for local/provider/physical/Human work
+12. exact owning Issue, PR base/head/tree, checks, receipts, and nearest scoped `AGENTS.md`
 13. only the applicable procedure delta from `ed3c/skills-shared`
 
 Never reconstruct an exact handoff from prior chat.
 
-## Exact-subject law
+## Authority
 
-The checked-out Git commit/tree is technical truth. A PDF, article, private Doc, Issue, branch, Draft PR, prompt packet, process exit or model statement is not implementation completion.
+- checked-out Git commit/tree: public technical truth;
+- private connected context or ignored local binding: private intent/source context only;
+- `ed3c/skills-shared`: reusable Tech Lead / Shadow / Git Town method authority;
+- Human/organization: legal/security acceptance, merge, release, production, visibility, and public/private-boundary decisions.
 
-Stable integrated receipts:
+Do not commit private URLs, private business/customer/career/roadmap material, employer source/protocol/test vectors, credentials, stable device identifiers, or private reasoning.
 
-```text
-#14 C00       fee8c290061542bfb93e27ddcc33cce7fbf8c653
-#15 S01       8810fe41f66ad1b4fe80db5f93bf9539e2a38899
-#16 D00       76efa9297d147712bb9dfbb9e797d69ca9432a99
-#42 D00-MAIN  71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99
-#44 D00-DELTA 53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d
-```
+A private source may produce a redacted technical delta. It cannot directly prove code, tests, PR state, user behavior, payment, legal clearance, or release.
 
-P0/P1 are closed at their declared cloud/static/source ceilings. P2 remains open.
+## Current exact P2 route
 
-## Current P2 truth
+Frozen contract:
 
 ```text
-PR #17 C01 contract        DRAFT_PREPARATION
-PR #34 Kotlin              PREPARATION_ONLY
-PR #35 Swift               PREPARATION_ONLY
-PR #36 TypeScript          PREPARATION_ONLY
-PR #38 execution control   DRAFT_PREPARATION
-Issue #39                  CLOSED_PREPARATION_ONLY
-PR #41 launch packets      DRAFT_PUBLISHED / NOT_LAUNCHED
-Issue #26                  INDEPENDENT_SHADOW NOT_EXERCISED
-Issue #24                  C01_CONVERGENCE BLOCKED_BY_WORKERS
+PR #17
+b63589e5a16e82fda1a9554227f2ebbb55398c8a
 ```
 
-Only #24 may emit `C01_ADMITTED | HOLD | REJECT`. Keep #17/#34/#35/#36/#38/#41 Draft/open until their owning receipts and convergence exist.
-
-## Public/private route
-
-Private intent and private source locations are not stored here. Authorized private resolution uses ignored local bindings/environment variables; tracked files contain only their names and redacted state.
-
-Never commit, print, log or place in an Issue/PR:
+Current path-disjoint language candidates:
 
 ```text
-private URLs/content
-customer or pricing data
-career strategy/private roadmap
-employer source/protocols/test vectors
-credentials/stable device identifiers
-private reasoning
+Kotlin      PR #34  cf589a0990aaaa6422be9c649b52b44230d570f6  Issue #18 CLOSED at local-deterministic ceiling
+Swift       PR #35  039827061f54aa72e2b81365a4c904d25833f83e  Issue #19 CLOSED at local-deterministic ceiling
+TypeScript  PR #36  3ed9f0307df0937028bbf52fe8fbd2a6621acafe  Issue #20 CLOSED at local-deterministic ceiling
 ```
 
-Private context may generate a redacted technical delta; it cannot prove code, checks, PR state, user behavior, payment or legal clearance.
+Historical process subjects retained by exact commit:
 
-## Article/PDF law
+```text
+PR #38 CLOSED unmerged  9f41038240837ea2dd9dcdb9befd13e6ba81a78e
+PR #41 CLOSED unmerged  98c9545c0dd2bbfdabdaf27c8a992822a78b3840
+PR #59 CLOSED unmerged  ce57d5db1e71223f18d1095024297391a36611f3
+```
 
-Source material can be classified, retained as a hypothesis, rejected as an overclaim or routed to an evidence owner. It cannot prove implementation, runtime, hardware, current policy/legal rights, user value, payment, merge, release or production.
+Current admission chain:
 
-Do not silently replace unsupported numbers. Use the Claim Ledger and Problem Closure Matrix.
+```text
+PR #61 profile-v2 independent-review dispatch
+  2998b0a93d23ddfca0934250d82bdbd892f2c84b
+        ↓ EXTERNAL_EVIDENCE
+Issue #26 independent read-only Shadow
+  NOT_EXERCISED
+        ↓
+PR #63 fail-closed convergence control
+  e4196305284b4751286b01f5d1d33e82fc34af0b
+        ↓
+Issue #24 sole C01 semantic convergence owner
+  C01_ADMITTED | HOLD | REJECT
+        ↓ C01_ADMITTED only
+Issues #25/#28 K01 preparation
+```
 
-## Tech Lead procedure
+Do not merge PR #17/#34/#35/#36/#61/#63 before the owning admission path permits it. A Draft/mergeable state is not admission.
 
-1. Bind repository, exact base/head/tree, Issue, objective, non-goals, lease, rollback and Human-owned operations.
-2. Extract invariants, unknowns, ports, failure conditions, positive oracle, falsifiers and evidence ceiling.
-3. Keep start and completion dependencies separate.
-4. `TRUE_CHILD` only when unmerged parent bytes/contracts are consumed.
-5. Keep path-disjoint Workers as siblings.
-6. Treat Worker output as candidate evidence.
-7. Verify the complete denominator on the exact subject.
-8. Use one semantic/aggregate convergence owner.
-9. Compile unavailable work into Local Handoff.
-10. Re-read current main, all relevant open/closed PRs, review threads and workflows immediately before closure/merge.
+## Current provenance route
 
-## Shadow monitor
+PRV01 provenance-control candidate:
 
-Shadow is read-only; it never becomes a second implementation writer.
+```text
+PR #54
+d9716d029578608b6179c56def6f7ea8c3728146
+```
+
+It is hosted-deterministic static-control evidence only. Issue #55 must be executed by a reviewer that did not implement/repair PR #54. Issue #56 remains blocked until independent admission, explicit Human merge, actual merge, and post-merge main readback.
+
+No public upstream, Fork/derived-source relation, employment non-overlap, legal clearance, or release may be inferred from the control plane alone.
+
+## Tech Lead laws
+
+1. Bind repository, exact base/head/tree, Issue, objective, non-goals, lease, rollback, and Human-owned operations.
+2. Separate start dependencies from completion dependencies.
+3. `TRUE_CHILD` only when unmerged parent bytes/contracts are consumed.
+4. Keep path-disjoint workers `SIBLING`.
+5. Review/physical/Human lanes are `EXTERNAL_EVIDENCE`, not Git parents.
+6. Completed but superseded subjects are `HISTORICAL`; retain their exact identity.
+7. Worker output is candidate evidence until its owning convergence gate admits it.
+8. Verify the complete denominator; do not delete unavailable or failing controls.
+9. Use one semantic convergence owner and one aggregate-index writer.
+10. Compile unavailable work into Local Handoff with exactly one ACTIVE execution item.
+11. Re-read current main, current PR heads, issue states, checks, and receipts immediately before closure or merge.
+
+## Shadow Architect Monitor
+
+Shadow is read-only and does not become a second implementation writer.
 
 Classify:
 
@@ -107,64 +122,165 @@ FAILURE_SURFACE_DELTA
 EVIDENCE_DELTA
 ```
 
-Use `L3 BLOCK` for private leakage, privilege expansion, model-owned authorization, ambiguous signing bytes, stale evidence promotion, false dependency serialization, destructive history without rollback, irreversible effects without idempotency/reconciliation or physical claims without physical evidence.
-
-`SAME_CONTEXT_READ_ONLY_SHADOW` must say `INDEPENDENCE_NOT_CLAIMED` and cannot close #26.
-
-## Closure law
-
-Valid terminals:
+Block on:
 
 ```text
-VERIFIED
-SATISFIED_BY_PRIOR_EVIDENCE
-NOT_APPLICABLE_WITH_EVIDENCE
-BLOCKED
-FAILED
-WAIVED_WITH_AUTHORIZED_REASON
+private leakage
+stale exact subject
+false Git dependency
+overlapping lease
+ambiguous canonical/signing bytes
+denominator shrinkage
+same-context review promoted to independent evidence
+workflow green promoted beyond its lane
+model/planner text used as authorization
+missing replay/idempotency/reconciliation for irreversible effects
+physical claim without physical evidence
+legal/release/production authority widening
 ```
 
-`MENTIONED`, `PLANNED`, `DRAFT_PUBLISHED`, `MERGEABLE`, `LAUNCH_REQUESTED`, tool presence and `EXECUTED_PENDING_VERIFICATION` are not closure.
+`SAME_CONTEXT_READ_ONLY_SHADOW` must say `INDEPENDENCE_NOT_CLAIMED`. It cannot satisfy Issue #26 or Issue #55.
 
-Issue #39 is closed only for launch-packet preparation. PR #41 is not a running Session. A merged preparation atom never satisfies implementation, independent Shadow, physical, user, paid, legal, release or production lanes.
+## Current completed leaf evidence
+
+The following are closed at their declared ceilings, not globally:
+
+```text
+#18 Kotlin canonicalization/profile hardening
+#19 Swift canonicalization/profile hardening
+#20 TypeScript canonicalization/profile hardening
+#22 runtime capability observation
+#23 exact-blob schema engine
+#27 zero-context packets
+#29 clean-room process contract
+#30 common receipt gate
+#31 PR/stale-base control
+#32 C01 epoch freeze
+#33 language preimplementation preparation
+#37 execution-control preparation
+#39 launch preparation
+#47 bounded implementation wave
+#49 same-context hardening
+#57 profile hardening
+#60 profile-v2 external-review dispatch
+#62 fail-closed convergence-control preparation
+```
+
+PR #38 and PR #41 are closed unmerged as historical exact preparation subjects. Do not treat closing an unmerged PR as main integration.
+
+## Problem-closure law
+
+For article/PDF/repository claims:
+
+```text
+SOURCE_DISPOSITION
+→ CONTRACT_DEFINED
+→ LOCAL_DETERMINISTIC_VERIFIED
+→ INTEGRATION_VERIFIED
+→ LIVE_PHYSICAL_VERIFIED
+→ INDEPENDENT_SECURITY_ADMITTED
+→ USER_OBSERVED
+→ PAID_OBSERVED
+→ HUMAN_RELEASE_ADMITTED
+```
+
+No cheaper rung substitutes for a later rung.
+
+Use `docs/traceability/PROBLEM_CLOSURE_MATRIX.md`. Do not silently replace unsupported source numbers or market claims with model knowledge.
 
 ## Stack law
 
-- one writer per mutable subject;
-- dedicated branch/worktree and disjoint path/resource lease;
-- sibling branches stay siblings absent real unmerged-byte dependency;
-- PR #41 is a true child of PR #38 and a routing sibling of PR #34/#35/#36;
-- parent movement makes affected receipts stale;
-- no silent rebase/fast-forward of non-empty Worker branches;
-- review-only Shadow is not a Git parent;
-- merge/release/production/visibility/legal/security/authority widening are Human-owned.
-
-## Handoff contract
-
-Every packet binds repository, Issue, stage/atom, exact base/head/tree, branch/PR, lease, private-context state without locators, input receipts, outputs, commands/exits, evidence lane/state, Shadow deltas/dissent, blockers, next entry condition and Human-owned operations.
-
-No secrets, private URLs, stable device identifiers or private reasoning.
-
-## Current Local Handoff
-
-`LH-MAIN-001` is ACTIVE. It resolves the then-current `origin/main`, binds exact SHA/tree, proves these ancestors:
+Use only:
 
 ```text
-fee8c290061542bfb93e27ddcc33cce7fbf8c653
-8810fe41f66ad1b4fe80db5f93bf9539e2a38899
-76efa9297d147712bb9dfbb9e797d69ca9432a99
-71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99
-53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d
+SIBLING
+TRUE_CHILD
+CONVERGENCE
+PROCESS_DEPENDENCY
+EXTERNAL_EVIDENCE
+HISTORICAL
 ```
 
-It parses machine contracts and checks public/private and clean-room separation. It authorizes no reset, rebase, sync, push, semantic resolution, release or production.
+Current important relations:
 
-`C01-SESSION-003` requires exact PR #41 head `98c9545c0dd2bbfdabdaf27c8a992822a78b3840`, a current selected Worker head, a Human clean-room declaration and a fresh public-input-only Session/runtime re-probe. This context cannot self-certify the gate.
+```text
+C01 -> PR #34/#35/#36            SIBLING
+historical PR #38/#41/#59        HISTORICAL exact evidence
+PR #61 -> PR #63                 TRUE_CHILD
+Issue #26                        EXTERNAL_EVIDENCE
+Issue #24                        CONVERGENCE
+PR #54 -> Issue #55              EXTERNAL_EVIDENCE
+```
+
+Do not infer dependency from chronology.
+
+## Directory/data-flow law
+
+- `contracts/v1/**`: C01 oracle; Workers cannot mutate it.
+- `contracts/impl/kotlin/**`: Kotlin candidate.
+- `contracts/impl/swift/**`: Swift candidate.
+- `contracts/impl/typescript/**`: TypeScript candidate.
+- `.actiongate/c01-shadow-dispatch/profile-v2/**`: Issue #26 external-review packet.
+- `.actiongate/c01-convergence/profile-v2/**`: fail-closed Issue #24 convergence controller.
+- `.provenance/**` / `docs/provenance/**`: PRV01 source/clean-room governance candidate.
+- `packages/core-domain/**` / `packages/policy/**`: future K01 only after C01 admission.
+- `packages/sdk-android/**`, `packages/sdk-ios/**`, `packages/mcp-middleware-*`: later sibling adapters.
+- aggregate README/AGENTS/DAG/Stack/Problem Matrix: one D convergence writer only.
+
+## Local Handoff
+
+Machine authority: `.actiongate/local-handoff-queue.json`.
+
+Exactly one item is ACTIVE. Queue selection is operational scheduling and never fabricates Git ancestry.
+
+Current ACTIVE:
+
+```text
+LH-MAIN-001
+```
+
+Run on a trusted personal clean host. Resolve the then-current `origin/main`, bind exact SHA/tree, validate stable integration ancestors and JSON/doc presence, and read current open/closed PR topology. No reset, rebase, sync, push, merge, install, release, or production action is authorized.
+
+After a valid receipt, the controller may select exactly one eligible candidate:
+
+```text
+LH-STACK-002            local Git Town/ancestry observation
+C01-EXT-SHADOW-003      independent Issue #26 against PR #61 / current Workers
+PRV01-EXT-SHADOW-004    independent Issue #55 against PR #54
+```
+
+Later physical Android/iOS and Human/security/legal lanes remain separate.
 
 ## Stop conditions
 
-Stop on stale subject, missing task, false dependency, overlapping lease, private leakage, unsupported source claim promoted to fact, ambiguous canonicalization/signature payload, missing idempotency/replay/reconciliation, absent oracle, unavailable capability, semantic conflict, denominator shrinkage, unhandled late state, budget exhaustion or Human-owned operation.
+Stop on stale subject, missing task, false dependency, overlapping lease, private leakage, unsupported source claim promoted to fact, ambiguous canonicalization/signature payload, absent oracle, unavailable capability, semantic conflict, denominator shrinkage, stale receipt, unhandled late state, or Human-owned operation.
 
 ## Evidence ceiling
 
-Highest integrated state: merged control/source/handoff documentation plus Draft C01 execution and launch preparation. Product mechanisms, actual Worker Sessions, C01 admission, physical devices, independent security, user value, legal clearance, release and production remain unproven.
+Current highest earned repository evidence is:
+
+```text
+three C01 language candidates:
+  local-deterministic profile-hardened PASS
+
+profile-v2 independent-review dispatch:
+  hosted-green
+
+fail-closed convergence control:
+  hosted-green
+
+PRV01 provenance control:
+  hosted deterministic static-control candidate
+
+independent C01/provenance review:
+  NOT_EXERCISED
+
+C01_ADMITTED:
+  ABSENT
+
+P3-P6 / hardware / MCP:
+  NOT_IMPLEMENTED or NOT_EXERCISED
+
+legal / release / production:
+  HUMAN_ADMIT_REQUIRED or NOT_PERFORMED
+```
