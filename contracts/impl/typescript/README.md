@@ -1,59 +1,64 @@
 # C01 TypeScript Canonicalization Worker
 
-Status: `IMPLEMENTATION_CANDIDATE_LOCAL_DETERMINISTIC`; independent Shadow and C01 convergence remain separate.
+Status: `SHADOW_HARDENED_LOCAL_DETERMINISTIC`; independent Shadow #26 and C01 convergence #24 remain separate.
 
 ## State Machine
 
 ```text
-DISPATCH_BOUND
-→ TOOLCHAIN_PROBED
-→ IMPLEMENTATION_PLAN_FROZEN
-→ CANONICALIZER_IMPLEMENTED
-→ POSITIVE_VECTORS_VERIFIED
-→ NEGATIVE_CONTROLS_VERIFIED
-→ SHADOW_READBACK
-→ DRAFT_CANDIDATE
+C01_CONTRACT_BOUND
+→ LANGUAGE_IMPLEMENTED
+→ FROZEN_VECTORS_PASS
+→ COMMON_NEGATIVE_DENOMINATOR_PASS
+→ SHADOW_HARDENING_REPAIRED
+→ SUCCESSOR_RECEIPT
+→ INDEPENDENT_SHADOW_PENDING
 ```
-
-The implementation wave reached `SHADOW_READBACK` on the local deterministic lane. The durable receipt is added in a successor evidence commit and binds the implementation candidate subject immediately before that receipt commit.
 
 ## Data flow
 
 ```text
-read-only C01 profile/schema/vectors
+frozen C01 profile/schema/vectors
         ↓
-restricted TypeScript value validator
+restricted TypeScript value adapter
         ↓
-explicit key sorting + UTF-8 JSON encoding
+canonical UTF-8 JSON + exact ASCII domain bytes
         ↓
-Node built-in SHA-256 + base64url
+SHA-256 / base64url vectors
         ↓
-positive vectors + negative controls
+common 3-positive + 7-negative receipt
         ↓
-RECEIPT.json
+extra Shadow hardening controls
         ↓
-Issue #26 independent Shadow
+Issue #26 independent review
         ↓
 Issue #24 C01 convergence
 ```
 
-## Implementation surface
+## Hardened surface
 
 ```text
-src/actionGateCanonical.ts
-  restricted validation, canonical JSON, hashing, raw duplicate-key parser
-
-tests/test.ts
-  three positive hashes, ordering, float/range/key/type/duplicate/surrogate/Unicode controls
-
-tsconfig.json + run.sh
-  no-download TypeScript compile and Node test lane
+src/actionGateCanonical.ts, tests/test.ts
 ```
 
-## Deterministic command
+Hardening under Issue #49 adds:
+
+- escaped duplicate-key equivalence
+- raw surrogate-pair acceptance
+- raw lone-surrogate rejection
+- non-ASCII domain rejection
+- missing-NUL rejection
+- cyclic-container rejection
+- sparse-array rejection
+- accessor rejection
+- symbol-key rejection
+- leading-zero grammar rejection
+
+Run:
 
 ```bash
 ./run.sh
 ```
 
-No MCP SDK, protected-tool middleware, mobile, persistence or product implementation is present. A local green run is not independent review, C01 admission, hardware, integration, security, merge or release evidence.
+The exact hardened source/test blobs are recorded in `SHADOW_IMPLEMENTATION.receipt.json`. The final `RECEIPT.json` is a successor evidence commit that binds the immediately preceding implementation metadata subject.
+
+No Android/iOS hardware, MCP, persistence, independent-security, merge or release claim is made.
