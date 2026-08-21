@@ -7,6 +7,11 @@ import java.util.Base64
 import java.util.IdentityHashMap
 
 private const val MAX_SAFE_INTEGER: Long = 9_007_199_254_740_991L
+private const val MAX_SAFE_INTEGER_TEXT = "9007199254740991"
+private const val ARGUMENTS_DOMAIN = "ActionGate-Arguments-v1\u0000"
+private const val ACTION_ENVELOPE_DOMAIN = "ActionGate-ActionEnvelope-v1\u0000"
+private const val AUTHORIZATION_CHALLENGE_DOMAIN = "ActionGate-AuthorizationChallenge-v1\u0000"
+private val DIGEST_DOMAINS = setOf(ARGUMENTS_DOMAIN, ACTION_ENVELOPE_DOMAIN)
 private val KEY_PATTERN = Regex("^[A-Za-z0-9_.:-]+$")
 
 class CanonicalizationException(message: String) : IllegalArgumentException(message)
@@ -28,7 +33,7 @@ object ActionGateCanonical {
 
     fun digestBase64Url(domain: String, value: Any?): String {
         val digest = MessageDigest.getInstance("SHA-256")
-        digest.update(domainBytes(domain))
+        digest.update(domainBytes(domain, DIGEST_DOMAINS))
         digest.update(canonicalBytes(value))
         return Base64.getUrlEncoder().withoutPadding().encodeToString(digest.digest())
     }
@@ -39,21 +44,26 @@ object ActionGateCanonical {
 
     fun authorizationSigningInput(challenge: Any?): ByteArray {
         val out = ByteArrayOutputStream()
-        out.write(domainBytes("ActionGate-AuthorizationChallenge-v1\u0000"))
+        out.write(domainBytes(AUTHORIZATION_CHALLENGE_DOMAIN, setOf(AUTHORIZATION_CHALLENGE_DOMAIN)))
         out.write(canonicalBytes(challenge))
         return out.toByteArray()
     }
 
-    fun assertNoDuplicateKeys(raw: String) {
-        DuplicateKeyParser(raw).parseDocument()
+    fun assertCanonicalJsonInput(raw: String) {
+        RestrictedJsonParser(raw).parseDocument()
     }
 
-    private fun domainBytes(domain: String): ByteArray {
+    fun assertNoDuplicateKeys(raw: String) = assertCanonicalJsonInput(raw)
+
+    private fun domainBytes(domain: String, allowed: Set<String>): ByteArray {
         if (!domain.endsWith('\u0000')) {
             throw CanonicalizationException("domain must end with NUL")
         }
         if (domain.any { it.code > 0x7f }) {
             throw CanonicalizationException("domain must contain exact ASCII bytes")
+        }
+        if (domain !in allowed) {
+            throw CanonicalizationException("unregistered domain label")
         }
         return domain.toByteArray(StandardCharsets.US_ASCII)
     }
@@ -177,7 +187,7 @@ private fun validateUnicodeString(value: String) {
     }
 }
 
-private class DuplicateKeyParser(private val source: String) {
+private class RestrictedJsonParser(private val source: String) {
     private var index = 0
 
     fun parseDocument() {
@@ -197,7 +207,7 @@ private class DuplicateKeyParser(private val source: String) {
             't' -> expectLiteral("true")
             'f' -> expectLiteral("false")
             'n' -> expectLiteral("null")
-            '-', in '0'..'9' -> parseNumber()
+            '-', in '0'..'9' -> parseInteger()
             else -> fail("invalid value")
         }
     }
@@ -210,6 +220,7 @@ private class DuplicateKeyParser(private val source: String) {
         while (true) {
             skipWhitespace()
             val key = parseString()
+            if (!KEY_PATTERN.matches(key)) fail("invalid object key")
             if (!keys.add(key)) throw CanonicalizationException("duplicate object key: $key")
             skipWhitespace()
             expect(':')
@@ -273,24 +284,25 @@ private class DuplicateKeyParser(private val source: String) {
         return hex.toInt(16).toChar()
     }
 
-    private fun parseNumber() {
-        if (consume('-') && index >= source.length) fail("bad number")
+    private fun parseInteger() {
+        consume('-')
+        if (index >= source.length) fail("bad number")
+        val digitStart = index
         if (consume('0')) {
             if (index < source.length && source[index] in '0'..'9') fail("leading zero")
         } else {
-            if (index >= source.length || source[index] !in '1'..'9') fail("bad number")
+            if (source[index] !in '1'..'9') fail("bad number")
             while (index < source.length && source[index] in '0'..'9') index++
         }
-        if (index < source.length && source[index] == '.') {
-            index++
-            if (index >= source.length || source[index] !in '0'..'9') fail("bad fraction")
-            while (index < source.length && source[index] in '0'..'9') index++
+        if (index < source.length && (source[index] == '.' || source[index] == 'e' || source[index] == 'E')) {
+            fail("fraction or exponent number is forbidden")
         }
-        if (index < source.length && (source[index] == 'e' || source[index] == 'E')) {
-            index++
-            if (index < source.length && (source[index] == '+' || source[index] == '-')) index++
-            if (index >= source.length || source[index] !in '0'..'9') fail("bad exponent")
-            while (index < source.length && source[index] in '0'..'9') index++
+        val rawDigits = source.substring(digitStart, index)
+        val magnitude = rawDigits.trimStart('0').ifEmpty { "0" }
+        if (magnitude.length > MAX_SAFE_INTEGER_TEXT.length ||
+            (magnitude.length == MAX_SAFE_INTEGER_TEXT.length && magnitude > MAX_SAFE_INTEGER_TEXT)
+        ) {
+            fail("integer outside safe range")
         }
     }
 
