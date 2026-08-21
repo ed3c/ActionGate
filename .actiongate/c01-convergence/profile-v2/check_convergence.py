@@ -2,7 +2,6 @@
 from __future__ import annotations
 import argparse, hashlib, json
 from pathlib import Path
-
 ROOT=Path(__file__).resolve().parent
 REG=ROOT/"convergence-registry.json"; PHASE=ROOT/"phase-status.json"; CONTRACT=ROOT/"independent-review.contract.json"
 class Refusal(RuntimeError): pass
@@ -39,6 +38,7 @@ def validate_review(r,reg,contract):
     rr=r.get("reviewer",{})
     for k,v in contract["required_reviewer_state"].items():
         if rr.get(k)!=v: raise Refusal("review independence "+k)
+    if rr.get("kind") not in ("EXTERNAL_CODEX_REPLAY","EXTERNAL_HUMAN_REVIEWER","OTHER_SEPARATE_READ_ONLY_SESSION"): raise Refusal("reviewer kind")
     if not isinstance(rr.get("context_id"),str) or len(rr["context_id"])<8 or rr["context_id"]=="UNSET000": raise Refusal("review context")
     a=r.get("audited_subjects",{})
     if a.get("contract_epoch")!=contract["contract_epoch"] or a.get("common_evidence")!=contract["common_evidence"]: raise Refusal("audited contract drift")
@@ -54,6 +54,7 @@ def validate_review(r,reg,contract):
     if private(r): raise Refusal("private/secret shape")
     return v
 def derive(r,reg,contract,subject):
+    if not isinstance(subject,str) or len(subject)!=40 or any(ch not in "0123456789abcdef" for ch in subject) or subject=="0"*40: raise Refusal("control subject must be exact non-zero SHA")
     v=validate_review(r,reg,contract); decision={"ELIGIBLE_FOR_C01_CONVERGENCE":"C01_ADMITTED","HOLD":"HOLD","REJECT":"REJECT"}[v]; ok=decision=="C01_ADMITTED"
     return {"schema":"actiongate-c01-convergence-decision/v1","repository":"ed3c/ActionGate","issue":24,"control_issue":62,"control_subject":subject,
       "independent_review_digest":hashlib.sha256(json.dumps(r,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()).hexdigest(),
@@ -62,7 +63,7 @@ def derive(r,reg,contract,subject):
       "dissent":r.get("dissent",[]),"evidence_ceiling":"C01 contract/canonicalization admission only; no hardware, MCP, integration, security/legal, merge, release or production proof",
       "human_owned":["semantic conflict resolution","merge","release","production","security/legal acceptance"]}
 def main():
-    p=argparse.ArgumentParser(); p.add_argument("--review-receipt"); p.add_argument("--control-subject",default="0"*40); p.add_argument("--emit-candidate"); x=p.parse_args()
+    p=argparse.ArgumentParser(); p.add_argument("--review-receipt"); p.add_argument("--control-subject"); p.add_argument("--emit-candidate"); x=p.parse_args()
     reg,phase,contract=load(REG),load(PHASE),load(CONTRACT); check(reg,phase,contract)
     if not x.review_receipt:
         print("C01 convergence structural control: PASS"); print("Independent review: NOT_EXERCISED; admission remains BLOCKED"); return

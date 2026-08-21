@@ -1,22 +1,20 @@
 {
-  "evidence_ceiling": "same-context public/static convergence-control review only",
-  "findings": [
+  "evidence_ceiling":"same-context public/static convergence-control review only",
+  "findings":[
     {"class":"AUTHORITY_DELTA","finding":"Issue #24 admission cannot be automated from Builder/same-context evidence.","id":"SH-CV-001","resolution":"#62 emits candidate decisions only; final Issue #24 verdict remains outside this atom."},
     {"class":"EVIDENCE_DELTA","finding":"A schema-valid independent receipt could still contain stale subjects or an incomplete denominator.","id":"SH-CV-002","resolution":"Validator binds dispatch/contract/Worker subjects and exact 33-falsifier set."},
     {"class":"LIFECYCLE_DELTA","finding":"C01_ADMITTED could be misread as permission to start K01 or merge the stack.","id":"SH-CV-003","resolution":"K01 start and merge/release/production flags are fixed false."},
     {"class":"STATE_DELTA","finding":"PR #59 remained open after PR #61 superseded its review epoch.","id":"SH-CV-004","resolution":"PR #59 closed unmerged as superseded historical evidence."},
-    {"class":"STATE_DELTA","finding":"PV01 PR #50 and Issue #52 duplicated/superseded the hardened #54/#56 route.","id":"SH-CV-005","resolution":"PR #50 and Issue #52 closed as superseded historical paths."}
+    {"class":"STATE_DELTA","finding":"PV01 PR #50 and Issue #52 duplicated/superseded the hardened #54/#56 route.","id":"SH-CV-005","resolution":"PR #50 and Issue #52 closed as superseded historical paths."},
+    {"class":"EVIDENCE_DELTA","finding":"The external-receipt CLI allowed an omitted control subject, yielding a syntactically valid all-zero SHA candidate.","id":"SH-CV-006","resolution":"Require a non-zero 40-hex --control-subject whenever deriving a decision candidate."},
+    {"class":"AUTHORITY_DELTA","finding":"The manual validator enforced reviewer booleans but did not re-check the profile-v2 reviewer kind allowlist.","id":"SH-CV-007","resolution":"Restrict reviewer kind to EXTERNAL_CODEX_REPLAY, EXTERNAL_HUMAN_REVIEWER, or OTHER_SEPARATE_READ_ONLY_SESSION."}
   ],
-  "independence": "NOT_CLAIMED",
-  "issue": 62,
-  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
-  "remaining_dissent": [
-    "Issue #26 independent review is not exercised.",
-    "No C01_ADMITTED receipt exists.",
-    "K01, Android/iOS, MCP, integration, security/legal, merge, release and production remain blocked or Human-owned."
-  ],
-  "repository": "ed3c/ActionGate",
-  "schema": "actiongate-shadow-receipt/v1",
-  "subject": {"base_commit":"2998b0a93d23ddfca0934250d82bdbd892f2c84b","base_tree":"e535e6fa031c84697d9b0b5cb96ee90a64286a08"},
-  "verdict": "C01_CONVERGENCE_CONTROL_CANDIDATE_READY_FOR_HOSTED_VERIFICATION"
+  "independence":"NOT_CLAIMED",
+  "issue":62,
+  "observer_kind":"SAME_CONTEXT_READ_ONLY_SHADOW",
+  "remaining_dissent":["Issue #26 independent review is not exercised.","No C01_ADMITTED receipt exists.","K01, Android/iOS, MCP, integration, security/legal, merge, release and production remain blocked or Human-owned."],
+  "repository":"ed3c/ActionGate",
+  "schema":"actiongate-shadow-receipt/v1",
+  "subject":{"base_commit":"2998b0a93d23ddfca0934250d82bdbd892f2c84b","base_tree":"e535e6fa031c84697d9b0b5cb96ee90a64286a08"},
+  "verdict":"C01_CONVERGENCE_CONTROL_REPAIR_CANDIDATE_READY_FOR_HOSTED_VERIFICATION"
 }

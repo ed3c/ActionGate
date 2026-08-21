@@ -19,6 +19,8 @@ def review(verdict="ELIGIBLE_FOR_C01_CONVERGENCE"):
 c.check(reg,phase,contract)
 r=review(); assert c.validate_review(r,reg,contract)=="ELIGIBLE_FOR_C01_CONVERGENCE"
 d=c.derive(r,reg,contract,"1"*40); assert d["decision"]=="C01_ADMITTED" and d["k01_completion_eligible"] and not d["k01_start_authorized"]
+refuse("missing_control_subject",lambda:c.derive(r,reg,contract,None))
+rk=review(); rk["reviewer"]["kind"]="SAME_CONTEXT"; refuse("unknown_reviewer_kind",lambda:c.validate_review(rk,reg,contract))
 refuse("missing_independent_receipt",lambda:c.derive({},reg,contract,"1"*40))
 r=review(); r["reviewer"]["same_context_as_builder"]=True; refuse("same_context_review",lambda:c.validate_review(r,reg,contract))
 r=review(); r["dispatch_epoch"]="2"*40; refuse("review_subject_drift",lambda:c.validate_review(r,reg,contract))
@@ -33,4 +35,4 @@ r=review(); r["evidence_ceiling"]="hardware MCP integration PASS"; refuse("hardw
 p=copy.deepcopy(phase); p["k01_start_authorized"]=True; refuse("automatic_k01_start",lambda:c.check(reg,p,contract))
 p=copy.deepcopy(phase); p["merge_authorized"]=True; refuse("automatic_merge_release_production",lambda:c.check(reg,p,contract))
 rr=copy.deepcopy(reg); rr["stack"]["base_commit"]="5"*40; refuse("stale_dispatch_epoch",lambda:c.check(rr,phase,contract))
-print("C01 convergence selftest: PASS 14/14")
+print("C01 convergence selftest: PASS 16/16")
