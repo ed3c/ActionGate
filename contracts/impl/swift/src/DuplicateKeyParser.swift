@@ -1,4 +1,6 @@
-struct DuplicateKeyParser {
+private let maxSafeIntegerText = "9007199254740991"
+
+struct RestrictedJSONParser {
     private let scalars: [UnicodeScalar]
     private var index = 0
 
@@ -23,7 +25,7 @@ struct DuplicateKeyParser {
         case 0x74: try expectLiteral("true")
         case 0x66: try expectLiteral("false")
         case 0x6E: try expectLiteral("null")
-        case 0x2D, 0x30...0x39: try parseNumber()
+        case 0x2D, 0x30...0x39: try parseInteger()
         default: throw error("invalid value")
         }
     }
@@ -36,6 +38,7 @@ struct DuplicateKeyParser {
         while true {
             skipWhitespace()
             let key = try parseString()
+            guard isValidActionGateKey(key) else { throw error("invalid object key") }
             guard keys.insert(key).inserted else {
                 throw CanonicalizationError.invalid("duplicate object key: \(key)")
             }
@@ -114,24 +117,25 @@ struct DuplicateKeyParser {
         return value
     }
 
-    private mutating func parseNumber() throws {
+    private mutating func parseInteger() throws {
         _ = consume("-")
         guard index < scalars.count else { throw error("bad number") }
+        let digitStart = index
         if consume("0") {
             if index < scalars.count && isDigit(scalars[index]) { throw error("leading zero") }
         } else {
             guard isDigit(scalars[index]), scalars[index] != "0" else { throw error("bad number") }
             while index < scalars.count && isDigit(scalars[index]) { index += 1 }
         }
-        if consume(".") {
-            guard index < scalars.count && isDigit(scalars[index]) else { throw error("bad fraction") }
-            while index < scalars.count && isDigit(scalars[index]) { index += 1 }
+        if index < scalars.count && (scalars[index] == "." || scalars[index] == "e" || scalars[index] == "E") {
+            throw error("fraction or exponent number is forbidden")
         }
-        if index < scalars.count && (scalars[index] == "e" || scalars[index] == "E") {
-            index += 1
-            if index < scalars.count && (scalars[index] == "+" || scalars[index] == "-") { index += 1 }
-            guard index < scalars.count && isDigit(scalars[index]) else { throw error("bad exponent") }
-            while index < scalars.count && isDigit(scalars[index]) { index += 1 }
+        let digits = String(String.UnicodeScalarView(scalars[digitStart..<index]))
+        let trimmed = String(digits.drop(while: { $0 == "0" }))
+        let magnitude = trimmed.isEmpty ? "0" : trimmed
+        if magnitude.count > maxSafeIntegerText.count ||
+            (magnitude.count == maxSafeIntegerText.count && magnitude > maxSafeIntegerText) {
+            throw error("integer outside safe range")
         }
     }
 
