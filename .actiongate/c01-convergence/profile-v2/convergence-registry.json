@@ -1,0 +1,22 @@
+{
+  "authority":{"automatic_k01_start":false,"automatic_merge":false,"automatic_production":false,"automatic_release":false,"this_atom_may_emit_final_issue24_verdict":false,"this_atom_may_fabricate_review":false,"this_atom_may_validate_review":true},
+  "common_evidence":"9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
+  "contract_epoch":"b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "dispatch":{"current_head":"2998b0a93d23ddfca0934250d82bdbd892f2c84b","current_tree":"e535e6fa031c84697d9b0b5cb96ee90a64286a08","dispatch_candidate":"23ee1763bea2703f732482952b6312d751faf8cb","dispatch_candidate_tree":"bd34215ad036be41b5a2333b9b36b076bcddabc6","issue":60,"pr":61},
+  "evidence_ceiling":"public hosted deterministic convergence-control preparation only",
+  "independent_review":{"external_separate_context_required":true,"issue":26,"receipt_present":false,"required_verdict_for_admit":"ELIGIBLE_FOR_C01_CONVERGENCE","schema":"actiongate-c01-independent-review-receipt/v2"},
+  "issue":62,
+  "repository":"ed3c/ActionGate",
+  "required_falsifiers":["three_frozen_hashes","ordering","float_rejected","unsafe_integer_rejected","invalid_key_rejected","unsupported_value_rejected","duplicate_key_control","unicode_no_normalization","accessor_rejection","escaped_native_duplicate_equivalence","exact_ascii_domain_trailing_nul","extra_array_property_rejection","leading_zero_rejection","lone_surrogate_rejection","missing_nul_rejected","mutable_foundation_container_rejection","non_ascii_domain_rejected","recursive_container_rejection","sha256_known_answer_vectors","sparse_array_rejection","surrogate_pair_acceptance","symbol_key_rejection","unsupported_prototype_rejection","registered_domain_allowlist","unknown_domain_rejected","embedded_nul_domain_rejected","raw_ascii_key_profile","raw_fraction_rejected","raw_exponent_rejected","raw_positive_unsafe_integer_rejected","raw_negative_unsafe_integer_rejected","raw_safe_integer_boundaries","raw_negative_zero_accepted"],
+  "schema":"actiongate-c01-convergence-control/v1",
+  "semantic_owner":{"allowed_verdicts":["C01_ADMITTED","HOLD","REJECT"],"issue":24},
+  "stack":{"base_branch":"ag/C01-profile-independent-shadow-dispatch","base_commit":"2998b0a93d23ddfca0934250d82bdbd892f2c84b","base_pr":61,"base_tree":"e535e6fa031c84697d9b0b5cb96ee90a64286a08","branch":"ag/C01-convergence-control","relation":"TRUE_CHILD_OF_PROFILE_V2_DISPATCH"},
+  "state":"C01_CONVERGENCE_CONTROL_READY_BLOCKED_BY_INDEPENDENT_RECEIPT",
+  "workers":{
+    "kotlin":{"current_head":"cf589a0990aaaa6422be9c649b52b44230d570f6","current_tree":"10a35f943aaee0b0035132100357a1adbacff7e1","receipt_blob":"73e38ebfadf4512d1fbff63ba3d6b428ee5c46a7","receipt_subject":"9420a4cdb4c7119ff56d921688a65d62ff92cf39","receipt_tree":"c4d5b2fcd70b29b993d149e7120d149c82272592","shadow_blob":"0dec1c52b2e197c24deac9d0ac2ab9c2e69c78a2","source_candidate":"0247eb1fc7201b51aded66f2c2311aa42f9ca83c","source_tree":"15a27f2d9dbaacdfbea57dc1cd37e4af284b09dc"},
+    "swift":{"current_head":"039827061f54aa72e2b81365a4c904d25833f83e","current_tree":"015cc3123b3b09ea0c087028aaea2ee052c51508","receipt_blob":"31384670f22a0ff9558a0257ec6bb916056d1942","receipt_subject":"acd6ef93dc2f17340c86d5e45fa7a56496a53d52","receipt_tree":"921a8fd1d7584991c0321bd3dadf6959b24a480c","shadow_blob":"4345e5354d49338613b5e71419dc639a7803b89a","source_candidate":"2f089d45056fd783f57f3458dc739f33a49304c7","source_tree":"684275693783c379b134bd499a7dcddeb1f0b34c"},
+    "typescript":{"current_head":"3ed9f0307df0937028bbf52fe8fbd2a6621acafe","current_tree":"17532a35f42b07e350e7785a7be11038c9cf1ba0","receipt_blob":"4b16df1f702cc4e91dcef8c873cdf8df67cdd2b6","receipt_subject":"9f4f19468fda8c32cab376484ed75855bb577277","receipt_tree":"75e8d5fd360a2f15af6a27b62aa02b765b7392a1","shadow_blob":"d398b39159e8aa4b1347315911330136c95b1504","source_candidate":"dbdcfdcd8f100c3135730bc828700ffc8239994e","source_tree":"39a40aab9f13fdcae04d3164669667aa7322029c"}},
+  "superseded_control_receipt":{"control_candidate":"5ab9df03f14e33352ad8c965538a4525f0b22a07","control_tree":"a21297a7b6ccb5979ec91cd58b01054c871be47c","run_id":32468954197,"job_id":96731496625,"reason":"SHADOW_FOUND_MISSING_EXACT_CONTROL_SUBJECT_AND_REVIEWER_KIND_GATES","may_be_used_as_current":false},
+  "control_candidate":{"commit":"79ff9e595abbadbd3decef35c5acecc635aef616","tree":"eb8ac31f9ce1df886709a14d8109c9343a0d15cf"},
+  "hosted_validation":{"workflow":"C01 Convergence Control","run_id":32469662997,"job_id":96733615094,"head_sha":"79ff9e595abbadbd3decef35c5acecc635aef616","conclusion":"success"}
+}

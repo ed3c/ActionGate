@@ -1,0 +1,15 @@
+{
+  "c01_admitted": false,
+  "evidence_ceiling": "public hosted deterministic convergence-control preparation only",
+  "independent_review": "NOT_EXERCISED",
+  "issue": 62,
+  "k01_completion_eligible": false,
+  "k01_start_authorized": false,
+  "merge_authorized": false,
+  "next_entry_condition": "A separate Issue #26 reviewer publishes a valid actiongate-c01-independent-review-receipt/v2 bound to the profile-v2 subjects.",
+  "production_authorized": false,
+  "release_authorized": false,
+  "repository": "ed3c/ActionGate",
+  "schema": "actiongate-c01-convergence-phase/v1",
+  "state": "BLOCKED_BY_INDEPENDENT_RECEIPT"
+}
