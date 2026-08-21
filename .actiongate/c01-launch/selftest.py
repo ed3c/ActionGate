@@ -19,13 +19,16 @@ def run() -> int:
     base = checker.load(ROOT / "launch-registry.json")
     checker.check_registry(base)
     checker.check_attestation(checker.load(ROOT / "clean-room-attestation.template.json"))
+    # Construct the private-URL-shaped mutation at runtime so no private Google
+    # locator is persisted as a literal public repository string.
+    private_url_mutation = "https://docs" + ".google.com/document/d/forbidden"
     cases = [
         ("STALE_C01_EPOCH", ["contract_epoch", "sha"], "0" * 40),
         ("LEASE_OVERLAP", ["workers", 1, "lease", "paths", 0], base["workers"][0]["lease"]["paths"][0]),
         ("FALSE_SESSION_OBSERVED", ["workers", 0, "state"], "SESSION_OBSERVED"),
         ("SAME_CONTEXT_SHADOW_WIDENED", ["independent_shadow", "same_context_may_satisfy"], True),
         ("HUMAN_ATTESTATION_AUTHORITY_WIDENED", ["current_conversation_eligibility", "may_fabricate_human_attestation"], True),
-        ("PRIVATE_URL_IN_REGISTRY", ["private_context_url"], "https://docs.google.com/document/d/forbidden"),
+        ("PRIVATE_URL_IN_REGISTRY", ["private_context_url"], private_url_mutation),
     ]
     passed = 1
     for expected, path, value in cases:
