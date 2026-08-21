@@ -1,17 +1,19 @@
 {
-  "schema": "actiongate-system-contract/v1",
+  "schema": "actiongate-system-contract/v2",
   "repository": "ed3c/ActionGate",
   "current_subject_policy": "resolve checked-out/current main SHA and tree at read time; mutable aliases alone are not completion evidence",
-  "last_stable_integration_predecessor": {
-    "commit": "53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d",
-    "tree": "c74e911898086eddcd19bb292dbaf6ccd6bb435d"
+  "convergence_base": {
+    "commit": "70573aed229404772827829a1ce069a6e72184fa",
+    "tree": "e31f35bf0b60977df995df6f97dde941dfe529f9",
+    "issue": 64
   },
   "global_objective": "separate probabilistic planning from deterministic protected-action authority",
   "security_invariant": "R3 tools require a fresh audience-bound exact-action-bound proof accepted under the current policy version",
   "public_private_boundary": {
     "public_authority": "GitHub exact technical subject",
-    "private_authority": "CodexDoc private intent and private source context",
+    "private_authority": "private connected intent/source context",
     "private_urls_in_public_tree": "FORBIDDEN",
+    "private_strategy_in_public_tree": "FORBIDDEN",
     "missing_private_context": "PRIVATE_CONTEXT_UNAVAILABLE"
   },
   "integrated_receipts": [
@@ -19,33 +21,45 @@
     {"atom":"S01","issue":3,"pr":15,"merge_commit":"8810fe41f66ad1b4fe80db5f93bf9539e2a38899","ceiling":"source disposition"},
     {"atom":"D00","issue":2,"pr":16,"merge_commit":"76efa9297d147712bb9dfbb9e797d69ca9432a99","ceiling":"prompt/handoff contract"},
     {"atom":"D00-MAIN","issue":40,"pr":42,"merge_commit":"71796b8c4d50fdfbcade85f9bbdf4d3ec988ba99","ceiling":"cloud/static main reconciliation"},
-    {"atom":"D00-DELTA","issue":43,"pr":44,"merge_commit":"53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d","ceiling":"cloud/static PR #41 state reconciliation"}
+    {"atom":"D00-DELTA","issue":43,"pr":44,"merge_commit":"53f1014e4c75a0083c8ebe2972e8f52f3ff33b9d","ceiling":"cloud/static state reconciliation"},
+    {"atom":"D00-FINALIZE","issue":45,"pr":46,"merge_commit":"70573aed229404772827829a1ce069a6e72184fa","ceiling":"aggregate documentation finalization"}
   ],
   "stages": [
     {"id":"P0","issue":2,"state":"PASS","disposition":"MERGED_CLOSED_AT_CLOUD_STATIC_CEILING"},
     {"id":"P1","issue":3,"state":"PASS","disposition":"MERGED_CLOSED_AT_SOURCE_DISPOSITION_CEILING"},
-    {"id":"P2","issue":4,"state":"NOT_EXERCISED","disposition":"DRAFT_CONTRACT_EXECUTION_LAUNCH_PREPARATION_OPEN"},
+    {"id":"P2","issue":4,"state":"IN_PROGRESS","disposition":"PROFILE_HARDENED_WORKERS_READY; INDEPENDENT_REVIEW_NOT_EXERCISED; C01_NOT_ADMITTED"},
     {"id":"P3","issue":5,"state":"NOT_IMPLEMENTED","disposition":"BLOCKED_BY_C01_ADMISSION"},
     {"id":"P4","issues":[6,7,8,9],"state":"NOT_IMPLEMENTED"},
     {"id":"P5","issue":10,"state":"NOT_IMPLEMENTED"},
     {"id":"P6","issue":11,"state":"NOT_IMPLEMENTED"},
-    {"id":"P7","issue":12,"state":"NOT_EXERCISED","disposition":"PARTIAL_CHECKPOINTS_40_43_LANDED"},
+    {"id":"P7","issue":12,"state":"NOT_EXERCISED","disposition":"PARTIAL_DOCUMENTATION_CHECKPOINTS_ONLY"},
     {"id":"P8","issue":13,"state":"NOT_EXERCISED","disposition":"HUMAN_ADMIT_REQUIRED"}
   ],
   "c01": {
-    "contract": {"issue":4,"pr":17,"head":"b63589e5a16e82fda1a9554227f2ebbb55398c8a","state":"DRAFT_PREPARATION"},
+    "contract": {"issue":4,"pr":17,"head":"b63589e5a16e82fda1a9554227f2ebbb55398c8a","state":"DRAFT_NOT_ADMITTED"},
     "workers": {
-      "kotlin":{"issue":18,"pr":34,"head":"0136936e7d63ba0c538d2cb40db60409107ababc","state":"PREPARATION_ONLY"},
-      "swift":{"issue":19,"pr":35,"head":"76b10b5a05898410ed361761626b381158edb306","state":"PREPARATION_ONLY"},
-      "typescript":{"issue":20,"pr":36,"head":"c62e24ffa0ceb2224fe6931929bfaeeceabe3c39","state":"PREPARATION_ONLY"}
+      "kotlin":{"issue":18,"issue_state":"CLOSED_LOCAL_DETERMINISTIC","pr":34,"head":"cf589a0990aaaa6422be9c649b52b44230d570f6","state":"PROFILE_HARDENED_CANDIDATE"},
+      "swift":{"issue":19,"issue_state":"CLOSED_LOCAL_DETERMINISTIC","pr":35,"head":"039827061f54aa72e2b81365a4c904d25833f83e","state":"PROFILE_HARDENED_CANDIDATE"},
+      "typescript":{"issue":20,"issue_state":"CLOSED_LOCAL_DETERMINISTIC","pr":36,"head":"3ed9f0307df0937028bbf52fe8fbd2a6621acafe","state":"PROFILE_HARDENED_CANDIDATE"}
     },
-    "execution":{"issue":37,"pr":38,"head":"9f41038240837ea2dd9dcdb9befd13e6ba81a78e","state":"DRAFT_PREPARATION"},
-    "launch":{"issue":39,"issue_state":"CLOSED_PREPARATION_ONLY","pr":41,"head":"98c9545c0dd2bbfdabdaf27c8a992822a78b3840","state":"DRAFT_PUBLISHED_NOT_LAUNCHED"},
-    "independent_shadow":{"issue":26,"state":"NOT_EXERCISED"},
-    "convergence":{"issue":24,"state":"BLOCKED_BY_WORKERS","sole_admission_authority":true}
+    "historical_process_evidence": [
+      {"issue":37,"pr":38,"head":"9f41038240837ea2dd9dcdb9befd13e6ba81a78e","state":"CLOSED_UNMERGED_HISTORICAL_PROCESS_EVIDENCE"},
+      {"issue":39,"pr":41,"head":"98c9545c0dd2bbfdabdaf27c8a992822a78b3840","state":"CLOSED_UNMERGED_HISTORICAL_LAUNCH_PREPARATION"},
+      {"issue":58,"pr":59,"head":"ce57d5db1e71223f18d1095024297391a36611f3","state":"CLOSED_UNMERGED_SUPERSEDED_STALE_PROFILE"}
+    ],
+    "independent_review_dispatch": {"issue":60,"pr":61,"head":"2998b0a93d23ddfca0934250d82bdbd892f2c84b","state":"HOSTED_GREEN_EXTERNAL_REVIEW_PENDING","falsifier_denominator":33},
+    "independent_shadow": {"issue":26,"state":"NOT_EXERCISED"},
+    "convergence_control": {"issue":62,"pr":63,"head":"e4196305284b4751286b01f5d1d33e82fc34af0b","state":"HOSTED_GREEN_BLOCKED_BY_INDEPENDENT_RECEIPT"},
+    "convergence": {"issue":24,"state":"BLOCKED_BY_ISSUE_26","sole_admission_authority":true,"admitted":false}
+  },
+  "provenance": {
+    "control": {"issue":53,"pr":54,"head":"d9716d029578608b6179c56def6f7ea8c3728146","state":"DRAFT_HOSTED_STATIC_CONTROL_READY_FOR_INDEPENDENT_REVIEW"},
+    "independent_review": {"issue":55,"state":"NOT_EXERCISED"},
+    "post_merge_convergence": {"issue":56,"state":"BLOCKED"},
+    "upstream_selection": {"issue":51,"state":"OPEN_NOT_ADMITTED"}
   },
   "source_problem_matrix": "docs/traceability/PROBLEM_CLOSURE_MATRIX.md",
   "evidence_states": ["PASS","FAIL","ABSENT","NOT_IMPLEMENTED","NOT_EXERCISED","SKIPPED_BY_POLICY","HUMAN_ADMIT_REQUIRED"],
-  "human_owned": ["clean-room declaration","merge","release","production promotion","visibility","legal acceptance","security acceptance","public/private boundary change"],
-  "current_ceiling": "merged control/source/handoff documentation plus Draft C01 execution and launch preparation; no Worker Session or product implementation"
+  "human_owned": ["legal acceptance","security acceptance","merge","release","production promotion","visibility","public/private boundary change"],
+  "current_ceiling": "C01 profile-hardened local-deterministic workers + hosted profile-v2 dispatch/convergence controls + Draft PRV01 provenance static control; independent admission/hardware/MCP/product/release remain unearned"
 }
