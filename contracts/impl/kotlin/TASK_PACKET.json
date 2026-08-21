@@ -1,0 +1,61 @@
+{
+  "schema": "actiongate-c01-language-worker-packet/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 18,
+  "parent_issue": 4,
+  "runtime_issue": 22,
+  "clean_room_issue": 29,
+  "receipt_issue": 30,
+  "pr_gate_issue": 31,
+  "base_branch": "ag/C01-action-contracts",
+  "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "work_branch": "ag/C01-kotlin-vectors",
+  "relation": "SIBLING_AFTER_SCHEMA_FREEZE",
+  "lease": {
+    "paths": ["contracts/impl/kotlin/**"],
+    "resources": ["C01 Kotlin canonicalization candidate"]
+  },
+  "read_only_inputs": [
+    "contracts/v1/PROFILE.md",
+    "contracts/v1/DECISIONS.md",
+    "contracts/v1/actiongate-contracts.schema.json",
+    "contracts/v1/vectors.json"
+  ],
+  "capability_checks": [["kotlinc", "-version"], ["java", "-version"]],
+  "capability_state": "NOT_EXERCISED",
+  "dependency_policy": "Kotlin/JDK built-ins only unless exact revision/license admission exists",
+  "required_positive": [
+    "arguments canonical bytes and hash",
+    "ActionEnvelope canonical bytes and digest",
+    "AuthorizationChallenge signing-input hash"
+  ],
+  "required_negative": [
+    "modified arguments",
+    "wrong audience",
+    "missing policy version",
+    "invalid expiry",
+    "duplicate key where raw parser supports detection",
+    "float",
+    "unsafe integer",
+    "invalid key",
+    "lone surrogate",
+    "unsupported value"
+  ],
+  "clean_room_state": "NOT_EXERCISED",
+  "implementation_state": "NOT_IMPLEMENTED",
+  "evidence_lane": "local-deterministic canonicalization only",
+  "receipt_template": "RECEIPT.template.json",
+  "shadow_preflight": "SHADOW_PREFLIGHT.json",
+  "convergence_issue": 24,
+  "stop_on": [
+    "stale base",
+    "contract divergence",
+    "overlapping lease",
+    "unadmitted dependency",
+    "toolchain absent",
+    "failed oracle",
+    "private context contamination",
+    "Human-owned operation"
+  ],
+  "human_owned": ["merge", "release", "contract semantic change", "security/legal acceptance"]
+}

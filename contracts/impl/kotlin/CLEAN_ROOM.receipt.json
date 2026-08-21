@@ -1,0 +1,26 @@
+{
+  "schema": "actiongate-c01-clean-room-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "implementation_wave_issue": 47,
+  "worker_issue": 18,
+  "language": "kotlin",
+  "human_authorization": "EXPLICIT_BOUNDED_IMPLEMENTATION_AUTHORIZATION_2026-08-21",
+  "public_inputs": [
+    "C01:b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+    "execution-control:9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
+    "worker-preparation:0136936e7d63ba0c538d2cb40db60409107ababc"
+  ],
+  "dependencies": [
+    {"name": "Kotlin/JVM built-ins", "version": "kotlinc 1.9.0 / Java 21.0.11", "license_state": "runtime/toolchain only; no vendored dependency"}
+  ],
+  "fresh_session_requirement": {
+    "state": "WAIVED_WITH_AUTHORIZED_REASON",
+    "reason": "Human explicitly authorized this bounded deterministic public-input-only implementation wave."
+  },
+  "private_or_employer_source_accessed": false,
+  "customer_data_or_credential_used": false,
+  "company_resource_used": false,
+  "suspicious_similarity_stop_condition": "ACTIVE",
+  "technical_disposition": "CLEAN_ROOM_PRECHECK_PASS",
+  "legal_clearance": "HUMAN_ADMIT_REQUIRED"
+}

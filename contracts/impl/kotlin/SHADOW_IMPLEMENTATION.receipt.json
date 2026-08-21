@@ -1,0 +1,68 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 18,
+  "implementation_wave_issue": 47,
+  "hardening_issue": 49,
+  "profile_hardening_issue": 57,
+  "atom": "C01-KOTLIN",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "local-deterministic canonicalization only",
+  "exact_profile_hardened_subject": {
+    "commit": "0247eb1fc7201b51aded66f2c2311aa42f9ca83c",
+    "tree": "15a27f2d9dbaacdfbea57dc1cd37e4af284b09dc"
+  },
+  "verified_blobs": {
+    "sources": ["6e73c3a43ddc6ebaed23710f3b3f5e98d34b2426"],
+    "tests": ["2d3ff79c0c488ef2842aadb831b299c3cf8ecf9e"]
+  },
+  "findings": [
+    {
+      "id": "SH-K-P01",
+      "class": "DOMAIN_ALLOWLIST_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Digest helpers accept only the registered Arguments and ActionEnvelope labels; unknown and embedded-NUL suffix labels reject."
+    },
+    {
+      "id": "SH-K-P02",
+      "class": "RAW_NUMBER_PROFILE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "The raw gate rejects fraction/exponent spellings and integer magnitude above 9007199254740991 before generic parsing."
+    },
+    {
+      "id": "SH-K-P03",
+      "class": "RAW_KEY_PROFILE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "Raw object members enforce the ActionGate ASCII dynamic-key profile and escaped-equivalent duplicate detection."
+    },
+    {
+      "id": "SH-K-P04",
+      "class": "EVIDENCE_DELTA",
+      "disposition": "VERIFIED_REPAIRED",
+      "evidence": "The original frozen hashes and common 3+7 denominator remain green; extra profile-hardening controls pass."
+    }
+  ],
+  "verification": {
+    "command": "bash contracts/impl/kotlin/run.sh",
+    "result": "PASS",
+    "frozen_positive_hashes": "3/3 PASS",
+    "common_negative_denominator": "7/7 PASS",
+    "extra_profile_controls": [
+      "unknown-domain rejection",
+      "embedded-NUL domain rejection",
+      "raw non-ASCII-key rejection",
+      "raw fraction/exponent rejection",
+      "raw positive/negative unsafe-integer rejection",
+      "raw safe integer boundaries and -0 acceptance",
+      "cycle and raw Unicode controls retained"
+    ]
+  },
+  "remaining_dissent": [
+    "This is a same-context implementation Shadow; independent review Issue #26 is NOT_EXERCISED.",
+    "C01 convergence Issue #24 remains blocked on independent review.",
+    "Hardware, MCP, security/legal acceptance, merge, release and production are not proven."
+  ],
+  "verdict": "PROFILE_HARDENED_IMPLEMENTATION_ELIGIBLE_FOR_SUCCESSOR_RECEIPT"
+}

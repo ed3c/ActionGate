@@ -1,0 +1,20 @@
+{
+  "schema": "actiongate-worker-shadow-preflight/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 18,
+  "branch": "ag/C01-kotlin-vectors",
+  "base_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "checkpoint": "before Kotlin implementation",
+  "findings": [
+    {"id":"SH-KOTLIN-001","risk":"Map iteration order used as canonical order","required_falsifier":"explicit sorted-key output matches frozen bytes"},
+    {"id":"SH-KOTLIN-002","risk":"Double or permissive number model enters security values","required_falsifier":"float and unsafe-integer controls fail before serialization"},
+    {"id":"SH-KOTLIN-003","risk":"default charset or Unicode normalization changes bytes","required_falsifier":"explicit UTF-8 and non-normalization control"},
+    {"id":"SH-KOTLIN-004","risk":"Android/JNI concerns leak into language-only worker","required_falsifier":"changed-path and import scan contains no Android/native API"},
+    {"id":"SH-KOTLIN-005","risk":"toolchain absence hidden by package download","required_falsifier":"exact kotlinc/JVM capability receipt or typed blocker"}
+  ],
+  "verdict": "PREIMPLEMENTATION_READY_NOT_EXECUTED",
+  "remaining": ["toolchain", "implementation", "vector execution", "independent Shadow", "C01 convergence"]
+}
