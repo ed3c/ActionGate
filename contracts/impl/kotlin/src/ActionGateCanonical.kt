@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.Base64
+import java.util.IdentityHashMap
 
 private const val MAX_SAFE_INTEGER: Long = 9_007_199_254_740_991L
 private val KEY_PATTERN = Regex("^[A-Za-z0-9_.:-]+$")
@@ -20,14 +21,14 @@ sealed interface CanonicalValue {
 }
 
 object ActionGateCanonical {
-    fun canonicalBytes(value: Any?): ByteArray = encode(fromAny(value)).toByteArray(StandardCharsets.UTF_8)
+    fun canonicalBytes(value: Any?): ByteArray =
+        encode(fromAny(value, IdentityHashMap())).toByteArray(StandardCharsets.UTF_8)
 
-    fun canonicalString(value: Any?): String = encode(fromAny(value))
+    fun canonicalString(value: Any?): String = encode(fromAny(value, IdentityHashMap()))
 
     fun digestBase64Url(domain: String, value: Any?): String {
-        require(domain.endsWith('\u0000')) { "domain must end with NUL" }
         val digest = MessageDigest.getInstance("SHA-256")
-        digest.update(domain.toByteArray(StandardCharsets.US_ASCII))
+        digest.update(domainBytes(domain))
         digest.update(canonicalBytes(value))
         return Base64.getUrlEncoder().withoutPadding().encodeToString(digest.digest())
     }
@@ -38,7 +39,7 @@ object ActionGateCanonical {
 
     fun authorizationSigningInput(challenge: Any?): ByteArray {
         val out = ByteArrayOutputStream()
-        out.write("ActionGate-AuthorizationChallenge-v1\u0000".toByteArray(StandardCharsets.US_ASCII))
+        out.write(domainBytes("ActionGate-AuthorizationChallenge-v1\u0000"))
         out.write(canonicalBytes(challenge))
         return out.toByteArray()
     }
@@ -47,7 +48,20 @@ object ActionGateCanonical {
         DuplicateKeyParser(raw).parseDocument()
     }
 
-    private fun fromAny(value: Any?): CanonicalValue = when (value) {
+    private fun domainBytes(domain: String): ByteArray {
+        if (!domain.endsWith('\u0000')) {
+            throw CanonicalizationException("domain must end with NUL")
+        }
+        if (domain.any { it.code > 0x7f }) {
+            throw CanonicalizationException("domain must contain exact ASCII bytes")
+        }
+        return domain.toByteArray(StandardCharsets.US_ASCII)
+    }
+
+    private fun fromAny(
+        value: Any?,
+        activeContainers: IdentityHashMap<Any, Unit>,
+    ): CanonicalValue = when (value) {
         null -> CanonicalValue.Null
         is Boolean -> CanonicalValue.Bool(value)
         is Byte -> integer(value.toLong())
@@ -56,11 +70,13 @@ object ActionGateCanonical {
         is Long -> integer(value)
         is Float, is Double -> throw CanonicalizationException("floating point is forbidden")
         is String -> {
-            validateUnicode(value)
+            validateUnicodeString(value)
             CanonicalValue.Text(value)
         }
-        is List<*> -> CanonicalValue.ArrayValue(value.map(::fromAny))
-        is Map<*, *> -> {
+        is List<*> -> withActiveContainer(value, activeContainers) {
+            CanonicalValue.ArrayValue(value.map { fromAny(it, activeContainers) })
+        }
+        is Map<*, *> -> withActiveContainer(value, activeContainers) {
             val converted = LinkedHashMap<String, CanonicalValue>()
             for ((key, item) in value) {
                 if (key !is String || !KEY_PATTERN.matches(key)) {
@@ -69,11 +85,26 @@ object ActionGateCanonical {
                 if (converted.containsKey(key)) {
                     throw CanonicalizationException("duplicate object key: $key")
                 }
-                converted[key] = fromAny(item)
+                converted[key] = fromAny(item, activeContainers)
             }
             CanonicalValue.ObjectValue(converted)
         }
         else -> throw CanonicalizationException("unsupported value type: ${value::class.qualifiedName}")
+    }
+
+    private inline fun <T> withActiveContainer(
+        container: Any,
+        activeContainers: IdentityHashMap<Any, Unit>,
+        block: () -> T,
+    ): T {
+        if (activeContainers.put(container, Unit) != null) {
+            throw CanonicalizationException("cyclic container is forbidden")
+        }
+        return try {
+            block()
+        } finally {
+            activeContainers.remove(container)
+        }
     }
 
     private fun integer(value: Long): CanonicalValue.Integer {
@@ -95,7 +126,7 @@ object ActionGateCanonical {
     }
 
     private fun quote(value: String): String {
-        validateUnicode(value)
+        validateUnicodeString(value)
         val out = StringBuilder(value.length + 2)
         out.append('"')
         var index = 0
@@ -127,21 +158,21 @@ object ActionGateCanonical {
         out.append('"')
         return out.toString()
     }
+}
 
-    private fun validateUnicode(value: String) {
-        var index = 0
-        while (index < value.length) {
-            val ch = value[index]
-            when {
-                Character.isHighSurrogate(ch) -> {
-                    if (index + 1 >= value.length || !Character.isLowSurrogate(value[index + 1])) {
-                        throw CanonicalizationException("lone high surrogate")
-                    }
-                    index += 2
+private fun validateUnicodeString(value: String) {
+    var index = 0
+    while (index < value.length) {
+        val ch = value[index]
+        when {
+            Character.isHighSurrogate(ch) -> {
+                if (index + 1 >= value.length || !Character.isLowSurrogate(value[index + 1])) {
+                    throw CanonicalizationException("lone high surrogate")
                 }
-                Character.isLowSurrogate(ch) -> throw CanonicalizationException("lone low surrogate")
-                else -> index += 1
+                index += 2
             }
+            Character.isLowSurrogate(ch) -> throw CanonicalizationException("lone low surrogate")
+            else -> index += 1
         }
     }
 }
@@ -207,7 +238,11 @@ private class DuplicateKeyParser(private val source: String) {
         while (index < source.length) {
             val ch = source[index++]
             when (ch) {
-                '"' -> return out.toString()
+                '"' -> {
+                    val result = out.toString()
+                    validateUnicodeString(result)
+                    return result
+                }
                 '\\' -> {
                     if (index >= source.length) fail("bad escape")
                     when (val escaped = source[index++]) {
@@ -241,21 +276,21 @@ private class DuplicateKeyParser(private val source: String) {
     private fun parseNumber() {
         if (consume('-') && index >= source.length) fail("bad number")
         if (consume('0')) {
-            // zero prefix handled by the following delimiter check.
+            if (index < source.length && source[index] in '0'..'9') fail("leading zero")
         } else {
             if (index >= source.length || source[index] !in '1'..'9') fail("bad number")
-            while (index < source.length && source[index].isDigit()) index++
+            while (index < source.length && source[index] in '0'..'9') index++
         }
         if (index < source.length && source[index] == '.') {
             index++
-            if (index >= source.length || !source[index].isDigit()) fail("bad fraction")
-            while (index < source.length && source[index].isDigit()) index++
+            if (index >= source.length || source[index] !in '0'..'9') fail("bad fraction")
+            while (index < source.length && source[index] in '0'..'9') index++
         }
         if (index < source.length && (source[index] == 'e' || source[index] == 'E')) {
             index++
             if (index < source.length && (source[index] == '+' || source[index] == '-')) index++
-            if (index >= source.length || !source[index].isDigit()) fail("bad exponent")
-            while (index < source.length && source[index].isDigit()) index++
+            if (index >= source.length || source[index] !in '0'..'9') fail("bad exponent")
+            while (index < source.length && source[index] in '0'..'9') index++
         }
     }
 
