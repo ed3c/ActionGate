@@ -1,0 +1,20 @@
+{
+  "schema":"actiongate-c01-convergence-control-receipt/v1",
+  "repository":"ed3c/ActionGate",
+  "issue":62,
+  "pr":63,
+  "state":"C01_CONVERGENCE_CONTROL_READY_BLOCKED_BY_INDEPENDENT_RECEIPT",
+  "control_candidate":{"commit":"79ff9e595abbadbd3decef35c5acecc635aef616","tree":"eb8ac31f9ce1df886709a14d8109c9343a0d15cf"},
+  "hosted_workflow":{"name":"C01 Convergence Control","run_id":32469662997,"job_id":96733615094,"head_sha":"79ff9e595abbadbd3decef35c5acecc635aef616","conclusion":"success"},
+  "changed_path_denominator":11,
+  "checks":{"structural_control":"PASS","planted_mutations":"16/16 PASS","changed_path_lease":"PASS","diff_check":"PASS"},
+  "repairs":["SH-CV-006 exact non-zero control subject required","SH-CV-007 reviewer kind allowlist enforced"],
+  "independent_review":"NOT_EXERCISED",
+  "c01_admitted":false,
+  "k01_start_authorized":false,
+  "merge_authorized":false,
+  "release_authorized":false,
+  "production_authorized":false,
+  "evidence_ceiling":"public hosted deterministic convergence-control preparation only",
+  "next_entry_condition":"A separate Issue #26 reviewer publishes a valid profile-v2 independent-review receipt; Issue #24 then owns the semantic decision."
+}
