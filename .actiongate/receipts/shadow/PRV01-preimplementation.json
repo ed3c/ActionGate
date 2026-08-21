@@ -1,0 +1,68 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "atom": "PRV01-INDEPENDENT-SOURCE-CLEANROOM",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE_DURING_RECON",
+  "evidence_lane": "cloud/static design and mutation preflight",
+  "findings": [
+    {
+      "id": "PRV-SH-001",
+      "class": "SOURCE_DELTA",
+      "severity": "L3_BLOCK_BEFORE_SOURCE_IMPORT",
+      "finding": "No exact product upstream has been selected; a Fork or derived-source relationship must not be invented.",
+      "disposition": "FAIL_CLOSED_EMPTY_REGISTRY"
+    },
+    {
+      "id": "PRV-SH-002",
+      "class": "EMPLOYMENT_IP_DELTA",
+      "severity": "L3_BLOCK_BEFORE_LEGAL_CLAIM",
+      "finding": "Public upstream lineage cannot by itself prove employer non-use, non-overlap or ownership.",
+      "disposition": "PRIVATE_HUMAN_REVIEW_REQUIRED"
+    },
+    {
+      "id": "PRV-SH-003",
+      "class": "AUTHORSHIP_DELTA",
+      "severity": "L3_BLOCK_BEFORE_DCO",
+      "finding": "Automation cannot invent a Human contributor identity or Signed-off-by trailer.",
+      "disposition": "REAL_HUMAN_DCO_REQUIRED_WHEN_APPLICABLE"
+    },
+    {
+      "id": "PRV-SH-004",
+      "class": "EVIDENCE_DELTA",
+      "severity": "L3_BLOCK_BEFORE_RELEASE",
+      "finding": "An empty registry, policy document or workflow is not upstream, clean-room, independent-review, legal or release evidence.",
+      "disposition": "EVIDENCE_LANES_SEPARATED"
+    },
+    {
+      "id": "PRV-SH-005",
+      "class": "PRIVATE_SOURCE_DELTA",
+      "severity": "L3_BLOCK_ON_LEAK",
+      "finding": "Private CodexDoc locations and employer material must not enter public Git or implementation prompts.",
+      "disposition": "PUBLIC_SCAN_AND_SCOPED_AGENT_RULES_ADDED"
+    }
+  ],
+  "negative_controls": [
+    "placeholder upstream URL rejected",
+    "missing exact tree rejected",
+    "unknown license rejected",
+    "import without admitted upstream rejected",
+    "overlapping target mappings rejected",
+    "derived patch without source blob rejected",
+    "private document URL rejected",
+    "release before Human legal admission rejected",
+    "original patch falsely claiming upstream blob rejected"
+  ],
+  "remaining_blockers": [
+    "exact upstream selection and baseline not exercised",
+    "no source import admitted",
+    "no clean-room implementation Session observed",
+    "no independent provenance or similarity review",
+    "no private employment, IP or business-overlap review receipt",
+    "no exact-subject SPDX SBOM",
+    "no legal, merge, release or production admission"
+  ],
+  "verdict": "PRV01_CONTROL_PLANE_READY_FOR_REVIEW",
+  "evidence_ceiling": "static control plane and local mutation tests only"
+}
