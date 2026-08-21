@@ -1,62 +1,61 @@
 # C01 Swift Canonicalization Worker
 
-Status: `SHADOW_HARDENED_LOCAL_DETERMINISTIC`; independent Shadow #26 and C01 convergence #24 remain separate.
+Status: `PROFILE_HARDENED_CANDIDATE_LOCAL_DETERMINISTIC`; independent Shadow and C01 convergence remain separate.
+
+## Exact candidate
+
+```text
+base contract  b63589e5a16e82fda1a9554227f2ebbb55398c8a
+source head    2f089d45056fd783f57f3458dc739f33a49304c7
+source tree    684275693783c379b134bd499a7dcddeb1f0b34c
+issue          #19 / #47 / #49 / #57
+lease          contracts/impl/swift/**
+```
 
 ## State Machine
 
 ```text
-C01_CONTRACT_BOUND
-→ LANGUAGE_IMPLEMENTED
-→ FROZEN_VECTORS_PASS
-→ COMMON_NEGATIVE_DENOMINATOR_PASS
-→ SHADOW_HARDENING_REPAIRED
-→ SUCCESSOR_RECEIPT
-→ INDEPENDENT_SHADOW_PENDING
+DISPATCH_BOUND
+→ TOOLCHAIN_PROBED
+→ CANONICALIZER_IMPLEMENTED
+→ POSITIVE_VECTORS_VERIFIED
+→ NEGATIVE_CONTROLS_VERIFIED
+→ SHADOW_HARDENED
+→ RAW_PROFILE_HARDENED
+→ DRAFT_CANDIDATE
 ```
+
+The current local-deterministic lane reached `RAW_PROFILE_HARDENED`. A successor receipt binds the metadata candidate immediately before the receipt commit.
 
 ## Data flow
 
 ```text
-frozen C01 profile/schema/vectors
+structured Swift/Foundation value
         ↓
-restricted Swift value adapter
+restricted conversion + mutable-container boundary
         ↓
-canonical UTF-8 JSON + exact ASCII domain bytes
+explicit ASCII-key sorting + UTF-8 JSON
         ↓
-SHA-256 / base64url vectors
+exact registered domain label + reference SHA-256
         ↓
-common 3-positive + 7-negative receipt
+three frozen hashes
+
+raw JSON bytes
         ↓
-extra Shadow hardening controls
+assertCanonicalJsonInput
+        ├─ duplicate and ASCII-key validation
+        ├─ escaped-surrogate validation
+        └─ integer-only syntax + ±(2^53−1) bound
         ↓
-Issue #26 independent review
-        ↓
-Issue #24 C01 convergence
+approved generic JSON parsing boundary
 ```
 
-## Hardened surface
-
-```text
-src/ActionGateCanonical.swift, src/SHA256.swift, src/DuplicateKeyParser.swift, tests/main.swift
-```
-
-Hardening under Issue #49 adds:
-
-- escaped duplicate-key equivalence
-- raw surrogate-pair acceptance
-- lone high/low surrogate rejection
-- non-ASCII domain rejection
-- missing-NUL rejection
-- mutable cyclic-container rejection
-- leading-zero grammar rejection
-- SHA-256 known-answer vectors
-
-Run:
+## Verification
 
 ```bash
-./run.sh
+bash contracts/impl/swift/run.sh
 ```
 
-The exact hardened source/test blobs are recorded in `SHADOW_IMPLEMENTATION.receipt.json`. The final `RECEIPT.json` is a successor evidence commit that binds the immediately preceding implementation metadata subject.
+Observed controls include the frozen 3-positive/7-negative denominator, SHA-256 known-answer vectors, exact-domain rejection, raw non-ASCII-key rejection, fraction/exponent rejection, unsafe raw-integer rejection, safe boundary acceptance and existing mutable-container/Unicode controls.
 
-No Android/iOS hardware, MCP, persistence, independent-security, merge or release claim is made.
+No Secure Enclave, LocalAuthentication, App Attest, hardware key, MCP, persistence or product implementation is present. The pure-Swift SHA-256 is a C01 reference lane, not a production provider selection. Same-context Shadow is not independent review.
