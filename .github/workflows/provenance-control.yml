@@ -35,25 +35,55 @@ jobs:
         shell: bash
         env:
           REPOSITORY: ${{ github.repository }}
-          EVENT_PATH: ${{ github.event_path }}
           EVENT_NAME: ${{ github.event_name }}
           CURRENT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
+
+          git init checkout
+
           if [[ "$EVENT_NAME" == "pull_request" ]]; then
-            HEAD_SHA="$(python3 -c 'import json,os; print(json.load(open(os.environ["EVENT_PATH"]))["pull_request"]["head"]["sha"])')"
-            BASE_SHA="$(python3 -c 'import json,os; print(json.load(open(os.environ["EVENT_PATH"]))["pull_request"]["base"]["sha"])')"
+            : "${GITHUB_EVENT_PATH:?GITHUB_EVENT_PATH is required for pull_request runs}"
+            eval "$(python3 - <<'PY'
+          import json
+          import os
+          import shlex
+
+          with open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8") as handle:
+              pull = json.load(handle)["pull_request"]
+
+          values = {
+              "HEAD_SHA": pull["head"]["sha"],
+              "BASE_SHA": pull["base"]["sha"],
+              "HEAD_REF": pull["head"]["ref"],
+              "BASE_REF": pull["base"]["ref"],
+              "HEAD_CLONE_URL": pull["head"]["repo"]["clone_url"],
+              "BASE_CLONE_URL": pull["base"]["repo"]["clone_url"],
+          }
+          for key, value in values.items():
+              print(f"{key}={shlex.quote(value)}")
+          PY
+            )"
+
+            git -C checkout remote add base "$BASE_CLONE_URL"
+            git -C checkout remote add head "$HEAD_CLONE_URL"
+            git -C checkout fetch --no-tags --no-recurse-submodules \
+              head "+refs/heads/${HEAD_REF}:refs/remotes/head/pr-head"
+            git -C checkout fetch --no-tags --no-recurse-submodules \
+              base "+refs/heads/${BASE_REF}:refs/remotes/base/pr-base"
+
+            test "$(git -C checkout rev-parse refs/remotes/head/pr-head)" = "$HEAD_SHA"
+            test "$(git -C checkout rev-parse refs/remotes/base/pr-base)" = "$BASE_SHA"
+            git -C checkout checkout --detach "$HEAD_SHA"
           else
             HEAD_SHA="$CURRENT_SHA"
-            BASE_SHA="${CURRENT_SHA}^"
+            git -C checkout remote add origin "https://github.com/${REPOSITORY}.git"
+            git -C checkout fetch --no-tags --no-recurse-submodules origin "$GITHUB_REF"
+            test "$(git -C checkout rev-parse FETCH_HEAD)" = "$HEAD_SHA"
+            git -C checkout checkout --detach "$HEAD_SHA"
+            BASE_SHA="$(git -C checkout rev-parse "${HEAD_SHA}^")"
           fi
-          git init checkout
-          git -C checkout remote add origin "https://github.com/${REPOSITORY}.git"
-          git -C checkout fetch --no-tags --depth=2 origin "$HEAD_SHA"
-          git -C checkout checkout --detach FETCH_HEAD
-          if [[ "$EVENT_NAME" == "pull_request" ]]; then
-            git -C checkout fetch --no-tags --depth=1 origin "$BASE_SHA"
-          fi
+
           printf '%s\n' "$HEAD_SHA" > checkout/.provenance-head
           printf '%s\n' "$BASE_SHA" > checkout/.provenance-base
 
