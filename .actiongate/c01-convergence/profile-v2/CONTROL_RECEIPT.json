@@ -1,0 +1,33 @@
+{
+  "schema": "actiongate-c01-convergence-control-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 62,
+  "pr": 63,
+  "state": "C01_CONVERGENCE_CONTROL_READY_BLOCKED_BY_INDEPENDENT_RECEIPT",
+  "control_candidate": {
+    "commit": "5ab9df03f14e33352ad8c965538a4525f0b22a07",
+    "tree": "a21297a7b6ccb5979ec91cd58b01054c871be47c"
+  },
+  "hosted_workflow": {
+    "name": "C01 Convergence Control",
+    "run_id": 32468954197,
+    "job_id": 96731496625,
+    "head_sha": "5ab9df03f14e33352ad8c965538a4525f0b22a07",
+    "conclusion": "success"
+  },
+  "changed_path_denominator": 11,
+  "checks": {
+    "structural_control": "PASS",
+    "planted_mutations": "14/14 PASS",
+    "changed_path_lease": "PASS",
+    "diff_check": "PASS"
+  },
+  "independent_review": "NOT_EXERCISED",
+  "c01_admitted": false,
+  "k01_start_authorized": false,
+  "merge_authorized": false,
+  "release_authorized": false,
+  "production_authorized": false,
+  "evidence_ceiling": "public hosted deterministic convergence-control preparation only",
+  "next_entry_condition": "A separate Issue #26 reviewer publishes a valid profile-v2 independent-review receipt; Issue #24 then owns the semantic decision."
+}
