@@ -1,36 +1,64 @@
 {
   "schema": "actiongate-task-dag/v1",
   "repository": "ed3c/ActionGate",
+  "checkpoint_start_subject": {
+    "commit": "76efa9297d147712bb9dfbb9e797d69ca9432a99",
+    "tree": "bdc14c3c9bd21e2d4aaf8f7a562e6e05f6c55597"
+  },
   "nodes": [
-    {"id":"N01","issue":2,"atom":"C00","owner":"control-plane","state":"IN_PROGRESS"},
-    {"id":"N02","issue":3,"atom":"S01","owner":"source-rights","state":"BLOCKED"},
-    {"id":"N03","issue":4,"atom":"C01","owner":"contracts","state":"BLOCKED"},
-    {"id":"N04","issue":5,"atom":"K01","owner":"domain-core","state":"BLOCKED"},
-    {"id":"N05","issue":6,"atom":"A01","owner":"gateway","state":"BLOCKED"},
-    {"id":"N06","issue":7,"atom":"A02","owner":"android","state":"BLOCKED"},
-    {"id":"N07","issue":8,"atom":"A03","owner":"ios","state":"BLOCKED"},
-    {"id":"N08","issue":9,"atom":"A04","owner":"mcp","state":"BLOCKED"},
-    {"id":"N09","issue":10,"atom":"E01","owner":"evidence","state":"BLOCKED"},
-    {"id":"N10","issue":11,"atom":"X01","owner":"devops-e2e","state":"BLOCKED"},
-    {"id":"N11","issue":12,"atom":"D01","owner":"convergence","state":"BLOCKED"},
-    {"id":"N12","issue":13,"atom":"H01","owner":"physical-human-authorities","state":"NOT_EXERCISED"}
+    {"id":"N01","issue":2,"atom":"C00","owner":"control-plane","state":"MERGED_CLOUD_STATIC"},
+    {"id":"N02","issue":3,"atom":"S01","owner":"source-rights","state":"MERGED_SOURCE_DISPOSITION"},
+    {"id":"N02D","issue":2,"atom":"D00","owner":"prompt-handoff","state":"MERGED_QUEUE_NOT_EXERCISED"},
+    {"id":"N03","issue":4,"atom":"C01","owner":"contracts","state":"DRAFT_PREPARATION"},
+    {"id":"C01-K","issue":18,"atom":"C01-KOTLIN","owner":"kotlin-worker","state":"PREPARATION_ONLY"},
+    {"id":"C01-S","issue":19,"atom":"C01-SWIFT","owner":"swift-worker","state":"PREPARATION_ONLY"},
+    {"id":"C01-T","issue":20,"atom":"C01-TYPESCRIPT","owner":"typescript-worker","state":"PREPARATION_ONLY"},
+    {"id":"C01-EP","issue":37,"atom":"C01-EXECUTION-PREFLIGHT","owner":"execution-preflight","state":"DRAFT_PREPARATION"},
+    {"id":"C01-LP","issue":39,"atom":"C01-LAUNCH-PACKETS","owner":"launch-packet-owner","state":"READY_TO_PREPARE"},
+    {"id":"C01-SH","issue":26,"atom":"C01-INDEPENDENT-SHADOW","owner":"independent-reviewer","state":"NOT_EXERCISED"},
+    {"id":"C01-CV","issue":24,"atom":"C01-CONVERGENCE","owner":"single-semantic-owner","state":"BLOCKED_BY_WORKERS"},
+    {"id":"N04","issue":5,"atom":"K01","owner":"domain-core","state":"BLOCKED_BY_C01_ADMISSION"},
+    {"id":"N05","issue":6,"atom":"A01","owner":"gateway","state":"NOT_IMPLEMENTED"},
+    {"id":"N06","issue":7,"atom":"A02","owner":"android","state":"NOT_IMPLEMENTED"},
+    {"id":"N07","issue":8,"atom":"A03","owner":"ios","state":"NOT_IMPLEMENTED"},
+    {"id":"N08","issue":9,"atom":"A04","owner":"mcp","state":"NOT_IMPLEMENTED"},
+    {"id":"N09","issue":10,"atom":"E01","owner":"evidence","state":"NOT_IMPLEMENTED"},
+    {"id":"N10","issue":11,"atom":"X01","owner":"devops-e2e","state":"NOT_IMPLEMENTED"},
+    {"id":"N11","issue":12,"atom":"D01","owner":"final-convergence","state":"OPEN_BLOCKED"},
+    {"id":"N12","issue":13,"atom":"H01","owner":"physical-security-human","state":"NOT_EXERCISED"},
+    {"id":"N40","issue":40,"atom":"D00-MAIN","owner":"partial-convergence","state":"IN_PROGRESS"}
   ],
   "start_edges": [
-    ["N01","N02"],["N01","N03"],["N02","N03"],["N03","N04"],
-    ["N03","N06"],["N03","N07"],["N03","N09"],["N04","N05"],
-    ["N04","N08"],["N04","N09"],["N05","N10"],["N08","N10"],
+    ["N01","N02"],["N01","N02D"],["N01","N03"],["N02","N03"],
+    ["N03","C01-K"],["N03","C01-S"],["N03","C01-T"],["N03","C01-EP"],
+    ["C01-EP","C01-LP"],["C01-CV","N04"],
+    ["N03","N06"],["N03","N07"],["N04","N05"],["N04","N08"],
+    ["N03","N09"],["N04","N09"],["N05","N10"],["N08","N10"],
     ["N09","N10"],["N10","N11"],["N06","N12"],["N07","N12"],["N11","N12"]
   ],
   "completion_edges": [
-    {"from":["N01","N02"],"to":"N03"},
-    {"from":["N03"],"to":"N04"},
+    {"from":["N01","N02","N02D"],"to":"N03","meaning":"bootstrap/source/handoff exact-main receipts required for C01 completion, not merely readability"},
+    {"from":["C01-K","C01-S","C01-T","C01-EP","C01-SH"],"to":"C01-CV"},
+    {"from":["C01-CV"],"to":"N04","required_terminal":"C01_ADMITTED"},
     {"from":["N03","N04"],"to":"N05"},
+    {"from":["N03"],"to":"N06","scope":"deterministic adapter portion only"},
+    {"from":["N03"],"to":"N07","scope":"deterministic adapter portion only"},
     {"from":["N03","N04"],"to":"N08"},
     {"from":["N03","N04"],"to":"N09"},
     {"from":["N03","N04","N05","N08","N09"],"to":"N10"},
     {"from":["N10"],"to":"N11"},
     {"from":["N06","N07","N11"],"to":"N12"}
   ],
-  "convergence_owner": "N11",
-  "dependency_law": "an edge exists only when a task consumes another task's unmerged contract, bytes, state, or required exact-subject receipt"
+  "process_dependencies": [
+    {"from":"N02D","to":"local-handoff","law":"queue contract is not queue execution"},
+    {"from":"C01-EP","to":"C01-K/C01-S/C01-T","law":"runtime observations are non-transferable and must be re-probed"},
+    {"from":"C01-SH","to":"C01-CV","law":"independent receipt required; no Git ancestry"},
+    {"from":"N40","to":"N01/N02/N02D","law":"partial convergence records merged state only"}
+  ],
+  "convergence_owners": {
+    "c01_semantics": "C01-CV / Issue #24",
+    "partial_main_checkpoint": "N40 / Issue #40",
+    "final_repository": "N11 / Issue #12"
+  },
+  "dependency_law": "an edge creates Git ancestry only when a child consumes unmerged parent bytes/contracts; process and evidence dependencies do not"
 }

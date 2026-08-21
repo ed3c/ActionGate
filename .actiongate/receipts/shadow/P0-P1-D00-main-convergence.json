@@ -1,0 +1,75 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "atom": "P0-P1-D00-MAIN-CONVERGENCE",
+  "issue": 40,
+  "audit_input": {
+    "commit": "76efa9297d147712bb9dfbb9e797d69ca9432a99",
+    "tree": "bdc14c3c9bd21e2d4aaf8f7a562e6e05f6c55597"
+  },
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "cloud/static exact-main reconciliation",
+  "findings": [
+    {
+      "id": "SH-40-001",
+      "class": "STATE_DELTA",
+      "severity": "BLOCKER_BEFORE_AGENT_HANDOFF",
+      "finding": "README and machine state still described PR #14/#15/#16 as Draft after all three merged.",
+      "falsifier": "Aggregate files identify their stable merge receipts and preserve their cloud/static evidence ceilings.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-40-002",
+      "class": "EVIDENCE_DELTA",
+      "severity": "BLOCKER_BEFORE_ISSUE_CLOSURE",
+      "finding": "Source/PDF rejected overclaims were not separated from still-open technical mechanisms in one closure matrix.",
+      "falsifier": "Problem Closure Matrix distinguishes source-disposition closure from contract, runtime, physical, user and paid lanes.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-40-003",
+      "class": "STATE_DELTA",
+      "severity": "BLOCKER_BEFORE_C01_MERGE",
+      "finding": "The aggregate Stack did not name current C01 PR #17/#34/#35/#36/#38 and could be read as C01 absent or merge-ready.",
+      "falsifier": "Stack index records exact observed heads, preparation-only states and Issue #24 as sole C01 admission authority.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-40-004",
+      "class": "LIFECYCLE_DELTA",
+      "severity": "BLOCKER_BEFORE_LOCAL_EXECUTION",
+      "finding": "LH-001 still targeted the historical C00 branch after C00/S01/D00 landed on main.",
+      "falsifier": "Active queue item resolves post-convergence origin/main, binds exact SHA/tree and proves all three merge commits are ancestors.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-40-005",
+      "class": "OWNERSHIP_DELTA",
+      "severity": "BLOCKER_BEFORE_FANOUT",
+      "finding": "Language workers, execution preflight, independent Shadow and convergence needed explicit sibling/process relations.",
+      "falsifier": "README, Issue DAG and Stack index preserve path-disjoint siblings, process dependencies and single convergence owners.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    },
+    {
+      "id": "SH-40-006",
+      "class": "AUTHORITY_DELTA",
+      "severity": "BLOCKER_BEFORE_CLOSURE",
+      "finding": "A merged documentation atom could be misread as product, hardware, security or commercial completion.",
+      "falsifier": "All aggregate surfaces state the highest evidence ceiling and explicit non-claims.",
+      "disposition": "REPAIRED_IN_CANDIDATE"
+    }
+  ],
+  "remaining_dissent": [
+    "No hosted CI exists for the merged bootstrap documentation.",
+    "The new merged-main Local Handoff has not executed on a trusted host.",
+    "Kotlin, Swift and TypeScript implementations and vectors are NOT_IMPLEMENTED/NOT_EXERCISED.",
+    "Issue #26 independent Shadow is NOT_EXERCISED.",
+    "Issue #24 has not admitted C01.",
+    "K01, adapters, E2E, physical devices, security/legal, user/paid, release and production remain open."
+  ],
+  "verdict": "P0_P1_D00_MAIN_CONVERGENCE_READY_FOR_REVIEW_CLOUD_STATIC_ONLY",
+  "candidate_subject_rule": "the exact PR head/tree containing this receipt is authoritative; the receipt does not self-claim an embedded commit SHA",
+  "next_entry_condition": "merge this documentation-only convergence under Human authorization, read back current main, then close Issues #2 and #3 only at their declared evidence ceilings and execute LH-MAIN-001 locally"
+}
