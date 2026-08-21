@@ -1,0 +1,25 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 20,
+  "implementation_wave_issue": 47,
+  "atom": "C01-TYPESCRIPT",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "local-deterministic canonicalization only",
+  "findings": [
+    {"id": "SH-T-001", "class": "ORDERING_DELTA", "disposition": "VERIFIED", "evidence": "object keys are explicitly sorted"},
+    {"id": "SH-T-002", "class": "NUMBER_DELTA", "disposition": "VERIFIED", "evidence": "Number.isSafeInteger and profile range reject floats and unsafe integers"},
+    {"id": "SH-T-003", "class": "UNICODE_DELTA", "disposition": "VERIFIED", "evidence": "lone surrogates are rejected and Unicode values are not normalized"},
+    {"id": "SH-T-004", "class": "DUPLICATE_KEY_DELTA", "disposition": "VERIFIED", "evidence": "raw JSON duplicate-key parser rejects repeated members before JSON.parse loss"},
+    {"id": "SH-T-005", "class": "DEPENDENCY_DELTA", "disposition": "VERIFIED", "evidence": "Node crypto and TypeScript compiler only; no npm install or npx"},
+    {"id": "SH-T-006", "class": "AUTHORITY_DELTA", "disposition": "VERIFIED", "evidence": "no MCP/mobile/persistence/integration or independent-review claim"}
+  ],
+  "remaining_dissent": [
+    "Independent Shadow Issue #26 is NOT_EXERCISED.",
+    "C01 convergence Issue #24 is BLOCKED until all Worker receipts exist.",
+    "Merge, release and legal/security acceptance remain Human-owned."
+  ],
+  "verdict": "IMPLEMENTATION_CANDIDATE_ELIGIBLE_FOR_RECEIPT"
+}
