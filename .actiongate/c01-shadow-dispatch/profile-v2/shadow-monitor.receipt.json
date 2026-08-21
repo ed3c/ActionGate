@@ -45,15 +45,30 @@
       "class": "EVIDENCE_DELTA",
       "severity": "REVIEW",
       "finding": "The versioned candidate required exact-head hosted structural, mutation, ready-binding, and changed-path checks.",
-      "resolution": "Workflow run 32463771855, job 96715952863, completed success on 9e0d9f7f06b258f07f18ed2f98b015d61ef0dee1.",
+      "resolution": "Workflow run 32463771855, job 96715952863, completed success on the pre-receipt metadata head 9e0d9f7f06b258f07f18ed2f98b015d61ef0dee1.",
       "disposition": "VERIFIED"
+    },
+    {
+      "id": "SH-DISPATCH-P2-006",
+      "class": "LIFECYCLE_DELTA",
+      "severity": "BLOCKER_BEFORE_READY_CLAIM",
+      "finding": "The first successor receipt run checked HEAD^ directly, but pull_request workflows check out a synthetic merge commit whose second parent is the exact PR head.",
+      "resolution": "Resolve merge parent 2 as the branch-head subject, fetch three generations, retain the first-red run, remove its receipt, and require a new immediate-successor receipt after a hosted-green repair head.",
+      "disposition": "REPAIR_IMPLEMENTED_AWAITING_HOSTED_VALIDATION"
     }
   ],
+  "first_red": {
+    "head": "029c6566d44d92538fc7afadefa7c18051a95bcb",
+    "workflow_run_id": 32464263106,
+    "workflow_job_id": 96717425610,
+    "failed_step": "Validate successor ready binding when present"
+  },
   "remaining_dissent": [
+    "The ready-binding repair head has not yet earned hosted PASS.",
     "No external independent reviewer has executed Issue #26.",
     "Issue #24 remains blocked.",
     "C01_ADMITTED and K01 remain absent.",
     "Hardware, MCP, security/legal acceptance, merge, release, and production are not proven."
   ],
-  "verdict": "C01_PROFILE_HARDENED_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW"
+  "verdict": "READY_BINDING_REPAIR_CANDIDATE_REQUIRES_HOSTED_VALIDATION"
 }

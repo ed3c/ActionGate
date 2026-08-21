@@ -23,7 +23,7 @@ jobs:
       - name: Checkout exact subject
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 3
 
       - name: Validate exact dispatch packet
         run: python3 .actiongate/c01-shadow-dispatch/profile-v2/check_dispatch.py
