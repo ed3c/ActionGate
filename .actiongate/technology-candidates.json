@@ -1,0 +1,17 @@
+{
+  "schema": "actiongate-technology-candidates/v1",
+  "repository": "ed3c/ActionGate",
+  "admission_rule": "candidate is not dependency; pin exact revision, license, notice, SBOM and verification before use",
+  "candidates": [
+    {"name":"modelcontextprotocol/python-sdk","license_observed":"MIT","license_blob":"3d48435454b105021b4f777c11b6b07d8d2ffea3","state":"CANDIDATE"},
+    {"name":"modelcontextprotocol/typescript-sdk","license_observed":"MIXED_TRANSITION_MIT_APACHE2_CC_BY_DOCS","state":"REVIEW_REQUIRED"},
+    {"name":"fastapi/fastapi","license_observed":"MIT","license_blob":"3e92463e6bd522a2a21e5f0a80d8089d6c4be20d","state":"CANDIDATE"},
+    {"name":"tink-crypto/tink","license_observed":"Apache-2.0","license_blob":"d645695673349e3947e8e5ae42332d0ac3164cd7","state":"CANDIDATE"},
+    {"name":"apple/swift-crypto","license_observed":"Apache-2.0","license_blob":"d645695673349e3947e8e5ae42332d0ac3164cd7","state":"OPTIONAL"},
+    {"name":"valkey-io/valkey","license_observed":"BSD-3-Clause","license_blob":"a2782ea7ba8784d1116974c91df9706499eda3d7","state":"CANDIDATE"},
+    {"name":"asg017/sqlite-vec","license_observed":"MIT","license_blob":"9c106bc48c760f7ed9f5b8255dea7adeef029cbe","state":"OPTIONAL_PHASE_2"},
+    {"name":"ggml-org/llama.cpp","license_observed":"MIT","license_blob":"e7dca554bcb802f98408383a864404e3aa4eacca","state":"OPTIONAL_PHASE_2"},
+    {"name":"google-ai-edge/LiteRT","license_observed":"Apache-2.0","license_blob":"261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64","state":"OPTIONAL_PHASE_2"}
+  ],
+  "admitted": []
+}
