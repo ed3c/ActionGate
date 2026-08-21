@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:actiongate:provenance:clean-room-session-receipt:v1",
+  "title": "ActionGate clean-room session receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "session_id",
+    "repository",
+    "subject_sha",
+    "started_at",
+    "runtime",
+    "permitted_sources",
+    "forbidden_sources",
+    "employer_source_accessed",
+    "employer_resources_used",
+    "private_urls_echoed",
+    "changed_paths",
+    "evidence_state"
+  ],
+  "properties": {
+    "schema": {"const": "clean-room-session-receipt/v1"},
+    "session_id": {"type": "string", "minLength": 1},
+    "repository": {"const": "ed3c/ActionGate"},
+    "subject_sha": {"oneOf": [{"type": "string", "pattern": "^[0-9a-f]{40}$"}, {"const": "ABSENT_AT_START"}]},
+    "started_at": {"type": "string", "format": "date-time"},
+    "runtime": {"type": "string", "minLength": 1},
+    "permitted_sources": {"type": "array", "items": {"type": "object"}, "minItems": 1},
+    "forbidden_sources": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "employer_source_accessed": {"const": false},
+    "employer_resources_used": {"const": false},
+    "private_urls_echoed": {"const": false},
+    "changed_paths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "evidence_state": {"enum": ["PASS", "FAIL", "BLOCKED", "HUMAN_ADMIT_REQUIRED"]}
+  }
+}
