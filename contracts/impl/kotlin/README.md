@@ -1,6 +1,6 @@
 # C01 Kotlin Canonicalization Worker
 
-Status: `PREIMPLEMENTATION_READY`; implementation and runtime evidence are `NOT_EXERCISED`.
+Status: `IMPLEMENTATION_CANDIDATE_LOCAL_DETERMINISTIC`; independent Shadow and C01 convergence remain separate.
 
 ## State Machine
 
@@ -15,48 +15,45 @@ DISPATCH_BOUND
 → DRAFT_CANDIDATE
 ```
 
-A later state requires its own exact-subject receipt.
+The implementation wave reached `SHADOW_READBACK` on the local deterministic lane. The durable receipt is added in a successor evidence commit and binds the implementation candidate subject immediately before that receipt commit.
 
 ## Data flow
 
 ```text
-read-only contracts/v1 profile/schema/vectors
+read-only C01 profile/schema/vectors
         ↓
-restricted Kotlin value model + validator
+restricted Kotlin/JDK value model
         ↓
-explicit key sort + UTF-8 canonical bytes
+explicit ASCII-key sorting + UTF-8 JSON encoding
         ↓
-SHA-256 + base64url domain hashes
+SHA-256 + base64url domain separation
         ↓
-positive and negative vector runner
+positive vectors + negative controls
         ↓
-contracts/impl/kotlin/receipt.json
+RECEIPT.json
+        ↓
+Issue #26 independent Shadow
         ↓
 Issue #24 C01 convergence
 ```
 
-## DAG relation
-
-This branch is a path-disjoint sibling of Swift and TypeScript. It consumes the same immutable C01 subject and never consumes their unmerged bytes.
-
-## Toolchain gate
-
-Capability-only commands:
-
-```bash
-kotlinc -version
-java -version
-```
-
-Absence is `BLOCKED_ABSENT_EXECUTABLE`. No installer or dependency download is authorized. Exact compile/test commands are frozen by the Worker before first implementation green and recorded in the receipt.
-
-## Expected implementation surface
+## Implementation surface
 
 ```text
-src/                 Kotlin restricted canonicalizer and vector runner
-tests/               owned positive/negative controls
-run.sh               deterministic no-download command lane
-receipt.json         exact-subject result after execution
+src/ActionGateCanonical.kt
+  restricted value conversion, canonical JSON, hashing, duplicate-key parser
+
+tests/CanonicalizerTest.kt
+  three positive hashes, ordering, float/range/key/type/duplicate/Unicode controls
+
+run.sh
+  no-download Kotlin/JVM compile and test lane
 ```
 
-Preparation files do not count as implementation evidence.
+## Deterministic command
+
+```bash
+./run.sh
+```
+
+No Android, JNI, NDK, hardware key, MCP, persistence or product implementation is present. A local green run is not independent review, C01 admission, hardware, integration, security, merge or release evidence.

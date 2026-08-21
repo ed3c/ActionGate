@@ -1,0 +1,25 @@
+{
+  "schema": "actiongate-shadow-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 18,
+  "implementation_wave_issue": 47,
+  "atom": "C01-KOTLIN",
+  "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+  "independence": "NOT_CLAIMED",
+  "implementation_ownership": "NONE",
+  "evidence_lane": "local-deterministic canonicalization only",
+  "findings": [
+    {"id": "SH-K-001", "class": "ORDERING_DELTA", "disposition": "VERIFIED", "evidence": "object keys are explicitly sorted before encoding"},
+    {"id": "SH-K-002", "class": "NUMBER_DELTA", "disposition": "VERIFIED", "evidence": "floating point and integers outside ±(2^53-1) are rejected"},
+    {"id": "SH-K-003", "class": "UNICODE_DELTA", "disposition": "VERIFIED", "evidence": "lone surrogates are rejected and Unicode values are emitted without normalization"},
+    {"id": "SH-K-004", "class": "DUPLICATE_KEY_DELTA", "disposition": "VERIFIED", "evidence": "raw JSON duplicate-key parser rejects repeated object members"},
+    {"id": "SH-K-005", "class": "DEPENDENCY_DELTA", "disposition": "VERIFIED", "evidence": "Kotlin/JDK built-ins only; no download or package addition"},
+    {"id": "SH-K-006", "class": "AUTHORITY_DELTA", "disposition": "VERIFIED", "evidence": "no Android/NDK/hardware/MCP/integration or independent-review claim"}
+  ],
+  "remaining_dissent": [
+    "Independent Shadow Issue #26 is NOT_EXERCISED.",
+    "C01 convergence Issue #24 is BLOCKED until all Worker receipts exist.",
+    "Merge, release and legal/security acceptance remain Human-owned."
+  ],
+  "verdict": "IMPLEMENTATION_CANDIDATE_ELIGIBLE_FOR_RECEIPT"
+}
