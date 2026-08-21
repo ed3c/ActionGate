@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actiongate.dev/schemas/c01-shadow-dispatch-receipt-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "repository",
+    "issue",
+    "implementation_candidate",
+    "hosted_workflow",
+    "state",
+    "shadow_monitor",
+    "remaining_dissent",
+    "evidence_ceiling"
+  ],
+  "properties": {
+    "schema": {
+      "const": "actiongate-c01-shadow-dispatch-receipt/v1"
+    },
+    "repository": {
+      "const": "ed3c/ActionGate"
+    },
+    "issue": {
+      "const": 58
+    },
+    "pr": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "implementation_candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "tree"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "hosted_workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "job_id",
+        "conclusion",
+        "passed_steps"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "job_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "conclusion": {
+          "const": "success"
+        },
+        "passed_steps": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "checkout",
+              "structural_dispatch_check",
+              "mutation_selftest"
+            ]
+          }
+        }
+      }
+    },
+    "state": {
+      "const": "C01_INDEPENDENT_SHADOW_DISPATCH_READY_FOR_EXTERNAL_REVIEW"
+    },
+    "shadow_monitor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observer_kind",
+        "independence_claimed"
+      ],
+      "properties": {
+        "observer_kind": {
+          "const": "SAME_CONTEXT_READ_ONLY_SHADOW"
+        },
+        "independence_claimed": {
+          "const": false
+        }
+      }
+    },
+    "remaining_dissent": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ceiling": {
+      "const": "exact-head hosted dispatch preparation only"
+    }
+  }
+}

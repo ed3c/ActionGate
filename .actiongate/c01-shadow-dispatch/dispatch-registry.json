@@ -1,0 +1,282 @@
+{
+  "schema": "actiongate-c01-independent-shadow-dispatch/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 58,
+  "parent_shadow_issue": 26,
+  "convergence_issue": 24,
+  "state": "C01_INDEPENDENT_SHADOW_DISPATCH_CANDIDATE",
+  "base": {
+    "branch": "ag/C01-worker-launch-packets",
+    "commit": "98c9545c0dd2bbfdabdaf27c8a992822a78b3840",
+    "tree": "fd65f2fa9278fe0c0251987939663f42a22ec24b",
+    "pr": 41,
+    "relationship": "TRUE_CHILD_CONSUMES_LAUNCH_PACKET_CONTRACT"
+  },
+  "dispatch_branch": "ag/C01-independent-shadow-dispatch",
+  "contract": {
+    "branch": "ag/C01-action-contracts",
+    "sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a"
+  },
+  "common_evidence": {
+    "branch": "ag/C01-execution-preflight",
+    "sha": "9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
+    "receipt_schema": "contracts/evidence/common/language-worker-receipt.schema.json",
+    "receipt_checker": "contracts/evidence/common/check_language_worker_receipt.py",
+    "schema_receipt": "contracts/evidence/schema/C01-schema-engine.receipt.json",
+    "access_rule": "EXACT_READ_ONLY_FETCH_NO_CHERRY_PICK"
+  },
+  "worker_relation": "PATH_DISJOINT_SIBLINGS_NO_INTER_WORKER_GIT_PARENT",
+  "workers": [
+    {
+      "language": "kotlin",
+      "issue": 18,
+      "pr": 34,
+      "branch": "ag/C01-kotlin-vectors",
+      "current_head": "511b26ad10389e0d0076f463f59f3a9c0e8a1b6e",
+      "current_tree": "92d6e5affe027df8c6ea4a03cf0e49b756248ee3",
+      "source_candidate": "8d56b1533bc5b9b56fae8b515d7a64b280ababb3",
+      "source_tree": "f08ec00d212aecfc04e8ba6db4ecca97ae75971c",
+      "receipt_subject": "7cd754840b471844b6215685671b3e8e2829a43a",
+      "receipt_tree": "9b2f07b220ee40d9b1b7641fa0a5aca9372252f8",
+      "receipt_blob": "6bfa88ca2f3e2a928c8785f2fb87fdcaee5e6c67",
+      "shadow_receipt_blob": "17ede5d60b45f8bdc38b6ffb1917bb5ea1c70c8a",
+      "lease": "contracts/impl/kotlin/**",
+      "hardening_falsifiers": [
+        "exact_ascii_domain_trailing_nul",
+        "non_ascii_domain_rejected",
+        "missing_nul_rejected",
+        "escaped_native_duplicate_equivalence",
+        "surrogate_pair_acceptance",
+        "lone_surrogate_rejection",
+        "leading_zero_rejection",
+        "recursive_container_rejection"
+      ],
+      "base_contract": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "receipt_relation": "SUCCESSOR_RECEIPT_BINDS_PRECEDING_METADATA_CANDIDATE",
+      "common_denominator": {
+        "positive": 3,
+        "negative": 7,
+        "pass": 10,
+        "fail": 0
+      },
+      "implementation_state": "SHADOW_HARDENED_LOCAL_DETERMINISTIC_PASS",
+      "same_context_shadow": {
+        "state": "PASS",
+        "independence_claimed": false
+      },
+      "independent_shadow_state": "NOT_EXERCISED"
+    },
+    {
+      "language": "swift",
+      "issue": 19,
+      "pr": 35,
+      "branch": "ag/C01-swift-vectors",
+      "current_head": "48bc9cf00105f40d5444542ddcdad85106f3c1d5",
+      "current_tree": "91458fe771874c3798edeedcaa2a3bde777bd14c",
+      "source_candidate": "d4abae30f9822667b14912a3964a0f21bff04772",
+      "source_tree": "6159f45a8be6a774f69ec955af1900b4d54950b1",
+      "receipt_subject": "4d38cf1451d95f83fb9251d707fe9ab173e2ca45",
+      "receipt_tree": "31f0efacb44e92eb6c8fabf8facdf9facfc7eabd",
+      "receipt_blob": "38d762d2ae306b30e607f2de71794a2609debfca",
+      "shadow_receipt_blob": "87346e102a1be351c0a95a5628ccda47d3cb829e",
+      "lease": "contracts/impl/swift/**",
+      "hardening_falsifiers": [
+        "exact_ascii_domain_trailing_nul",
+        "non_ascii_domain_rejected",
+        "missing_nul_rejected",
+        "escaped_native_duplicate_equivalence",
+        "surrogate_pair_acceptance",
+        "lone_surrogate_rejection",
+        "leading_zero_rejection",
+        "mutable_foundation_container_rejection",
+        "sha256_known_answer_vectors"
+      ],
+      "base_contract": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "receipt_relation": "SUCCESSOR_RECEIPT_BINDS_PRECEDING_METADATA_CANDIDATE",
+      "common_denominator": {
+        "positive": 3,
+        "negative": 7,
+        "pass": 10,
+        "fail": 0
+      },
+      "implementation_state": "SHADOW_HARDENED_LOCAL_DETERMINISTIC_PASS",
+      "same_context_shadow": {
+        "state": "PASS",
+        "independence_claimed": false
+      },
+      "independent_shadow_state": "NOT_EXERCISED"
+    },
+    {
+      "language": "typescript",
+      "issue": 20,
+      "pr": 36,
+      "branch": "ag/C01-typescript-vectors",
+      "current_head": "6a99c61150d00be56c7eddf70eb9e3f423cfb7fa",
+      "current_tree": "5c392c2e72bef44732617c13fd3d698fc4955594",
+      "source_candidate": "3cca770448d37610e494bb4147d03fe93da8b0b9",
+      "source_tree": "2e51037be1214c52ce0961d5b6a972884f2d1284",
+      "receipt_subject": "f3c0f57e2e32adbfc0754466322f18bbd724a71e",
+      "receipt_tree": "eae7ddab948aad05e1576deb6984a614525e9311",
+      "receipt_blob": "62e4a49035a1522bf23b60d858dfd38cba98bf8c",
+      "shadow_receipt_blob": "dd946070466ea2287700d549c92f97756685da89",
+      "lease": "contracts/impl/typescript/**",
+      "hardening_falsifiers": [
+        "exact_ascii_domain_trailing_nul",
+        "non_ascii_domain_rejected",
+        "missing_nul_rejected",
+        "escaped_native_duplicate_equivalence",
+        "surrogate_pair_acceptance",
+        "lone_surrogate_rejection",
+        "leading_zero_rejection",
+        "recursive_container_rejection",
+        "sparse_array_rejection",
+        "accessor_rejection",
+        "symbol_key_rejection",
+        "extra_array_property_rejection",
+        "unsupported_prototype_rejection"
+      ],
+      "base_contract": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+      "receipt_relation": "SUCCESSOR_RECEIPT_BINDS_PRECEDING_METADATA_CANDIDATE",
+      "common_denominator": {
+        "positive": 3,
+        "negative": 7,
+        "pass": 10,
+        "fail": 0
+      },
+      "implementation_state": "SHADOW_HARDENED_LOCAL_DETERMINISTIC_PASS",
+      "same_context_shadow": {
+        "state": "PASS",
+        "independence_claimed": false
+      },
+      "independent_shadow_state": "NOT_EXERCISED"
+    }
+  ],
+  "common_denominator": {
+    "positive_required": 3,
+    "negative_required": 7,
+    "total_required": 10,
+    "required_states": {
+      "pass": 10,
+      "fail": 0,
+      "not_exercised": 0,
+      "not_representable": 0
+    },
+    "ids": [
+      "three_frozen_hashes",
+      "ordering",
+      "float_rejected",
+      "unsafe_integer_rejected",
+      "invalid_key_rejected",
+      "unsupported_value_rejected",
+      "duplicate_key_control",
+      "unicode_no_normalization"
+    ]
+  },
+  "required_falsifiers": [
+    "three_frozen_hashes",
+    "ordering",
+    "float_rejected",
+    "unsafe_integer_rejected",
+    "invalid_key_rejected",
+    "unsupported_value_rejected",
+    "duplicate_key_control",
+    "unicode_no_normalization",
+    "accessor_rejection",
+    "escaped_native_duplicate_equivalence",
+    "exact_ascii_domain_trailing_nul",
+    "extra_array_property_rejection",
+    "leading_zero_rejection",
+    "lone_surrogate_rejection",
+    "missing_nul_rejected",
+    "mutable_foundation_container_rejection",
+    "non_ascii_domain_rejected",
+    "recursive_container_rejection",
+    "sha256_known_answer_vectors",
+    "sparse_array_rejection",
+    "surrogate_pair_acceptance",
+    "symbol_key_rejection",
+    "unsupported_prototype_rejection"
+  ],
+  "independent_review": {
+    "issue": 26,
+    "prompt": ".actiongate/c01-shadow-dispatch/prompts/independent-shadow.md",
+    "receipt_schema": ".actiongate/c01-shadow-dispatch/independent-review-receipt.schema.json",
+    "receipt_template": ".actiongate/c01-shadow-dispatch/independent-review-receipt.template.json",
+    "observer_rule": "SEPARATE_READ_ONLY_CONTEXT_DID_NOT_IMPLEMENT_OR_REPAIR",
+    "builder_or_same_context_may_satisfy": false,
+    "source_or_pr_mutation_allowed": false,
+    "allowed_verdicts": [
+      "ELIGIBLE_FOR_C01_CONVERGENCE",
+      "HOLD",
+      "REJECT"
+    ],
+    "state": "BLOCKED_BY_EXACT_HEAD_HOSTED_DISPATCH_CHECK"
+  },
+  "convergence": {
+    "issue": 24,
+    "prompt": ".actiongate/c01-shadow-dispatch/prompts/convergence.md",
+    "sole_semantic_owner": true,
+    "state": "BLOCKED_BY_INDEPENDENT_SHADOW_RECEIPT",
+    "allowed_verdicts": [
+      "C01_ADMITTED",
+      "HOLD",
+      "REJECT"
+    ],
+    "automatic_k01_start": false
+  },
+  "local_handoff_queue": {
+    "active_item": "C01-DISPATCH-CHECK-001",
+    "items": [
+      {
+        "id": "C01-DISPATCH-CHECK-001",
+        "state": "ACTIVE",
+        "entry": "exact base and all three Shadow-hardened Worker subjects remain current",
+        "operation": "run structural checker, planted mutations and hosted exact-head workflow",
+        "exit": "successor dispatch receipt binds the implementation candidate and hosted run",
+        "next_candidates": [
+          "C01-SHADOW-002"
+        ]
+      },
+      {
+        "id": "C01-SHADOW-002",
+        "state": "BLOCKED_BY_DISPATCH_CHECK",
+        "entry": "dispatch receipt PASS on exact hosted head; reviewer is separate and read-only",
+        "operation": "execute Issue #26 against all immutable subjects and required falsifiers",
+        "exit": "ELIGIBLE_FOR_C01_CONVERGENCE | HOLD | REJECT",
+        "next_candidates": [
+          "C01-CONVERGENCE-003"
+        ]
+      },
+      {
+        "id": "C01-CONVERGENCE-003",
+        "state": "BLOCKED_BY_INDEPENDENT_RECEIPT",
+        "entry": "valid Issue #26 receipt attached to Issue #24",
+        "operation": "Issue #24 emits C01_ADMITTED | HOLD | REJECT",
+        "exit": "exact C01 convergence receipt",
+        "next_candidates": []
+      }
+    ]
+  },
+  "current_context": {
+    "role": "TECH_LEAD_BUILDER_WITH_SAME_CONTEXT_READ_ONLY_SHADOW_MONITOR",
+    "may_prepare_dispatch": true,
+    "may_emit_independent_verdict": false,
+    "independence_claimed": false
+  },
+  "human_owned": [
+    "independent reviewer selection",
+    "semantic conflict resolution",
+    "merge",
+    "release",
+    "security/legal acceptance",
+    "production"
+  ],
+  "non_claims": [
+    "no independent Shadow verdict",
+    "no C01 admission",
+    "no K01 start",
+    "no Android/iOS hardware evidence",
+    "no MCP/integration/security/legal evidence",
+    "no merge/release/production authority"
+  ]
+}

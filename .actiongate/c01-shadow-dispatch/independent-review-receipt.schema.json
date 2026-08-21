@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actiongate.dev/schemas/c01-independent-review-receipt-v1.json",
+  "title": "ActionGate C01 Independent Review Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "repository",
+    "issue",
+    "audit_subject",
+    "reviewer",
+    "independence",
+    "checks",
+    "findings",
+    "verdict",
+    "evidence_ceiling"
+  ],
+  "properties": {
+    "schema": {
+      "const": "actiongate-c01-independent-review-receipt/v1"
+    },
+    "repository": {
+      "const": "ed3c/ActionGate"
+    },
+    "issue": {
+      "const": 26
+    },
+    "audit_subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_sha",
+        "common_evidence_sha",
+        "dispatch_implementation_sha",
+        "workers"
+      ],
+      "properties": {
+        "contract_sha": {
+          "const": "b63589e5a16e82fda1a9554227f2ebbb55398c8a"
+        },
+        "common_evidence_sha": {
+          "const": "9f41038240837ea2dd9dcdb9befd13e6ba81a78e"
+        },
+        "dispatch_implementation_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "workers": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "language",
+              "current_head",
+              "current_tree",
+              "receipt_subject",
+              "receipt_tree",
+              "receipt_blob",
+              "shadow_receipt_blob"
+            ],
+            "properties": {
+              "language": {
+                "enum": [
+                  "kotlin",
+                  "swift",
+                  "typescript"
+                ]
+              },
+              "current_head": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "current_tree": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "receipt_subject": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "receipt_tree": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "receipt_blob": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              },
+              "shadow_receipt_blob": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context_id",
+        "kind"
+      ],
+      "properties": {
+        "context_id": {
+          "type": "string",
+          "minLength": 8
+        },
+        "kind": {
+          "const": "INDEPENDENT_READ_ONLY_SHADOW"
+        }
+      }
+    },
+    "independence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "same_context",
+        "implemented_or_repaired_audited_subject",
+        "read_only",
+        "source_or_pr_mutation"
+      ],
+      "properties": {
+        "same_context": {
+          "const": false
+        },
+        "implemented_or_repaired_audited_subject": {
+          "const": false
+        },
+        "read_only": {
+          "const": true
+        },
+        "source_or_pr_mutation": {
+          "const": false
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_falsifiers",
+        "passed",
+        "failed",
+        "not_exercised"
+      ],
+      "properties": {
+        "required_falsifiers": {
+          "type": "array",
+          "minItems": 23,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "passed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "failed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "not_exercised": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "class",
+          "severity",
+          "finding",
+          "evidence",
+          "disposition"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "class": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "enum": [
+              "L0_OBSERVE",
+              "L1_WARN",
+              "L2_REVIEW",
+              "L3_BLOCK"
+            ]
+          },
+          "finding": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "disposition": {
+            "enum": [
+              "VERIFIED",
+              "BLOCKED",
+              "FAILED",
+              "NOT_APPLICABLE_WITH_EVIDENCE"
+            ]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "enum": [
+        "ELIGIBLE_FOR_C01_CONVERGENCE",
+        "HOLD",
+        "REJECT"
+      ]
+    },
+    "dissent": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ceiling": {
+      "const": "independent read-only C01 contract/language review only"
+    }
+  }
+}

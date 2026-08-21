@@ -1,0 +1,84 @@
+{
+  "schema": "actiongate-c01-independent-review-receipt-template/v1",
+  "template": true,
+  "repository": "ed3c/ActionGate",
+  "issue": 26,
+  "audit_subject": {
+    "contract_sha": "b63589e5a16e82fda1a9554227f2ebbb55398c8a",
+    "common_evidence_sha": "9f41038240837ea2dd9dcdb9befd13e6ba81a78e",
+    "dispatch_implementation_sha": "HUMAN_INPUT_REQUIRED",
+    "workers": [
+      {
+        "language": "kotlin",
+        "current_head": "511b26ad10389e0d0076f463f59f3a9c0e8a1b6e",
+        "current_tree": "92d6e5affe027df8c6ea4a03cf0e49b756248ee3",
+        "receipt_subject": "7cd754840b471844b6215685671b3e8e2829a43a",
+        "receipt_tree": "9b2f07b220ee40d9b1b7641fa0a5aca9372252f8",
+        "receipt_blob": "6bfa88ca2f3e2a928c8785f2fb87fdcaee5e6c67",
+        "shadow_receipt_blob": "17ede5d60b45f8bdc38b6ffb1917bb5ea1c70c8a"
+      },
+      {
+        "language": "swift",
+        "current_head": "48bc9cf00105f40d5444542ddcdad85106f3c1d5",
+        "current_tree": "91458fe771874c3798edeedcaa2a3bde777bd14c",
+        "receipt_subject": "4d38cf1451d95f83fb9251d707fe9ab173e2ca45",
+        "receipt_tree": "31f0efacb44e92eb6c8fabf8facdf9facfc7eabd",
+        "receipt_blob": "38d762d2ae306b30e607f2de71794a2609debfca",
+        "shadow_receipt_blob": "87346e102a1be351c0a95a5628ccda47d3cb829e"
+      },
+      {
+        "language": "typescript",
+        "current_head": "6a99c61150d00be56c7eddf70eb9e3f423cfb7fa",
+        "current_tree": "5c392c2e72bef44732617c13fd3d698fc4955594",
+        "receipt_subject": "f3c0f57e2e32adbfc0754466322f18bbd724a71e",
+        "receipt_tree": "eae7ddab948aad05e1576deb6984a614525e9311",
+        "receipt_blob": "62e4a49035a1522bf23b60d858dfd38cba98bf8c",
+        "shadow_receipt_blob": "dd946070466ea2287700d549c92f97756685da89"
+      }
+    ]
+  },
+  "reviewer": {
+    "context_id": "HUMAN_INPUT_REQUIRED",
+    "kind": "INDEPENDENT_READ_ONLY_SHADOW"
+  },
+  "independence": {
+    "same_context": "HUMAN_INPUT_REQUIRED",
+    "implemented_or_repaired_audited_subject": "HUMAN_INPUT_REQUIRED",
+    "read_only": "HUMAN_INPUT_REQUIRED",
+    "source_or_pr_mutation": "HUMAN_INPUT_REQUIRED"
+  },
+  "checks": {
+    "required_falsifiers": [
+      "three_frozen_hashes",
+      "ordering",
+      "float_rejected",
+      "unsafe_integer_rejected",
+      "invalid_key_rejected",
+      "unsupported_value_rejected",
+      "duplicate_key_control",
+      "unicode_no_normalization",
+      "accessor_rejection",
+      "escaped_native_duplicate_equivalence",
+      "exact_ascii_domain_trailing_nul",
+      "extra_array_property_rejection",
+      "leading_zero_rejection",
+      "lone_surrogate_rejection",
+      "missing_nul_rejected",
+      "mutable_foundation_container_rejection",
+      "non_ascii_domain_rejected",
+      "recursive_container_rejection",
+      "sha256_known_answer_vectors",
+      "sparse_array_rejection",
+      "surrogate_pair_acceptance",
+      "symbol_key_rejection",
+      "unsupported_prototype_rejection"
+    ],
+    "passed": [],
+    "failed": [],
+    "not_exercised": []
+  },
+  "findings": [],
+  "verdict": "HUMAN_INPUT_REQUIRED",
+  "dissent": [],
+  "evidence_ceiling": "independent read-only C01 contract/language review only"
+}

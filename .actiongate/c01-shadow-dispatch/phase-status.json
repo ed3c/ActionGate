@@ -1,0 +1,27 @@
+{
+  "schema": "actiongate-phase-status/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 58,
+  "phase": "C01_INDEPENDENT_SHADOW_DISPATCH",
+  "state": "C01_INDEPENDENT_SHADOW_DISPATCH_CANDIDATE",
+  "base_commit": "98c9545c0dd2bbfdabdaf27c8a992822a78b3840",
+  "base_tree": "fd65f2fa9278fe0c0251987939663f42a22ec24b",
+  "completed_outputs": [
+    "exact hardened Worker commit/tree/receipt/blob registry",
+    "zero-placeholder external independent Shadow prompt",
+    "exact convergence prompt",
+    "independent-review receipt schema and fail-closed template",
+    "deterministic structural checker",
+    "planted mutation selftest",
+    "same-context Shadow monitor receipt",
+    "dedicated hosted workflow"
+  ],
+  "verification": {
+    "local_structural_check": "PASS",
+    "local_mutation_selftest": "PASS_15_OF_15",
+    "exact_head_hosted_workflow": "PENDING",
+    "successor_dispatch_receipt": "PENDING"
+  },
+  "evidence_ceiling": "dispatch preparation only",
+  "next_entry_condition": "candidate checks pass; publish Draft PR and bind exact hosted run in a successor receipt"
+}
