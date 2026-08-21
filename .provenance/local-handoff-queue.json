@@ -1,0 +1,72 @@
+{
+  "schema": "actiongate-provenance-handoff-queue/v1",
+  "repository": "ed3c/ActionGate",
+  "active_item": "PV-LH-001",
+  "evidence_ceiling": "typed handoff only; no upstream, legal or release admission",
+  "items": [
+    {
+      "id": "PV-LH-001",
+      "state": "ACTIVE_INPUT_COLLECTION",
+      "objective": "Select and bind the exact public upstream relationship without accessing employer material.",
+      "entry": "Human provides the intended public upstream repository and relationship class.",
+      "required_inputs": [
+        "public repository URL",
+        "exact commit SHA or tag to resolve",
+        "relationship class",
+        "intended imported or dependency paths"
+      ],
+      "commands_after_binding": [
+        ["git", "clone", "--filter=blob:none", "--no-checkout", "<PUBLIC_UPSTREAM_URL>", "upstream"],
+        ["git", "-C", "upstream", "fetch", "origin", "<EXACT_COMMIT>"],
+        ["git", "-C", "upstream", "rev-parse", "<EXACT_COMMIT>"],
+        ["git", "-C", "upstream", "rev-parse", "<EXACT_COMMIT>^{tree}"],
+        ["python3", "scripts/check_provenance_control.py", "--hash-license", "upstream/<LICENSE_PATH>"]
+      ],
+      "parameter_law": "Placeholders must be resolved before process launch; no shell expansion or guessed revision.",
+      "receipt": ".provenance/receipts/upstream-baseline-<id>.json",
+      "exit": "repository, commit, tree, license SPDX/digest and path boundary are exact and independently read back",
+      "next": ["PV-LH-002"],
+      "human_owned": ["upstream/product selection", "relationship classification"]
+    },
+    {
+      "id": "PV-LH-002",
+      "state": "BLOCKED_BY_PV_LH_001",
+      "objective": "Run one public-input-only clean-room implementation Session.",
+      "entry": "PV-LH-001 valid; isolated personal environment; permitted-source allowlist frozen.",
+      "receipt": ".provenance/receipts/clean-room-session-<id>.json",
+      "exit": "exact changed paths and source allowlist recorded; all forbidden-source booleans remain false",
+      "next": ["PV-LH-003"],
+      "human_owned": ["clean-room declaration", "DCO for Human-authored contribution"]
+    },
+    {
+      "id": "PV-LH-003",
+      "state": "BLOCKED_BY_PV_LH_002",
+      "objective": "Independent read-only provenance, similarity, notice and SBOM review.",
+      "entry": "immutable candidate SHA/tree, upstream lock, path mapping, patch lineage, notices and SBOM exist.",
+      "receipt": ".provenance/receipts/independent-provenance-review-<id>.json",
+      "exit": "ADMIT_STATIC_PROVENANCE | BLOCK | REPLAN",
+      "next": ["PV-LH-004"],
+      "human_owned": []
+    },
+    {
+      "id": "PV-LH-004",
+      "state": "HUMAN_ADMIT_REQUIRED",
+      "objective": "Private employment/IP/business-overlap and counsel review.",
+      "entry": "private review packet plus all public provenance receipts exist.",
+      "public_receipt": ".provenance/receipts/outside-project-review-redacted.json",
+      "exit": "HUMAN_ADMITTED | BLOCKED | REPLAN",
+      "next": ["PV-LH-005"],
+      "human_owned": ["employment/IP/legal/business-overlap decision"]
+    },
+    {
+      "id": "PV-LH-005",
+      "state": "BLOCKED_BY_PV_LH_003_AND_PV_LH_004",
+      "objective": "Release eligibility decision.",
+      "entry": "notices, exact SBOM, independent provenance review and Human legal admission all pass on one exact subject.",
+      "receipt": ".provenance/receipts/release-admission.json",
+      "exit": "RELEASE_ELIGIBLE | BLOCKED",
+      "next": [],
+      "human_owned": ["merge", "release", "production", "visibility"]
+    }
+  ]
+}
