@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:actiongate:provenance:imported-paths:v1",
+  "title": "ActionGate imported path mapping",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "repository", "state", "mappings"],
+  "properties": {
+    "schema": {"const": "actiongate-imported-paths/v1"},
+    "repository": {"const": "ed3c/ActionGate"},
+    "state": {"enum": ["NO_IMPORTS_ADMITTED", "IMPORTS_CLASSIFIED"]},
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["upstream_id", "source_path", "target_path", "source_blob", "import_mode"],
+        "properties": {
+          "upstream_id": {"type": "string", "minLength": 1},
+          "source_path": {"type": "string", "minLength": 1},
+          "target_path": {"type": "string", "minLength": 1},
+          "source_blob": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "import_mode": {"enum": ["UNCHANGED_IMPORT", "MODIFIED_DERIVATIVE", "GENERATED_FROM_PUBLIC_SPEC"]}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"state": {"const": "NO_IMPORTS_ADMITTED"}}, "required": ["state"]},
+      "then": {"properties": {"mappings": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"state": {"const": "IMPORTS_CLASSIFIED"}}, "required": ["state"]},
+      "then": {"properties": {"mappings": {"minItems": 1}}}
+    }
+  ]
+}

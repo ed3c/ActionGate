@@ -1,0 +1,10 @@
+{
+  "schema": "actiongate-upstream-lock/v1",
+  "repository": "ed3c/ActionGate",
+  "state": "UPSTREAM_SELECTION_REQUIRED",
+  "source_policy": "PUBLIC_ENUMERATED_ONLY",
+  "no_source_imports_admitted": true,
+  "legal_admission": "HUMAN_ADMIT_REQUIRED",
+  "release_state": "BLOCKED",
+  "upstreams": []
+}

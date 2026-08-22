@@ -1,0 +1,64 @@
+{
+  "schema": "actiongate-provenance-control-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 53,
+  "pull_request": 54,
+  "receipt_relation": "SUCCESSOR_EVIDENCE_COMMIT",
+  "implementation_candidate": {
+    "base_commit": "70573aed229404772827829a1ce069a6e72184fa",
+    "commit": "639e48e262e1ac161afcd7f218b99886124c3e1c",
+    "tree": "14e7a7574ecd33aefd9e770f0d1680718d49cd07",
+    "changed_path_denominator": 29
+  },
+  "workflow": {
+    "run": 32465733281,
+    "job": 96721806382,
+    "conclusion": "SUCCESS",
+    "exact_head_and_base_fetch": "PASS",
+    "control_checker": "PASS",
+    "mutation_tests": "32_OF_32_PASS",
+    "commit_history_and_dco": "PASS",
+    "diff_check": "PASS"
+  },
+  "retained_lineage": {
+    "first_red_run": 32453603099,
+    "first_red_job": 96686539070,
+    "checkout_repair_commit": "a794a96734472173163528171521cc5acd34b407",
+    "prior_control_receipt_commit": "18fbd51d058d82575cd3f60811d28a7cbb7e0d57"
+  },
+  "hardening_findings": [
+    "path traversal, backslash, glob and ambiguous target boundaries now fail closed",
+    "import mappings and patch-lineage records must agree bidirectionally",
+    "all declared authorship classes now have compatible relationship and mapping rules",
+    "private-locator scanning covers the final tree and each commit in the declared range",
+    "DCO classification uses the source inventory visible in each source-bearing commit",
+    "clean-room receipts bind typed public sources, output commit/tree, changed paths and DCO evidence",
+    "independent review binds base, candidate, denominator, hosted workflow and a fixed falsifier set",
+    "outside-project Human admission requires complete private-review dispositions",
+    "release requires exact-candidate SPDX evidence and digest-bound predecessor/successor receipts",
+    "candidate-to-release-successor changes are restricted to admission metadata, lock, receipt and SBOM paths"
+  ],
+  "earned_state": "PRV01_HARDENED_STATIC_CONTROL_READY_FOR_INDEPENDENT_REVIEW",
+  "upstream_state": "UPSTREAM_SELECTION_REQUIRED",
+  "source_import_state": "NO_IMPORTS_ADMITTED",
+  "clean_room_session_state": "NOT_EXERCISED",
+  "independent_review_state": "NOT_EXERCISED",
+  "employment_ip_legal_state": "HUMAN_ADMIT_REQUIRED",
+  "release_state": "BLOCKED",
+  "shadow": {
+    "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+    "independence": "NOT_CLAIMED",
+    "finding_class": "SOURCE_LINEAGE_HISTORY_LIFECYCLE_AND_EVIDENCE_DELTA",
+    "verdict": "HARDENED_CANDIDATE_VERIFIED"
+  },
+  "evidence_ceiling": "cloud/static plus hosted deterministic provenance-control verification",
+  "next_entry_condition": "A separate reviewer who did not implement PR #54 executes Issue #55 against the final exact PR head and returns ADMIT_STATIC_PROVENANCE, BLOCK, or REPLAN.",
+  "human_owned": [
+    "upstream selection and relationship classification",
+    "employment/IP/business-overlap/legal admission",
+    "merge",
+    "release",
+    "production",
+    "visibility"
+  ]
+}

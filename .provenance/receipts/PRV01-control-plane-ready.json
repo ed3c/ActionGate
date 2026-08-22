@@ -1,0 +1,54 @@
+{
+  "schema": "actiongate-provenance-control-receipt/v1",
+  "repository": "ed3c/ActionGate",
+  "issue": 53,
+  "pull_request": 54,
+  "receipt_relation": "SUCCESSOR_EVIDENCE_COMMIT",
+  "implementation_candidate": {
+    "base_commit": "70573aed229404772827829a1ce069a6e72184fa",
+    "commit": "a794a96734472173163528171521cc5acd34b407",
+    "tree": "bd20a0a8e0de0cb28e33718395586ce90ba66c1e",
+    "changed_path_denominator": 26
+  },
+  "first_red": {
+    "commit": "a1dc5708f19ae3073b4affb839fcf1099999e914",
+    "workflow_run": 32453603099,
+    "job": 96686539070,
+    "result": "FAIL",
+    "finding": "The workflow referenced an empty github.event_path expression instead of the runner-provided GITHUB_EVENT_PATH, so exact-subject checkout never began."
+  },
+  "repair": {
+    "commit": "a794a96734472173163528171521cc5acd34b407",
+    "workflow_run": 32460903950,
+    "job": 96707475605,
+    "result": "PASS",
+    "checkout": "EXACT_HEAD_AND_BASE_REFS_VERIFIED",
+    "control_checker": "PASS",
+    "mutation_tests": "10_OF_10_PASS",
+    "commit_range_check": "PASS",
+    "diff_check": "PASS"
+  },
+  "earned_state": "PRV01_CONTROL_PLANE_READY_FOR_INDEPENDENT_REVIEW",
+  "upstream_state": "UPSTREAM_SELECTION_REQUIRED",
+  "source_import_state": "NO_IMPORTS_ADMITTED",
+  "clean_room_session_state": "NOT_EXERCISED",
+  "independent_review_state": "NOT_EXERCISED",
+  "employment_ip_legal_state": "HUMAN_ADMIT_REQUIRED",
+  "release_state": "BLOCKED",
+  "shadow": {
+    "observer_kind": "SAME_CONTEXT_READ_ONLY_SHADOW",
+    "independence": "NOT_CLAIMED",
+    "finding_class": "RUNTIME_AND_EVIDENCE_DELTA",
+    "disposition": "WORKFLOW_REPAIRED_AND_FIRST_RED_RETAINED"
+  },
+  "evidence_ceiling": "cloud/static plus hosted deterministic provenance-control verification",
+  "next_entry_condition": "A separate reviewer who did not implement PR #54 executes Issue #55 against the final exact PR head and returns ADMIT_STATIC_CONTROL, BLOCK_STATIC_CONTROL, or REPLAN_REQUIRED.",
+  "human_owned": [
+    "upstream selection and relationship classification",
+    "employment/IP/business-overlap/legal admission",
+    "merge",
+    "release",
+    "production",
+    "visibility"
+  ]
+}

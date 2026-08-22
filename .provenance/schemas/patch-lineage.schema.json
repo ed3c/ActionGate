@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:actiongate:provenance:patch-lineage:v1",
+  "title": "ActionGate patch lineage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "repository", "state", "records"],
+  "properties": {
+    "schema": {"const": "actiongate-patch-lineage/v1"},
+    "repository": {"const": "ed3c/ActionGate"},
+    "state": {"enum": ["BASELINE_ONLY", "PATCHES_RECORDED"]},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["change_id", "target_path", "authorship", "upstream_id", "source_path", "upstream_blob", "receipt"],
+        "properties": {
+          "change_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+          "target_path": {"type": "string", "minLength": 1},
+          "authorship": {"enum": ["ORIGINAL_PATCH", "DERIVED_PATCH", "MECHANICAL_TRANSFORM", "UNCHANGED_IMPORT", "GENERATED_FROM_PUBLIC_SPEC"]},
+          "upstream_id": {"type": ["string", "null"]},
+          "source_path": {"type": ["string", "null"]},
+          "upstream_blob": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+          "receipt": {"type": "string", "minLength": 1}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"authorship": {"const": "ORIGINAL_PATCH"}}, "required": ["authorship"]},
+            "then": {
+              "properties": {
+                "upstream_id": {"type": "null"},
+                "source_path": {"type": "null"},
+                "upstream_blob": {"type": "null"}
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "authorship": {"enum": ["DERIVED_PATCH", "MECHANICAL_TRANSFORM", "UNCHANGED_IMPORT", "GENERATED_FROM_PUBLIC_SPEC"]}
+              },
+              "required": ["authorship"]
+            },
+            "then": {
+              "properties": {
+                "upstream_id": {"type": "string", "minLength": 1},
+                "source_path": {"type": "string", "minLength": 1},
+                "upstream_blob": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
